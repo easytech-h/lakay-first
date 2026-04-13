@@ -10,7 +10,7 @@ const PricingSection = () => {
   const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("annual");
 
   return (
-    <section id="pricing" className="relative py-24 md:py-32 px-4 bg-[#FAFAFA] overflow-hidden">
+    <section id="pricing" className="relative py-24 md:py-32 px-4 bg-[#FAFAFA]">
       <div
         className="absolute inset-0 pointer-events-none"
         style={{ background: "radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,193,7,0.06) 0%, transparent 60%)" }}
@@ -90,7 +90,7 @@ const PricingSection = () => {
         </p>
 
         {selectedTab === "new" ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 w-full pt-6">
             {formationPlans.map((plan) => {
               const isPopular = plan.popular;
               return (
