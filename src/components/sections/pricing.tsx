@@ -90,7 +90,7 @@ const PricingSection = () => {
         </p>
 
         {selectedTab === "new" ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 w-full">
             {formationPlans.map((plan) => {
               const isPopular = plan.popular;
               return (
@@ -110,14 +110,14 @@ const PricingSection = () => {
                     </div>
                   )}
 
-                  <div className="p-6 pb-4 text-center">
+                  <div className="p-6 pb-4">
                     <h3 className={`text-lg font-black mb-0.5 ${isPopular ? "text-white" : "text-black"}`}>
                       {plan.name}
                     </h3>
                     <p className={`text-xs font-medium mb-4 ${isPopular ? "text-white/45" : "text-black/45"}`}>
                       {plan.tagline}
                     </p>
-                    <div className="flex items-baseline justify-center gap-0.5 mb-1">
+                    <div className="flex items-baseline gap-0.5 mb-1">
                       <span className={`text-4xl font-black tracking-tighter ${isPopular ? "text-white" : "text-black"}`}>
                         ${plan.price}
                       </span>
@@ -128,15 +128,15 @@ const PricingSection = () => {
                     <div className={`h-px w-full mt-5 ${isPopular ? "bg-white/10" : "bg-black/6"}`} />
                   </div>
 
-                  <div className="px-6 flex-grow flex flex-col items-center">
+                  <div className="px-6 flex-grow">
                     {plan.additionalFeatures && (
-                      <p className={`text-xs font-black uppercase tracking-widest mb-3 text-center ${isPopular ? "text-[#FFC107]" : "text-black/35"}`}>
+                      <p className={`text-xs font-black uppercase tracking-widest mb-3 ${isPopular ? "text-[#FFC107]" : "text-black/35"}`}>
                         {plan.additionalFeatures}
                       </p>
                     )}
                     <ul className="space-y-2.5 w-full">
                       {plan.coreFeatures.map((f) => (
-                        <li key={f} className="flex items-start gap-2.5 justify-center">
+                        <li key={f} className="flex items-start gap-2.5">
                           <div className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${isPopular ? "bg-[#FFC107]" : "bg-[#FFC107]/20"}`}>
                             <Check className="w-2.5 h-2.5 text-black" strokeWidth={3} />
                           </div>
@@ -149,7 +149,7 @@ const PricingSection = () => {
                     {plan.notIncluded && plan.notIncluded.length > 0 && (
                       <ul className="space-y-2 mt-3 pt-3 border-t border-black/6 w-full">
                         {plan.notIncluded.map((f) => (
-                          <li key={f} className="flex items-start gap-2.5 justify-center">
+                          <li key={f} className="flex items-start gap-2.5">
                             <div className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${isPopular ? "bg-white/10" : "bg-black/5"}`}>
                               <X className={`w-2.5 h-2.5 ${isPopular ? "text-white/30" : "text-black/25"}`} />
                             </div>
