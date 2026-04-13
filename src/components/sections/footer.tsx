@@ -127,7 +127,7 @@ const Footer = () => {
               &copy; 2025 Prolify. All rights reserved.
             </p>
             <div className="flex gap-5 text-xs text-black/35">
-              <span className="hover:text-black/60 cursor-pointer transition-colors font-medium">Privacy Policy</span>
+              <a href="/privacy-policy" className="hover:text-black/60 cursor-pointer transition-colors font-medium">Privacy Policy</a>
               <span className="hover:text-black/60 cursor-pointer transition-colors font-medium">Terms of Service</span>
               <span className="hover:text-black/60 cursor-pointer transition-colors font-medium">Cookie Policy</span>
             </div>
