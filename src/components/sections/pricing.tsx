@@ -110,14 +110,14 @@ const PricingSection = () => {
                     </div>
                   )}
 
-                  <div className="p-6 pb-4">
+                  <div className="p-6 pb-4 text-center">
                     <h3 className={`text-lg font-black mb-0.5 ${isPopular ? "text-white" : "text-black"}`}>
                       {plan.name}
                     </h3>
                     <p className={`text-xs font-medium mb-4 ${isPopular ? "text-white/45" : "text-black/45"}`}>
                       {plan.tagline}
                     </p>
-                    <div className="flex items-baseline gap-0.5 mb-1">
+                    <div className="flex items-baseline justify-center gap-0.5 mb-1">
                       <span className={`text-4xl font-black tracking-tighter ${isPopular ? "text-white" : "text-black"}`}>
                         ${plan.price}
                       </span>
