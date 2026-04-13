@@ -128,32 +128,32 @@ const PricingSection = () => {
                     <div className={`h-px w-full mt-5 ${isPopular ? "bg-white/10" : "bg-black/6"}`} />
                   </div>
 
-                  <div className="px-6 flex-grow">
+                  <div className="px-6 flex-grow flex flex-col items-center">
                     {plan.additionalFeatures && (
-                      <p className={`text-xs font-black uppercase tracking-widest mb-3 ${isPopular ? "text-[#FFC107]" : "text-black/35"}`}>
+                      <p className={`text-xs font-black uppercase tracking-widest mb-3 text-center ${isPopular ? "text-[#FFC107]" : "text-black/35"}`}>
                         {plan.additionalFeatures}
                       </p>
                     )}
-                    <ul className="space-y-2.5">
+                    <ul className="space-y-2.5 w-full">
                       {plan.coreFeatures.map((f) => (
-                        <li key={f} className="flex items-start gap-2.5">
+                        <li key={f} className="flex items-start gap-2.5 justify-center">
                           <div className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${isPopular ? "bg-[#FFC107]" : "bg-[#FFC107]/20"}`}>
                             <Check className="w-2.5 h-2.5 text-black" strokeWidth={3} />
                           </div>
-                          <span className={`text-xs font-medium leading-snug ${isPopular ? "text-white/75" : "text-black/65"}`}>
+                          <span className={`text-xs font-medium leading-snug flex-1 ${isPopular ? "text-white/75" : "text-black/65"}`}>
                             {f}
                           </span>
                         </li>
                       ))}
                     </ul>
                     {plan.notIncluded && plan.notIncluded.length > 0 && (
-                      <ul className="space-y-2 mt-3 pt-3 border-t border-black/6">
+                      <ul className="space-y-2 mt-3 pt-3 border-t border-black/6 w-full">
                         {plan.notIncluded.map((f) => (
-                          <li key={f} className="flex items-start gap-2.5">
+                          <li key={f} className="flex items-start gap-2.5 justify-center">
                             <div className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${isPopular ? "bg-white/10" : "bg-black/5"}`}>
                               <X className={`w-2.5 h-2.5 ${isPopular ? "text-white/30" : "text-black/25"}`} />
                             </div>
-                            <span className={`text-xs font-medium leading-snug ${isPopular ? "text-white/30" : "text-black/30"}`}>
+                            <span className={`text-xs font-medium leading-snug flex-1 ${isPopular ? "text-white/30" : "text-black/30"}`}>
                               {f}
                             </span>
                           </li>
