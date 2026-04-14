@@ -190,7 +190,7 @@ function OnboardingSuccessContent() {
         <p className="text-sm text-gray-400 dark:text-gray-600 mb-6">
           If you completed payment, please contact{" "}
           <a href="mailto:support@prolify.com" className="text-[#FFC107] hover:underline">
-            support@prolify.com
+            support@prolify.co
           </a>{" "}
           and we'll sort it out immediately.
         </p>
