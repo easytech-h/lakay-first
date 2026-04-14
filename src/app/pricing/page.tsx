@@ -248,7 +248,6 @@ export default function PricingPage() {
                     {isPopular && (
                       <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-10">
                         <span className="inline-flex items-center gap-1 px-4 py-1 rounded-full bg-[#FFC107] text-black text-xs font-black uppercase tracking-widest">
-                          Most Popular
                         </span>
                       </div>
                     )}
