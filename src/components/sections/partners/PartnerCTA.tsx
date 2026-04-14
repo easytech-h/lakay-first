@@ -41,7 +41,7 @@ export default function PartnerCTA() {
         <p className="text-sm text-gray-400">
           Questions? Email{" "}
           <a href="mailto:partners@prolify.co" className="text-gray-600 font-semibold hover:text-[#b08800] transition-colors underline underline-offset-2">
-            partners@prolify.com
+            partners@prolify.co
           </a>
         </p>
       </div>
