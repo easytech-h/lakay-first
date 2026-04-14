@@ -51,7 +51,7 @@ export default function PartnerFAQ() {
           <p className="text-lg text-gray-500 font-medium">
             Can't find your answer? Email us at{" "}
             <a href="mailto:partners@prolify.com" className="font-semibold text-[#FFC107] hover:underline transition-colors">
-              partners@prolify.com
+              partners@prolify.co
             </a>
           </p>
         </div>
