@@ -378,16 +378,16 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <section className="py-20 px-4 bg-black">
+      <section className="py-20 px-4 bg-[#FFC107]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FFC107]/15 border border-[#FFC107]/30 text-xs font-bold uppercase tracking-widest text-[#FFC107]/80 mb-6">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/10 border border-black/20 text-xs font-bold uppercase tracking-widest text-black/70 mb-6">
               Partner Network
             </span>
-            <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-white mb-4">
+            <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-black mb-4">
               Unlock $5,000+ in<br className="hidden sm:block" /> Annual Savings
             </h2>
-            <p className="text-lg text-white/50 max-w-xl mx-auto font-medium leading-relaxed">
+            <p className="text-lg text-black/55 max-w-xl mx-auto font-medium leading-relaxed">
               Growth and Elite subscribers get exclusive access to VIP deals from the tools you actually use.
             </p>
           </div>
@@ -395,12 +395,12 @@ export default function PricingPage() {
             {vipPerks.map((perk, index) => {
               const Icon = perk.icon;
               return (
-                <div key={index} className="bg-white/5 border border-white/8 rounded-3xl p-6 hover:border-[#FFC107]/30 transition-all duration-200">
-                  <div className="w-10 h-10 rounded-xl bg-[#FFC107] flex items-center justify-center mb-4">
+                <div key={index} className="bg-white border border-black/8 rounded-3xl p-6 hover:border-black/20 transition-all duration-200">
+                  <div className="w-10 h-10 rounded-xl bg-[#FFC107] border border-black/10 flex items-center justify-center mb-4">
                     <Icon className="h-5 w-5 text-black" />
                   </div>
-                  <h3 className="text-sm font-black text-white mb-2">{perk.title}</h3>
-                  <p className="text-xs text-white/45 font-medium leading-relaxed">{perk.description}</p>
+                  <h3 className="text-sm font-black text-black mb-2">{perk.title}</h3>
+                  <p className="text-xs text-black/50 font-medium leading-relaxed">{perk.description}</p>
                 </div>
               );
             })}
