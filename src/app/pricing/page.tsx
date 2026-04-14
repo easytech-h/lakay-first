@@ -112,7 +112,7 @@ export default function PricingPage() {
       </section>
 
       <section className="py-16 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
+        <div className="w-full">
           <div className="flex justify-center mb-8">
             <div className="inline-flex items-center gap-1 p-1.5 bg-[#F5F5F5] rounded-2xl border border-black/6">
               <button
@@ -164,8 +164,7 @@ export default function PricingPage() {
           </p>
 
           {selectedTab === "new" ? (
-            <div className="flex justify-center pt-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 w-full max-w-4xl">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-4xl mx-auto pt-6 px-4">
               {formationPlans.map((plan) => {
                 const isPopular = plan.popular;
                 return (
@@ -234,10 +233,8 @@ export default function PricingPage() {
                 );
               })}
             </div>
-            </div>
           ) : (
-            <div className="flex justify-center pt-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 w-full max-w-4xl">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-4xl mx-auto pt-6 px-4">
               {managementPlans.map((plan) => {
                 const isPopular = plan.popular;
                 const displayPrice = billingCycle === "annual" ? plan.priceAnnual : plan.priceMonthly;
@@ -297,7 +294,6 @@ export default function PricingPage() {
                   </div>
                 );
               })}
-            </div>
             </div>
           )}
         </div>
