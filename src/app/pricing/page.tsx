@@ -164,7 +164,8 @@ export default function PricingPage() {
           </p>
 
           {selectedTab === "new" ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-4xl mx-auto pt-6">
+            <div className="flex justify-center pt-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 w-full max-w-4xl">
               {formationPlans.map((plan) => {
                 const isPopular = plan.popular;
                 return (
@@ -233,8 +234,10 @@ export default function PricingPage() {
                 );
               })}
             </div>
+            </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-4xl mx-auto pt-6">
+            <div className="flex justify-center pt-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 w-full max-w-4xl">
               {managementPlans.map((plan) => {
                 const isPopular = plan.popular;
                 const displayPrice = billingCycle === "annual" ? plan.priceAnnual : plan.priceMonthly;
@@ -294,6 +297,7 @@ export default function PricingPage() {
                   </div>
                 );
               })}
+            </div>
             </div>
           )}
         </div>
