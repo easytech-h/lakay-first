@@ -6,8 +6,6 @@ import { useState } from "react";
 import { Check, X, ArrowRight, Shield, Briefcase, Building2, ChevronDown, DollarSign, Sparkles, Zap, TrendingUp } from "lucide-react";
 import { formationPlans, managementPlans } from "@/lib/plans";
 import Link from "next/link";
-import Navigation from "@/components/sections/navigation";
-import Footer from "@/components/sections/footer";
 
 export default function PricingPage() {
   const [selectedTab, setSelectedTab] = useState<"new" | "existing">("new");
@@ -87,9 +85,7 @@ export default function PricingPage() {
 
   return (
     <main className="min-h-screen flex flex-col bg-white">
-      <Navigation />
-
-      <section className="relative pt-32 pb-20 px-4 bg-[#FAFAFA] overflow-hidden">
+      <section className="relative pt-20 pb-20 px-4 bg-[#FAFAFA] overflow-hidden">
         <div
           className="absolute inset-0 pointer-events-none"
           style={{ background: "radial-gradient(ellipse 60% 50% at 50% 0%, rgba(255,193,7,0.08) 0%, transparent 65%)" }}
@@ -468,7 +464,6 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <Footer />
     </main>
   );
 }
