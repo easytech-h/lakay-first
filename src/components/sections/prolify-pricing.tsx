@@ -41,13 +41,13 @@ export default function ProlifyPricing() {
                 key={plan.id}
                 className={`relative rounded-3xl flex flex-col transition-all duration-200 ${
                   isHighlight
-                    ? "bg-black text-white shadow-xl scale-[1.02]"
+                    ? "bg-[#FFC107] shadow-xl scale-[1.02]"
                     : "bg-white border border-black/8 shadow-sm hover:shadow-md hover:border-black/15"
                 }`}
               >
                 {plan.popular && (
                   <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-10">
-                    <span className="inline-flex items-center gap-1 px-4 py-1 rounded-full bg-[#FFC107] text-black text-xs font-black uppercase tracking-widest shadow-sm">
+                    <span className="inline-flex items-center gap-1 px-4 py-1 rounded-full bg-black text-white text-xs font-black uppercase tracking-widest shadow-sm">
                       Most Popular
                     </span>
                   </div>
@@ -62,30 +62,30 @@ export default function ProlifyPricing() {
                     {config.icon}
                   </div>
 
-                  <h3 className={`text-xl font-black mb-1 ${isHighlight ? "text-white" : "text-black"}`}>
+                  <h3 className="text-xl font-black mb-1 text-black">
                     {plan.name}
                   </h3>
-                  <p className={`text-xs font-medium mb-5 ${isHighlight ? "text-white/50" : "text-black/50"}`}>
+                  <p className={`text-xs font-medium mb-5 ${isHighlight ? "text-black/55" : "text-black/50"}`}>
                     {plan.tagline}
                   </p>
 
                   <div className="mb-5">
                     <div className="flex items-baseline gap-1">
-                      <span className={`text-5xl font-black tracking-tighter ${isHighlight ? "text-white" : "text-black"}`}>
+                      <span className="text-5xl font-black tracking-tighter text-black">
                         ${plan.price}
                       </span>
                     </div>
-                    <p className={`text-xs font-medium mt-1 ${isHighlight ? "text-white/40" : "text-black/40"}`}>
+                    <p className={`text-xs font-medium mt-1 ${isHighlight ? "text-black/45" : "text-black/40"}`}>
                       one-time + state fees
                     </p>
                   </div>
 
-                  <div className={`h-px w-full mb-5 ${isHighlight ? "bg-white/10" : "bg-black/6"}`} />
+                  <div className={`h-px w-full mb-5 ${isHighlight ? "bg-black/15" : "bg-black/6"}`} />
                 </div>
 
                 <div className="px-7 flex-grow">
                   {plan.additionalFeatures && (
-                    <p className={`text-xs font-black uppercase tracking-widest mb-4 ${isHighlight ? "text-[#FFC107]" : "text-black/40"}`}>
+                    <p className={`text-xs font-black uppercase tracking-widest mb-4 ${isHighlight ? "text-black/60" : "text-black/40"}`}>
                       {plan.additionalFeatures}
                     </p>
                   )}
@@ -94,12 +94,12 @@ export default function ProlifyPricing() {
                       <li key={f} className="flex items-start gap-3">
                         <div
                           className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${
-                            isHighlight ? "bg-[#FFC107]" : "bg-[#FFC107]/20"
+                            isHighlight ? "bg-black" : "bg-[#FFC107]/20"
                           }`}
                         >
-                          <Check className={`w-2.5 h-2.5 ${isHighlight ? "text-black" : "text-black"}`} strokeWidth={3} />
+                          <Check className={`w-2.5 h-2.5 ${isHighlight ? "text-[#FFC107]" : "text-black"}`} strokeWidth={3} />
                         </div>
-                        <span className={`text-sm font-medium leading-snug ${isHighlight ? "text-white/80" : "text-black/70"}`}>
+                        <span className={`text-sm font-medium leading-snug ${isHighlight ? "text-black/80" : "text-black/70"}`}>
                           {f}
                         </span>
                       </li>
@@ -112,7 +112,7 @@ export default function ProlifyPricing() {
                     <button
                       className={`w-full py-3.5 px-6 rounded-2xl font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 group ${
                         isHighlight
-                          ? "bg-[#FFC107] text-black hover:bg-[#FFB300]"
+                          ? "bg-black text-white hover:bg-black/85"
                           : "bg-black text-white hover:bg-[#FFC107] hover:text-black"
                       }`}
                     >
