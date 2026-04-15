@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Building2, User, FileText, Calendar, Percent, BookOpen, ChartBar as BarChart3, Rocket, Gift, Settings, Hop as Home, Bot, Store, GraduationCap, Crown, List, ChartPie as PieChart, Layers, ShoppingBag, Package, Sparkles, Megaphone, ChevronRight, LogOut, Mail, Phone, LayoutGrid, Lock } from "lucide-react";
+import { Building2, User, FileText, Calendar, Percent, BookOpen, ChartBar as BarChart3, Rocket, Gift, Settings, Hop as Home, Bot, Store, GraduationCap, Crown, List, ChartPie as PieChart, Layers, ShoppingBag, Package, Sparkles, Megaphone, ChevronRight, LogOut, Mail, Phone, LayoutGrid, Lock, ShieldCheck } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAnalytics } from "@/hooks/useAnalytics";
 
@@ -53,7 +53,8 @@ type ActiveSection =
   | "upgrade-plan"
   | "settings"
   | "mail-phone"
-  | "services";
+  | "services"
+  | "kyc";
 
 interface DashboardSidebarProps {
   activeSection: ActiveSection;
@@ -130,6 +131,7 @@ export function DashboardSidebar({
   ];
 
   const bottomNavItems: NavItem[] = [
+    { id: "kyc", label: "Identity Verification", icon: ShieldCheck },
     { id: "upgrade-plan", label: "Upgrade Plan", icon: Rocket, highlight: true },
     { id: "settings", label: "Settings", icon: Settings },
   ];
