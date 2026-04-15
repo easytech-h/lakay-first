@@ -63,7 +63,10 @@ export default function KYCVerificationSection() {
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to start verification");
+      if (!res.ok) {
+        const detail = data.details ? ` (${data.details})` : "";
+        throw new Error((data.error || "Failed to start verification") + detail);
+      }
 
       if (data.session?.session_url) {
         setSession(data.session);
