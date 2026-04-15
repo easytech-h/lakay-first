@@ -108,27 +108,27 @@ export default function KYCVerificationSection() {
     },
     pending: {
       icon: Clock,
-      iconClass: "text-amber-500",
-      bgClass: "bg-amber-50 border-amber-200",
-      badgeClass: "bg-amber-100 text-amber-700",
+      iconClass: "text-yellow-500",
+      bgClass: "bg-yellow-50 border-yellow-200",
+      badgeClass: "bg-yellow-100 text-yellow-800",
       badgeLabel: "In Progress",
       title: "Verification In Progress",
       description: "Your identity verification is underway. If you haven't completed the steps yet, click the button below to continue.",
     },
     in_review: {
       icon: AlertCircle,
-      iconClass: "text-blue-500",
-      bgClass: "bg-blue-50 border-blue-200",
-      badgeClass: "bg-blue-100 text-blue-700",
+      iconClass: "text-yellow-600",
+      bgClass: "bg-yellow-50 border-yellow-300",
+      badgeClass: "bg-yellow-100 text-yellow-800",
       badgeLabel: "Under Review",
       title: "Under Manual Review",
       description: "Our team is reviewing your verification submission. You'll be notified once the review is complete.",
     },
     approved: {
       icon: CheckCircle,
-      iconClass: "text-emerald-500",
-      bgClass: "bg-emerald-50 border-emerald-200",
-      badgeClass: "bg-emerald-100 text-emerald-700",
+      iconClass: "text-yellow-500",
+      bgClass: "bg-yellow-50 border-yellow-200",
+      badgeClass: "bg-yellow-100 text-yellow-800",
       badgeLabel: "Verified",
       title: "Identity Verified",
       description: "Your identity has been successfully verified. You have full access to all Prolify services.",
@@ -171,8 +171,8 @@ export default function KYCVerificationSection() {
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center">
-          <ShieldCheck className="w-5 h-5 text-emerald-600" />
+        <div className="w-10 h-10 rounded-xl bg-yellow-100 flex items-center justify-center">
+          <ShieldCheck className="w-5 h-5 text-yellow-600" />
         </div>
         <div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Identity Verification</h1>
@@ -209,7 +209,7 @@ export default function KYCVerificationSection() {
             {canContinue && (
               <Button
                 onClick={() => window.open(session!.session_url!, "_blank", "noopener,noreferrer")}
-                className="bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-xl"
+                className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold rounded-xl"
               >
                 <ExternalLink className="w-4 h-4 mr-2" />
                 Continue Verification
@@ -253,8 +253,8 @@ export default function KYCVerificationSection() {
           { icon: CheckCircle, label: "AML Screening", desc: "Compliance screening against global watchlists" },
         ].map(({ icon: Icon, label, desc }) => (
           <div key={label} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl p-4">
-            <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center mb-3">
-              <Icon className="w-4 h-4 text-emerald-600" />
+            <div className="w-8 h-8 rounded-lg bg-yellow-100 flex items-center justify-center mb-3">
+              <Icon className="w-4 h-4 text-yellow-600" />
             </div>
             <p className="text-sm font-semibold text-gray-900 dark:text-white mb-1">{label}</p>
             <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{desc}</p>
