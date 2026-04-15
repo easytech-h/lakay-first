@@ -51,10 +51,13 @@ export default function KYCVerificationSection() {
     try {
       const { data: { session: authSession } } = await supabase.auth.getSession();
       const token = authSession?.access_token;
-      if (!token) throw new Error("Not authenticated");
+      if (!token) throw new Error("Not authenticated — no access token");
 
       const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-      const res = await fetch(`${supabaseUrl}/functions/v1/didit-create-session`, {
+      if (!supabaseUrl) throw new Error("NEXT_PUBLIC_SUPABASE_URL is not set");
+
+      const endpoint = `${supabaseUrl}/functions/v1/didit-create-session`;
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -62,19 +65,29 @@ export default function KYCVerificationSection() {
         },
       });
 
-      const data = await res.json();
-      if (!res.ok) {
-        const detail = data.details ? ` (${data.details})` : "";
-        throw new Error((data.error || "Failed to start verification") + detail);
+      const rawText = await res.text();
+      let data: Record<string, unknown> = {};
+      try {
+        data = JSON.parse(rawText);
+      } catch {
+        throw new Error(`HTTP ${res.status} — invalid JSON response: ${rawText.slice(0, 300)}`);
       }
 
-      if (data.session?.session_url) {
-        setSession(data.session);
+      if (!res.ok) {
+        const detail = data.details ? ` | details: ${data.details}` : "";
+        throw new Error(`HTTP ${res.status}: ${data.error || "Unknown error"}${detail} | raw: ${rawText.slice(0, 300)}`);
+      }
+
+      const session = data.session as { session_url?: string } | undefined;
+      if (session?.session_url) {
+        setSession(data.session as KYCSession);
         setStatus("pending");
-        window.open(data.session.session_url, "_blank", "noopener,noreferrer");
+        window.open(session.session_url, "_blank", "noopener,noreferrer");
       } else if (data.status === "approved") {
         setStatus("approved");
         await fetchStatus();
+      } else {
+        throw new Error(`Unexpected response: ${rawText.slice(0, 300)}`);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
