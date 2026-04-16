@@ -1,13 +1,10 @@
 import type { NextConfig } from "next";
-import createNextIntlPlugin from "next-intl/plugin";
-
-const withNextIntl = createNextIntlPlugin("./i18n.ts");
 
 const nextConfig: NextConfig = {
   experimental: {
     webpackMemoryOptimizations: true,
   },
-  webpack: (config) => {
+  webpack: (config, { isServer }) => {
     config.parallelism = 1;
     return config;
   },
@@ -19,12 +16,12 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "**",
+        protocol: 'https',
+        hostname: '**',
       },
       {
-        protocol: "http",
-        hostname: "**",
+        protocol: 'http',
+        hostname: '**',
       },
     ],
   },
@@ -36,4 +33,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withNextIntl(nextConfig);
+export default nextConfig;

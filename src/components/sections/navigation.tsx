@@ -8,24 +8,15 @@ import { Menu, X, ChevronDown } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useAuth } from "@/contexts/AuthContext";
-import LanguageSwitcher from "@/components/LanguageSwitcher";
-import { useTranslations } from "next-intl";
 
-const HIDDEN_PATHS_SEGMENTS = ["signup", "login"];
+const HIDDEN_PATHS = ["/signup", "/login"];
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, loading } = useAuth();
   const pathname = usePathname();
-  const t = useTranslations("nav");
 
-  const pathSegments = pathname.split("/").filter(Boolean);
-  const locales = ["en", "fr", "ht", "es", "pt"];
-  const relevantSegment = locales.includes(pathSegments[0])
-    ? pathSegments[1]
-    : pathSegments[0];
-
-  if (user || HIDDEN_PATHS_SEGMENTS.includes(relevantSegment)) {
+  if (user || HIDDEN_PATHS.includes(pathname)) {
     return null;
   }
 
@@ -38,33 +29,33 @@ export default function Navigation() {
   };
 
   const productItems = [
-    { name: t("formation"), href: "/formation" },
-    { name: t("bookkeeping"), href: "/bookkeeping" },
-    { name: t("taxes"), href: "/taxes" },
-    { name: t("analytics"), href: "/analytics" },
-    { name: t("aiChiefOfStaff"), href: "/ai-chief-of-staff" },
-    { name: t("compliance"), href: "/compliance" },
-    { name: t("bankingGuidance"), href: "/banking-guidance" },
+    { name: "Formation", href: "/formation" },
+    { name: "Bookkeeping", href: "/bookkeeping" },
+    { name: "Taxes", href: "/taxes" },
+    { name: "Analytics", href: "/analytics" },
+    { name: "AI chief of staff", href: "/ai-chief-of-staff" },
+    { name: "Compliance", href: "/compliance" },
+    { name: "Banking Guidance", href: "/banking-guidance" },
   ];
 
   const forFoundersItems = [
-    { name: t("saasFounders"), href: "/saas-founders" },
-    { name: t("ecommerceSellers"), href: "/ecommerce-sellers" },
-    { name: t("realEstateInvestors"), href: "/real-estate-investors" },
-    { name: t("courseCreators"), href: "/course-creators" },
-    { name: t("coachesConsultants"), href: "/coaches-consultants" },
-    { name: t("newsletterCreators"), href: "/newsletter-creators" },
+    { name: "SaaS Founders", href: "/saas-founders" },
+    { name: "E-commerce Sellers", href: "/ecommerce-sellers" },
+    { name: "Real Estate Investors", href: "/real-estate-investors" },
+    { name: "Course Creators", href: "/course-creators" },
+    { name: "Coaches & Consultants", href: "/coaches-consultants" },
+    { name: "Newsletter Creators", href: "/newsletter-creators" },
   ];
 
   const resourcesItems = [
-    { name: t("blog"), href: "/blog" },
-    { name: t("ebooks"), href: "/e-books" },
-    { name: t("events"), href: "/events" },
-    { name: t("prolifyMarketplace"), href: "/prolify-marketplace" },
-    { name: t("prolifyUniversity"), href: "/prolify-university" },
-    { name: t("aboutUs"), href: "/about-us" },
-    { name: t("vipClub"), href: "/vip-club" },
-    { name: t("taxCalculator"), href: "/tax-calculator" },
+    { name: "Blog", href: "/blog" },
+    { name: "E-books", href: "/e-books" },
+    { name: "Events", href: "/events" },
+    { name: "Prolify marketplace", href: "/prolify-marketplace" },
+    { name: "Prolify University", href: "/prolify-university" },
+    { name: "About Us", href: "/about-us" },
+    { name: "VIP club", href: "/vip-club" },
+    { name: "Tax Calculator", href: "/tax-calculator" },
   ];
 
   return (
@@ -85,18 +76,18 @@ export default function Navigation() {
                   <PopoverTrigger asChild>
                     <button
                       className="text-sm font-bold text-black dark:text-black hover:text-black/70 dark:hover:text-black/70 transition-colors flex items-center gap-1"
-                      aria-label={t("product")}>
-                      {t("product")}
+                      aria-label="Product">
+                      Product
                       <ChevronDown className="h-4 w-4" />
                     </button>
                   </PopoverTrigger>
                   <PopoverContent className="w-[400px] p-4 bg-white dark:bg-[#171717] border-2 border-black dark:border-white rounded-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)]" align="start" sideOffset={10}>
                     <div className="space-y-2">
-                      <div className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider mb-2">{t("productsServices")}</div>
+                      <div className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider mb-2">Products & Services</div>
                       <div className="flex flex-wrap gap-2">
                         {productItems.map((item) => (
                           <Link
-                            key={item.href}
+                            key={item.name}
                             href={item.href}
                             className="group px-3 py-1.5 text-xs font-bold text-black dark:text-white bg-white dark:bg-[#262626] hover:bg-[#FFC107] dark:hover:bg-[#FFD54F] dark:hover:text-black transition-all duration-200 rounded-lg border-2 border-black dark:border-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.3)] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.3)] hover:translate-x-[-1px] hover:translate-y-[-1px]"
                           >
@@ -111,18 +102,18 @@ export default function Navigation() {
                   <PopoverTrigger asChild>
                     <button
                       className="text-sm font-bold text-black dark:text-black hover:text-black/70 dark:hover:text-black/70 transition-colors flex items-center gap-1"
-                      aria-label={t("forFounders")}>
-                      {t("forFounders")}
+                      aria-label="For Founders">
+                      For Founders
                       <ChevronDown className="h-4 w-4" />
                     </button>
                   </PopoverTrigger>
                   <PopoverContent className="w-[400px] p-4 bg-white dark:bg-[#171717] border-2 border-black dark:border-white rounded-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)]" align="start" sideOffset={10}>
                     <div className="space-y-2">
-                      <div className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider mb-2">{t("forFounders")}</div>
+                      <div className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider mb-2">For Founders</div>
                       <div className="grid grid-cols-2 gap-2">
                         {forFoundersItems.map((item) => (
                           <Link
-                            key={item.href}
+                            key={item.name}
                             href={item.href}
                             className="group px-3 py-1.5 text-xs font-bold text-black dark:text-white bg-white dark:bg-[#262626] hover:bg-[#FFC107] dark:hover:bg-[#FFD54F] dark:hover:text-black transition-all duration-200 rounded-lg border-2 border-black dark:border-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.3)] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.3)] hover:translate-x-[-1px] hover:translate-y-[-1px]"
                           >
@@ -136,31 +127,31 @@ export default function Navigation() {
                 <Link
                   href="/partners"
                   className="text-sm font-bold text-black dark:text-black hover:text-black/70 dark:hover:text-black/70 transition-colors"
-                  aria-label={t("partners")}>
-                  {t("partners")}
+                  aria-label="Partners">
+                  Partners
                 </Link>
                 <Link
                   href="/pricing"
                   className="text-sm font-bold text-black dark:text-black hover:text-black/70 dark:hover:text-black/70 transition-colors"
-                  aria-label={t("pricing")}>
-                  {t("pricing")}
+                  aria-label="Pricing">
+                  Pricing
                 </Link>
                 <Popover>
                   <PopoverTrigger asChild>
                     <button
                       className="text-sm font-bold text-black dark:text-black hover:text-black/70 dark:hover:text-black/70 transition-colors flex items-center gap-1"
-                      aria-label={t("resources")}>
-                      {t("resources")}
+                      aria-label="Resources">
+                      Resources
                       <ChevronDown className="h-4 w-4" />
                     </button>
                   </PopoverTrigger>
                   <PopoverContent className="w-[450px] p-4 bg-white dark:bg-[#171717] border-2 border-black dark:border-white rounded-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)]" align="start" sideOffset={10}>
                     <div className="space-y-2">
-                      <div className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider mb-2">{t("resourcesCommunity")}</div>
+                      <div className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider mb-2">Resources & Community</div>
                       <div className="flex flex-wrap gap-2">
                         {resourcesItems.map((item) => (
                           <Link
-                            key={item.href}
+                            key={item.name}
                             href={item.href}
                             className="group px-3 py-1.5 text-xs font-bold text-black dark:text-white bg-white dark:bg-[#262626] hover:bg-[#FFC107] dark:hover:bg-[#FFD54F] dark:hover:text-black transition-all duration-200 rounded-lg border-2 border-black dark:border-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.3)] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.3)] hover:translate-x-[-1px] hover:translate-y-[-1px]"
                           >
@@ -173,27 +164,25 @@ export default function Navigation() {
                 </Popover>
               </nav>
             <div className="hidden md:flex items-center gap-3">
-              <LanguageSwitcher />
               <ThemeToggle />
               {!loading && (
                 user ? (
                   <Link href="/dashboard" className="inline-flex items-center justify-center whitespace-nowrap font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white disabled:pointer-events-none disabled:opacity-50 h-8 rounded-md px-3 text-xs bg-black dark:bg-white hover:bg-white dark:hover:bg-black text-white dark:text-black hover:text-black dark:hover:text-white border-2 border-black dark:border-white">
-                    {t("dashboard")}
+                    Dashboard
                   </Link>
                 ) : (
                   <>
                     <Link href="/login" className="inline-flex items-center justify-center whitespace-nowrap font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white disabled:pointer-events-none disabled:opacity-50 h-8 rounded-md px-3 text-xs text-black dark:text-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black border-2 border-black dark:border-white">
-                      {t("login")}
+                      Login
                     </Link>
                     <Link href="/signup" className="inline-flex items-center justify-center whitespace-nowrap font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white disabled:pointer-events-none disabled:opacity-50 h-8 rounded-md px-3 text-xs bg-black dark:bg-white hover:bg-white dark:hover:bg-black text-white dark:text-black hover:text-black dark:hover:text-white border-2 border-black dark:border-white">
-                      {t("startFree")}
+                      Start Free
                     </Link>
                   </>
                 )
               )}
             </div>
             <div className="flex md:hidden items-center gap-2">
-              <LanguageSwitcher />
               <ThemeToggle />
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -211,17 +200,17 @@ export default function Navigation() {
               <PopoverTrigger asChild>
                 <button
                   className="flex items-center justify-between w-full text-left text-sm font-bold text-black dark:text-black hover:text-black/70 dark:hover:text-black/70 transition-colors py-2">
-                  {t("product")}
+                  Product
                   <ChevronDown className="h-4 w-4" />
                 </button>
               </PopoverTrigger>
               <PopoverContent className="w-[calc(100vw-3rem)] max-w-sm p-4 bg-white dark:bg-[#171717] border-2 border-black dark:border-white rounded-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)]" align="start" sideOffset={10}>
                 <div className="space-y-2">
-                  <div className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider mb-2">{t("productsServices")}</div>
+                  <div className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider mb-2">Products & Services</div>
                   <div className="flex flex-wrap gap-2">
                     {productItems.map((item) => (
                       <Link
-                        key={item.href}
+                        key={item.name}
                         href={item.href}
                         className="group px-3 py-1.5 text-xs font-bold text-black dark:text-white bg-white dark:bg-[#262626] hover:bg-[#FFC107] dark:hover:bg-[#FFD54F] dark:hover:text-black transition-all duration-200 rounded-lg border-2 border-black dark:border-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.3)] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.3)] hover:translate-x-[-1px] hover:translate-y-[-1px]"
                         onClick={() => setIsMenuOpen(false)}
@@ -237,17 +226,17 @@ export default function Navigation() {
               <PopoverTrigger asChild>
                 <button
                   className="flex items-center justify-between w-full text-left text-sm font-bold text-black dark:text-black hover:text-black/70 dark:hover:text-black/70 transition-colors py-2">
-                  {t("forFounders")}
+                  For Founders
                   <ChevronDown className="h-4 w-4" />
                 </button>
               </PopoverTrigger>
               <PopoverContent className="w-[calc(100vw-3rem)] max-w-sm p-4 bg-white dark:bg-[#171717] border-2 border-black dark:border-white rounded-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)]" align="start" sideOffset={10}>
                 <div className="space-y-2">
-                  <div className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider mb-2">{t("forFounders")}</div>
+                  <div className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider mb-2">For Founders</div>
                   <div className="grid grid-cols-1 gap-2">
                     {forFoundersItems.map((item) => (
                       <Link
-                        key={item.href}
+                        key={item.name}
                         href={item.href}
                         className="group px-3 py-1.5 text-xs font-bold text-black dark:text-white bg-white dark:bg-[#262626] hover:bg-[#FFC107] dark:hover:bg-[#FFD54F] dark:hover:text-black transition-all duration-200 rounded-lg border-2 border-black dark:border-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.3)] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.3)] hover:translate-x-[-1px] hover:translate-y-[-1px]"
                         onClick={() => setIsMenuOpen(false)}
@@ -263,29 +252,29 @@ export default function Navigation() {
               href="/partners"
               className="block w-full text-left text-sm font-bold text-black dark:text-black hover:text-black/70 dark:hover:text-black/70 transition-colors py-2"
               onClick={() => setIsMenuOpen(false)}>
-              {t("partners")}
+              Partners
             </Link>
             <Link
               href="/pricing"
               className="block w-full text-left text-sm font-bold text-black dark:text-black hover:text-black/70 dark:hover:text-black/70 transition-colors py-2"
               onClick={() => setIsMenuOpen(false)}>
-              {t("pricing")}
+              Pricing
             </Link>
             <Popover>
               <PopoverTrigger asChild>
                 <button
                   className="flex items-center justify-between w-full text-left text-sm font-bold text-black dark:text-black hover:text-black/70 dark:hover:text-black/70 transition-colors py-2">
-                  {t("resources")}
+                  Resources
                   <ChevronDown className="h-4 w-4" />
                 </button>
               </PopoverTrigger>
               <PopoverContent className="w-[calc(100vw-3rem)] max-w-sm p-4 bg-white dark:bg-[#171717] border-2 border-black dark:border-white rounded-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)]" align="start" sideOffset={10}>
                 <div className="space-y-2">
-                  <div className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider mb-2">{t("resourcesCommunity")}</div>
+                  <div className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider mb-2">Resources & Community</div>
                   <div className="flex flex-wrap gap-2">
                     {resourcesItems.map((item) => (
                       <Link
-                        key={item.href}
+                        key={item.name}
                         href={item.href}
                         className="group px-3 py-1.5 text-xs font-bold text-black dark:text-white bg-white dark:bg-[#262626] hover:bg-[#FFC107] dark:hover:bg-[#FFD54F] dark:hover:text-black transition-all duration-200 rounded-lg border-2 border-black dark:border-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.3)] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[3px_3px_0px_0px_rgba(255,255,255,0.3)] hover:translate-x-[-1px] hover:translate-y-[-1px]"
                         onClick={() => setIsMenuOpen(false)}
@@ -301,15 +290,15 @@ export default function Navigation() {
               {!loading && (
                 user ? (
                   <Link href="/dashboard" className="block w-full text-center bg-black dark:bg-white hover:bg-white dark:hover:bg-black text-white dark:text-black hover:text-black dark:hover:text-white text-sm font-bold py-2 px-4 rounded-md transition-colors border-2 border-black dark:border-white">
-                    {t("dashboard")}
+                    Dashboard
                   </Link>
                 ) : (
                   <>
                     <Link href="/login" className="block w-full text-left text-sm font-bold text-black dark:text-black hover:text-black/70 dark:hover:text-black/70 transition-colors py-2">
-                      {t("login")}
+                      Login
                     </Link>
                     <Link href="/signup" className="block w-full text-center bg-black dark:bg-white hover:bg-white dark:hover:bg-black text-white dark:text-black hover:text-black dark:hover:text-white text-sm font-bold py-2 px-4 rounded-md transition-colors border-2 border-black dark:border-white">
-                      {t("startFree")}
+                      Start Free
                     </Link>
                   </>
                 )
