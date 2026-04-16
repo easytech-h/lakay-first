@@ -13,12 +13,11 @@ export function LanguageSwitcher() {
     <Popover>
       <PopoverTrigger asChild>
         <button
-          className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-bold text-black dark:text-black hover:bg-black/10 dark:hover:bg-black/20 rounded-lg border-2 border-black dark:border-black transition-all duration-200"
+          className="inline-flex items-center gap-1 h-8 px-2.5 text-xs font-bold text-black border-2 border-black rounded-md hover:bg-black/10 transition-all duration-200 whitespace-nowrap"
           aria-label="Change language"
         >
-          <Globe className="h-3.5 w-3.5" />
-          <span className="hidden sm:inline">{current?.label ?? "EN"}</span>
-          <span className="text-[10px]">{current?.flag}</span>
+          <Globe className="h-3.5 w-3.5 flex-shrink-0" />
+          <span className="hidden lg:inline">{current?.label ?? "EN"}</span>
         </button>
       </PopoverTrigger>
       <PopoverContent
