@@ -42,6 +42,7 @@ import {
 } from "@/components/ui/sidebar";
 import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
 import { Separator } from "@/components/ui/separator";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import {
   Dialog,
   DialogContent,
@@ -535,6 +536,7 @@ function DashboardContent() {
             </div>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
+            <LanguageSwitcher />
             <Button
               onClick={() => {
                 setStartFreshWizard(true);
