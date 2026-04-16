@@ -3,7 +3,6 @@ import "./globals.css";
 import VisualEditsMessenger from "../visual-edits/VisualEditsMessenger";
 import ErrorReporter from "@/components/ErrorReporter";
 import Script from "next/script";
-import { ThemeProvider } from "@/components/theme-provider";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { I18nProvider } from "@/contexts/I18nContext";
 import Navigation from "@/components/sections/navigation";
@@ -29,12 +28,6 @@ export default function RootLayout({
       <body className="antialiased">
         <I18nProvider>
         <PHProvider>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
           <AuthProvider>
             <Suspense fallback={null}>
               <PostHogPageView />
@@ -75,7 +68,6 @@ export default function RootLayout({
               strategy="afterInteractive"
             />
           </AuthProvider>
-        </ThemeProvider>
         </PHProvider>
         </I18nProvider>
       </body>

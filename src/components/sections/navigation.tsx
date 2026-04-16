@@ -6,7 +6,6 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { useAuth } from "@/contexts/AuthContext";
 import { useI18n } from "@/contexts/I18nContext";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
@@ -168,7 +167,6 @@ export default function Navigation() {
               </nav>
             <div className="hidden md:flex items-center gap-2 flex-shrink-0">
               <LanguageSwitcher />
-              <ThemeToggle />
               {!loading && (
                 user ? (
                   <Link href="/dashboard" className="inline-flex items-center justify-center whitespace-nowrap font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white disabled:pointer-events-none disabled:opacity-50 h-8 rounded-md px-3 text-xs bg-black dark:bg-white hover:bg-white dark:hover:bg-black text-white dark:text-black hover:text-black dark:hover:text-white border-2 border-black dark:border-white">
@@ -187,7 +185,6 @@ export default function Navigation() {
               )}
             </div>
             <div className="flex md:hidden items-center gap-2">
-              <ThemeToggle />
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="p-2 text-black dark:text-black hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black rounded-md transition-colors border-2 border-black dark:border-white"
