@@ -6,64 +6,72 @@ import { usePathname } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { ArrowRight } from "lucide-react";
 import { TermsModal } from "@/components/TermsModal";
+import { useTranslations } from "next-intl";
 
-const HIDDEN_PATHS = ["/signup", "/login"];
-
-const footerLinks = [
-  {
-    title: "Services",
-    links: [
-      { label: "Formation", href: "/formation" },
-      { label: "Bookkeeping", href: "/bookkeeping" },
-      { label: "Taxes", href: "/taxes" },
-      { label: "Compliance", href: "/compliance" },
-      { label: "Analytics", href: "/analytics" },
-      { label: "AI Chief of Staff", href: "/ai-chief-of-staff" },
-      { label: "Banking Guidance", href: "/banking-guidance" },
-    ],
-  },
-  {
-    title: "For Founders",
-    links: [
-      { label: "SaaS Founders", href: "/saas-founders" },
-      { label: "E-commerce Sellers", href: "/ecommerce-sellers" },
-      { label: "Course Creators", href: "/course-creators" },
-      { label: "Coaches & Consultants", href: "/coaches-consultants" },
-      { label: "Newsletter Creators", href: "/newsletter-creators" },
-      { label: "Real Estate Investors", href: "/real-estate-investors" },
-    ],
-  },
-  {
-    title: "Resources",
-    links: [
-      { label: "Blog", href: "/blog" },
-      { label: "E-books & Guides", href: "/e-books" },
-      { label: "Events & Webinars", href: "/events" },
-      { label: "Prolify University", href: "/prolify-university" },
-      { label: "Marketplace", href: "/prolify-marketplace" },
-      { label: "Tax Calculator", href: "/tax-calculator" },
-      { label: "VIP Club", href: "/vip-club" },
-    ],
-  },
-  {
-    title: "Company",
-    links: [
-      { label: "About Us", href: "/about-us" },
-      { label: "Partners", href: "/partners" },
-      { label: "Pricing", href: "/pricing" },
-      { label: "Login", href: "/login" },
-      { label: "Get Started", href: "/signup" },
-    ],
-  },
-];
+const HIDDEN_PATH_SEGMENTS = ["signup", "login"];
 
 const Footer = () => {
   const { user } = useAuth();
   const pathname = usePathname();
+  const t = useTranslations("footer");
 
-  if (user || HIDDEN_PATHS.includes(pathname)) {
+  const pathSegments = pathname.split("/").filter(Boolean);
+  const locales = ["en", "fr", "ht", "es", "pt"];
+  const relevantSegment = locales.includes(pathSegments[0])
+    ? pathSegments[1]
+    : pathSegments[0];
+
+  if (user || HIDDEN_PATH_SEGMENTS.includes(relevantSegment)) {
     return null;
   }
+
+  const footerLinks = [
+    {
+      title: t("services"),
+      links: [
+        { label: t("links.formation"), href: "/formation" },
+        { label: t("links.bookkeeping"), href: "/bookkeeping" },
+        { label: t("links.taxes"), href: "/taxes" },
+        { label: t("links.compliance"), href: "/compliance" },
+        { label: t("links.analytics"), href: "/analytics" },
+        { label: t("links.aiChiefOfStaff"), href: "/ai-chief-of-staff" },
+        { label: t("links.bankingGuidance"), href: "/banking-guidance" },
+      ],
+    },
+    {
+      title: t("forFounders"),
+      links: [
+        { label: t("links.saasFounders"), href: "/saas-founders" },
+        { label: t("links.ecommerceSellers"), href: "/ecommerce-sellers" },
+        { label: t("links.courseCreators"), href: "/course-creators" },
+        { label: t("links.coachesConsultants"), href: "/coaches-consultants" },
+        { label: t("links.newsletterCreators"), href: "/newsletter-creators" },
+        { label: t("links.realEstateInvestors"), href: "/real-estate-investors" },
+      ],
+    },
+    {
+      title: t("resourcesLabel"),
+      links: [
+        { label: t("links.blog"), href: "/blog" },
+        { label: t("links.ebooksGuides"), href: "/e-books" },
+        { label: t("links.eventsWebinars"), href: "/events" },
+        { label: t("links.prolifyUniversity"), href: "/prolify-university" },
+        { label: t("links.marketplace"), href: "/prolify-marketplace" },
+        { label: t("links.taxCalculator"), href: "/tax-calculator" },
+        { label: t("links.vipClub"), href: "/vip-club" },
+      ],
+    },
+    {
+      title: t("company"),
+      links: [
+        { label: t("links.aboutUs"), href: "/about-us" },
+        { label: t("links.partners"), href: "/partners" },
+        { label: t("links.pricing"), href: "/pricing" },
+        { label: t("links.login"), href: "/login" },
+        { label: t("links.getStarted"), href: "/signup" },
+      ],
+    },
+  ];
 
   return (
     <footer className="bg-white border-t-4 border-[#FFC107]">
@@ -76,7 +84,7 @@ const Footer = () => {
                 Prolify
               </Link>
               <p className="text-sm text-black/50 leading-relaxed mt-3 font-medium">
-                Launch and run your US business from anywhere in the world. One platform, every service, zero confusion.
+                {t("tagline")}
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0">
@@ -84,14 +92,14 @@ const Footer = () => {
                 href="/signup"
                 className="group inline-flex items-center gap-2 px-6 py-3 bg-[#FFC107] text-black text-sm font-bold rounded-xl hover:bg-[#FFB300] transition-all duration-200 border-2 border-[#FFC107]"
               >
-                Start Your LLC
+                {t("startYourLLC")}
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </Link>
               <Link
                 href="/pricing"
                 className="inline-flex items-center gap-2 px-6 py-3 border-2 border-black/12 text-black/70 text-sm font-bold rounded-xl hover:border-black hover:text-black transition-all duration-200"
               >
-                View Pricing
+                {t("viewPricing")}
               </Link>
             </div>
           </div>
@@ -121,16 +129,16 @@ const Footer = () => {
 
         <div className="py-8">
           <p className="text-xs text-black/35 leading-relaxed mb-6 max-w-4xl">
-            Prolify provides business formation, bookkeeping, and administrative services. We are not a law firm and do not provide legal advice. We are not a licensed accounting or CPA firm and do not provide tax, audit, or accounting advice. Information provided through our platform is for informational purposes only and does not constitute legal, tax, or financial advice. Consult a licensed attorney, CPA, or financial advisor for your specific situation.
+            {t("disclaimer")}
           </p>
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <p className="text-xs text-black/35 font-medium">
-              &copy; 2025 Prolify. All rights reserved.
+              {t("copyright")}
             </p>
             <div className="flex gap-5 text-xs text-black/35">
-              <a href="/privacy-policy" className="hover:text-black/60 cursor-pointer transition-colors font-medium">Privacy Policy</a>
-              <TermsModal className="hover:text-black/60 cursor-pointer transition-colors font-medium">Terms of Service</TermsModal>
-              <a href="/cookie-policy" className="hover:text-black/60 cursor-pointer transition-colors font-medium">Cookie Policy</a>
+              <a href="/privacy-policy" className="hover:text-black/60 cursor-pointer transition-colors font-medium">{t("privacyPolicy")}</a>
+              <TermsModal className="hover:text-black/60 cursor-pointer transition-colors font-medium">{t("termsOfService")}</TermsModal>
+              <a href="/cookie-policy" className="hover:text-black/60 cursor-pointer transition-colors font-medium">{t("cookiePolicy")}</a>
             </div>
           </div>
         </div>
