@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from "next-intl/server";
-import { notFound } from "next/navigation";
+import { getMessages, setRequestLocale } from "next-intl/server";
 import VisualEditsMessenger from "../../visual-edits/VisualEditsMessenger";
 import ErrorReporter from "@/components/ErrorReporter";
 import Script from "next/script";
@@ -17,6 +16,10 @@ import { PoliteChatWidget } from "@/components/chat/PoliteChatWidget";
 
 const locales = ["en", "fr", "ht", "es", "pt"];
 
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
+
 export const metadata: Metadata = {
   title: "prolify",
   description: "prolify",
@@ -30,17 +33,16 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const safeLocale = locales.includes(locale) ? locale : "en";
 
-  if (!locales.includes(locale)) {
-    notFound();
-  }
+  setRequestLocale(safeLocale);
 
   const messages = await getMessages();
 
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang={safeLocale} suppressHydrationWarning>
       <body className="antialiased">
-        <NextIntlClientProvider messages={messages}>
+        <NextIntlClientProvider messages={messages} locale={safeLocale}>
           <PHProvider>
             <ThemeProvider
               attribute="class"
