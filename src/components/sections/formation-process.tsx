@@ -4,116 +4,74 @@ import Link from 'next/link';
 import { motion, useReducedMotion } from 'framer-motion';
 import { CircleCheck as CheckCircle2, Clock, User, Building, Percent, X, ArrowRight } from 'lucide-react';
 import { useState } from 'react';
-
-const steps = [
-  {
-    number: '01',
-    headline: 'Submit Your Information',
-    description: 'Answer a few basic questions about your business through our guided setup. No legal jargon—just straightforward questions we need to file your paperwork correctly.',
-    items: [
-      'Company name (we\'ll check availability)',
-      'Entity type (LLC or C-Corp)',
-      'State where you want to form',
-      'Member/owner information',
-    ],
-    timeline: '15 minutes',
-  },
-  {
-    number: '02',
-    headline: 'We File in Any of the 50 States',
-    description: 'We handle all the paperwork—state filings, operating agreement, articles of organization, and registered agent setup. You get confirmation when your business is officially formed.',
-    items: [
-      'LLC or C-Corp formation in your chosen state',
-      'Operating agreement customized for your business',
-      'Articles of organization filed with the state',
-      'Registered agent service (first year included)',
-    ],
-    timeline: '1 week average (varies by state)',
-  },
-  {
-    number: '03',
-    headline: 'Secure Your Business Documents',
-    description: 'We obtain your federal EIN (tax ID) from the IRS and prepare all documents banks and payment processors require. Everything is organized in your Prolify dashboard.',
-    items: [
-      'Federal EIN (Employer Identification Number)',
-      'EIN confirmation letter',
-      'Certificate of formation',
-      'Operating agreement (signed)',
-    ],
-    timeline: '1-2 days (US) / 4-6 weeks (international)',
-  },
-  {
-    number: '04',
-    headline: 'Apply for Your US Bank Account',
-    description: 'With your business documents ready, you can apply for a US business bank account through our partner network—all remotely, without visiting the US.',
-    items: [
-      'Your business documents (we provide these)',
-      'Valid passport (for international founders)',
-      'Basic business information',
-    ],
-    timeline: '3-5 business days for account approval',
-  },
-  {
-    number: '05',
-    headline: 'You\'re Ready to Do Business',
-    description: 'Your LLC is formed, your EIN is secured, your bank account is open. Now focus on building your business while we handle ongoing compliance, bookkeeping, and tax filings.',
-    items: [
-      'Bookkeeping: Automated transaction tracking',
-      'Tax filing: Annual business tax preparation',
-      'Compliance monitoring: Deadline reminders',
-      'Registered agent: Continued legal document handling',
-    ],
-    cta: true,
-  },
-];
-
-const entityInfo = {
-  llc: {
-    title: 'Limited Liability Company (LLC)',
-    description: 'A flexible business structure that offers personal liability protection and can have one or multiple owners (members). Popular among small business owners and entrepreneurs for its simplicity and tax flexibility.',
-    pros: [
-      'Limited liability protection for owners',
-      'Simple management structure and easy to operate',
-      'Unlimited owners (US and international)',
-    ],
-    cons: [
-      'Cannot issue stock to investors',
-      'Ownership represented by members, not shares',
-    ],
-  },
-  ccorp: {
-    title: 'C Corporation',
-    description: 'A legal entity separate from its owners. Can have unlimited shareholders and is ideal for businesses planning to raise venture capital or go public.',
-    pros: [
-      'Unlimited shareholders',
-      'Can issue multiple classes of stock',
-      'Easier to raise venture capital',
-    ],
-    cons: [
-      'Double taxation (corporate and dividend)',
-      'More complex management requirements',
-    ],
-  },
-  scorp: {
-    title: 'S Corporation',
-    description: 'A tax designation that allows business income to pass through to owners\' personal tax returns, avoiding double taxation while still providing liability protection.',
-    pros: [
-      'Pass-through taxation avoids double tax',
-      'Limited liability protection',
-      'Can have up to 100 shareholders',
-    ],
-    cons: [
-      'Strict ownership restrictions',
-      'Only one class of stock allowed',
-    ],
-  },
-};
+import { useI18n } from '@/contexts/I18nContext';
 
 type EntityTab = 'llc' | 'ccorp' | 'scorp';
 
 const FormationProcess = () => {
   const prefersReducedMotion = useReducedMotion();
+  const { t } = useI18n();
   const [activeTab, setActiveTab] = useState<EntityTab>('llc');
+
+  const steps = [
+    {
+      number: '01',
+      headline: t.formation.step1headline,
+      description: t.formation.step1desc,
+      items: [t.formation.step1i1, t.formation.step1i2, t.formation.step1i3, t.formation.step1i4],
+      timeline: t.formation.step1time,
+    },
+    {
+      number: '02',
+      headline: t.formation.step2headline,
+      description: t.formation.step2desc,
+      items: [t.formation.step2i1, t.formation.step2i2, t.formation.step2i3, t.formation.step2i4],
+      timeline: t.formation.step2time,
+    },
+    {
+      number: '03',
+      headline: t.formation.step3headline,
+      description: t.formation.step3desc,
+      items: [t.formation.step3i1, t.formation.step3i2, t.formation.step3i3, t.formation.step3i4],
+      timeline: t.formation.step3time,
+    },
+    {
+      number: '04',
+      headline: t.formation.step4headline,
+      description: t.formation.step4desc,
+      items: [t.formation.step4i1, t.formation.step4i2, t.formation.step4i3],
+      timeline: t.formation.step4time,
+    },
+    {
+      number: '05',
+      headline: t.formation.step5headline,
+      description: t.formation.step5desc,
+      items: [t.formation.step5i1, t.formation.step5i2, t.formation.step5i3, t.formation.step5i4],
+      cta: true,
+    },
+  ];
+
+  const entityInfo = {
+    llc: {
+      title: t.formation.llcTitle,
+      description: t.formation.llcDesc,
+      pros: [t.formation.llcPro1, t.formation.llcPro2, t.formation.llcPro3],
+      cons: [t.formation.llcCon1, t.formation.llcCon2],
+    },
+    ccorp: {
+      title: t.formation.ccorpTitle,
+      description: t.formation.ccorpDesc,
+      pros: [t.formation.ccorpPro1, t.formation.ccorpPro2, t.formation.ccorpPro3],
+      cons: [t.formation.ccorpCon1, t.formation.ccorpCon2],
+    },
+    scorp: {
+      title: t.formation.scorpTitle,
+      description: t.formation.scorpDesc,
+      pros: [t.formation.scorpPro1, t.formation.scorpPro2, t.formation.scorpPro3],
+      cons: [t.formation.scorpCon1, t.formation.scorpCon2],
+    },
+  };
+
   const currentEntity = entityInfo[activeTab];
 
   return (
@@ -127,7 +85,7 @@ const FormationProcess = () => {
             transition={{ duration: 0.5 }}
             className="inline-block mb-6 px-4 py-2 bg-[#FFC107] text-black font-black text-xs uppercase tracking-widest border-2 border-black dark:border-black"
           >
-            The Process
+            {t.formation.processBadge}
           </motion.div>
           <motion.h2
             initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 30 }}
@@ -136,8 +94,8 @@ const FormationProcess = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tighter text-black dark:text-white mb-6 leading-[1.1]"
           >
-            Launch Your US Business
-            <span className="block">in 5 Simple Steps</span>
+            {t.formation.processTitle}
+            <span className="block">{t.formation.processTitleLine2}</span>
           </motion.h2>
           <motion.p
             initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
@@ -146,7 +104,7 @@ const FormationProcess = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-lg text-black/60 dark:text-white/60 max-w-2xl mx-auto"
           >
-            From company name to bank account—here&apos;s exactly how we get your business set up and legally compliant.
+            {t.formation.processSubtitle}
           </motion.p>
         </div>
 
@@ -193,7 +151,7 @@ const FormationProcess = () => {
                       href="/signup"
                       className="group inline-flex items-center gap-2 px-6 py-2 text-sm font-black uppercase tracking-tight text-black bg-[#FFC107] border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all duration-300"
                     >
-                      Start Your Business
+                      {t.formation.startBusiness}
                       <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
                     </Link>
                   )}
@@ -212,14 +170,14 @@ const FormationProcess = () => {
         >
           <div className="text-center mb-10">
             <h3 className="text-3xl lg:text-4xl font-black text-black dark:text-white tracking-tight mb-3">
-              LLC or C-Corp?
-              <span className="block text-[#FFC107]">We&apos;ll Help You Decide.</span>
+              {t.formation.entityTitle}
+              <span className="block text-[#FFC107]">{t.formation.entitySubtitle}</span>
             </h3>
             <Link
               href="/quiz"
               className="inline-flex items-center gap-2 text-base font-black uppercase tracking-wide text-black dark:text-white hover:text-[#FFC107] dark:hover:text-[#FFC107] transition-colors duration-300"
             >
-              Take Our Quiz <ArrowRight className="w-4 h-4" />
+              {t.formation.takeQuiz} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
 
@@ -255,7 +213,7 @@ const FormationProcess = () => {
                 </p>
 
                 <div className="space-y-3 mb-6">
-                  <p className="text-xs font-black uppercase tracking-widest text-black/40 dark:text-white/40">Advantages</p>
+                  <p className="text-xs font-black uppercase tracking-widest text-black/40 dark:text-white/40">{t.formation.advantages}</p>
                   {currentEntity.pros.map((pro, idx) => (
                     <div key={idx} className="flex items-start gap-3">
                       <CheckCircle2 className="w-5 h-5 text-[#FFC107] flex-shrink-0 mt-0.5" />
@@ -265,7 +223,7 @@ const FormationProcess = () => {
                 </div>
 
                 <div className="space-y-3">
-                  <p className="text-xs font-black uppercase tracking-widest text-black/40 dark:text-white/40">Limitations</p>
+                  <p className="text-xs font-black uppercase tracking-widest text-black/40 dark:text-white/40">{t.formation.limitations}</p>
                   {currentEntity.cons.map((con, idx) => (
                     <div key={idx} className="flex items-start gap-3">
                       <X className="w-5 h-5 text-black/30 dark:text-white/30 flex-shrink-0 mt-0.5" />
@@ -277,13 +235,13 @@ const FormationProcess = () => {
 
               <div className="flex flex-col justify-between">
                 <div className="bg-black dark:bg-[#FFC107] p-8 border-4 border-black dark:border-[#FFC107] mb-6">
-                  <p className="text-white dark:text-black font-black text-lg mb-2">Not sure which is right for you?</p>
-                  <p className="text-white/70 dark:text-black/70 text-sm mb-6 leading-relaxed">Our team of experts will help you choose the best structure for your goals, location, and business model.</p>
+                  <p className="text-white dark:text-black font-black text-lg mb-2">{t.formation.notSureTitle}</p>
+                  <p className="text-white/70 dark:text-black/70 text-sm mb-6 leading-relaxed">{t.formation.notSureDesc}</p>
                   <Link
                     href="/quiz"
                     className="group inline-flex items-center gap-2 px-6 py-3 text-sm font-black uppercase tracking-tight text-black bg-[#FFC107] dark:bg-black dark:text-white border-4 border-[#FFC107] dark:border-black shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] dark:shadow-[4px_4px_0px_0px_rgba(255,193,7,0.3)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all duration-300"
                   >
-                    Take the Quiz
+                    {t.formation.takeTheQuiz}
                     <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
                   </Link>
                 </div>
@@ -292,7 +250,7 @@ const FormationProcess = () => {
                   href="/signup"
                   className="group w-full flex items-center justify-between px-8 py-5 text-base font-black uppercase tracking-tight text-black bg-[#FFC107] border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all duration-300"
                 >
-                  Start Your Business Now
+                  {t.formation.startBusinessNow}
                   <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               </div>

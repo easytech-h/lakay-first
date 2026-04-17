@@ -3,57 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { ArrowRight, CircleCheck as CheckCircle, Circle as XCircle, TriangleAlert as AlertTriangle } from "lucide-react";
-
-const COMPARISON = [
-  {
-    feature: "Setup time",
-    prolify: "1 week",
-    diy: "3–6 months",
-    vendors: "4–8 weeks",
-  },
-  {
-    feature: "Total cost",
-    prolify: "One flat fee",
-    diy: "Varies + hidden costs",
-    vendors: "2–3x more expensive",
-  },
-  {
-    feature: "Formation",
-    prolify: true,
-    diy: "Research required",
-    vendors: true,
-  },
-  {
-    feature: "Banking setup",
-    prolify: true,
-    diy: false,
-    vendors: "Separate vendor",
-  },
-  {
-    feature: "Bookkeeping",
-    prolify: true,
-    diy: false,
-    vendors: "Separate vendor",
-  },
-  {
-    feature: "Tax filing",
-    prolify: true,
-    diy: "Hire CPA separately",
-    vendors: "Separate vendor",
-  },
-  {
-    feature: "Ongoing compliance",
-    prolify: true,
-    diy: false,
-    vendors: "Partial",
-  },
-  {
-    feature: "Single dashboard",
-    prolify: true,
-    diy: false,
-    vendors: false,
-  },
-];
+import { useI18n } from "@/contexts/I18nContext";
 
 function CellValue({ val }: { val: boolean | string }) {
   if (val === true) {
@@ -71,6 +21,59 @@ function CellValue({ val }: { val: boolean | string }) {
 }
 
 const ChooseYourPath = () => {
+  const { t } = useI18n();
+
+  const COMPARISON = [
+    {
+      feature: t.choosePath.setupTime,
+      prolify: t.choosePath.setupTimeProlify,
+      diy: t.choosePath.setupTimeDiy,
+      vendors: t.choosePath.setupTimeVendors,
+    },
+    {
+      feature: t.choosePath.totalCost,
+      prolify: t.choosePath.totalCostProlify,
+      diy: t.choosePath.totalCostDiy,
+      vendors: t.choosePath.totalCostVendors,
+    },
+    {
+      feature: t.choosePath.formation,
+      prolify: true,
+      diy: t.choosePath.formationDiy,
+      vendors: true,
+    },
+    {
+      feature: t.choosePath.bankingSetup,
+      prolify: true,
+      diy: false,
+      vendors: t.choosePath.bankingVendors,
+    },
+    {
+      feature: t.choosePath.bookkeeping,
+      prolify: true,
+      diy: false,
+      vendors: t.choosePath.bookkeepingVendors,
+    },
+    {
+      feature: t.choosePath.taxFiling,
+      prolify: true,
+      diy: t.choosePath.taxFilingDiy,
+      vendors: t.choosePath.taxFilingVendors,
+    },
+    {
+      feature: t.choosePath.compliance,
+      prolify: true,
+      diy: false,
+      vendors: t.choosePath.complianceDiy,
+    },
+    {
+      feature: t.choosePath.singleDashboard,
+      prolify: true,
+      diy: false,
+      vendors: false,
+    },
+  ];
+
   return (
     <section className="py-24 md:py-32 px-4 bg-white relative overflow-hidden">
       <div
@@ -81,13 +84,13 @@ const ChooseYourPath = () => {
       <div className="max-w-5xl mx-auto relative z-10">
         <div className="text-center mb-14 space-y-4">
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FFC107]/10 border border-[#FFC107]/30 text-xs font-bold uppercase tracking-widest text-black/60">
-            Why Prolify
+            {t.choosePath.badge}
           </span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter text-black">
-            One Partner Beats<br className="hidden sm:block" /> Three Every Time.
+            {t.choosePath.title}
           </h2>
           <p className="text-lg text-black/55 max-w-xl mx-auto font-medium leading-relaxed">
-            See how Prolify stacks up against going solo or piecing together multiple vendors.
+            {t.choosePath.subtitle}
           </p>
         </div>
 
@@ -96,16 +99,16 @@ const ChooseYourPath = () => {
             <thead>
               <tr className="border-b border-black/8">
                 <th className="py-4 px-5 text-left text-xs font-bold uppercase tracking-widest text-black/40 w-[30%]">
-                  Feature
+                  {t.choosePath.featureCol}
                 </th>
                 <th className="py-4 px-5 text-center bg-black text-xs font-bold uppercase tracking-widest text-[#FFC107] w-[23%]">
-                  Prolify
+                  {t.choosePath.prolifyCol}
                 </th>
                 <th className="py-4 px-5 text-center text-xs font-bold uppercase tracking-widest text-black/40 w-[23%]">
-                  DIY
+                  {t.choosePath.diyCol}
                 </th>
                 <th className="py-4 px-5 text-center text-xs font-bold uppercase tracking-widest text-black/40 w-[24%]">
-                  Multiple Vendors
+                  {t.choosePath.multipleVendors}
                 </th>
               </tr>
             </thead>
@@ -143,14 +146,14 @@ const ChooseYourPath = () => {
             className="group inline-flex items-center gap-2 h-13 px-8 py-3.5 rounded-2xl bg-black text-white font-bold text-sm tracking-tight overflow-hidden relative transition-all duration-300 hover:shadow-lg hover:scale-[1.02]"
           >
             <span className="absolute inset-0 bg-[#FFC107] translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-            <span className="relative z-10 group-hover:text-black transition-colors duration-300">Choose Prolify</span>
+            <span className="relative z-10 group-hover:text-black transition-colors duration-300">{t.choosePath.chooseProlify}</span>
             <ArrowRight className="relative z-10 w-4 h-4 group-hover:text-black group-hover:translate-x-0.5 transition-all duration-300" />
           </Link>
           <Link
             href="/pricing"
             className="inline-flex items-center gap-2 h-13 px-8 py-3.5 rounded-2xl border-2 border-black/10 text-black/70 font-bold text-sm hover:border-black hover:text-black transition-all duration-200"
           >
-            Compare Plans
+            {t.choosePath.comparePlans}
           </Link>
         </div>
       </div>

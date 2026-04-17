@@ -3,16 +3,25 @@
 import Link from 'next/link';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, CircleCheck as CheckCircle2 } from 'lucide-react';
-
-const badges = [
-  'LLC & C-Corp Formation',
-  'EIN Included',
-  'Registered Agent',
-  'All 50 States',
-];
+import { useI18n } from '@/contexts/I18nContext';
 
 const FormationHero = () => {
   const prefersReducedMotion = useReducedMotion();
+  const { t } = useI18n();
+
+  const badges = [
+    t.formation.badge1,
+    t.formation.badge2,
+    t.formation.badge3,
+    t.formation.badge4,
+  ];
+
+  const stats = [
+    { value: t.formation.stat1value, label: t.formation.stat1label },
+    { value: t.formation.stat2value, label: t.formation.stat2label },
+    { value: t.formation.stat3value, label: t.formation.stat3label },
+    { value: t.formation.stat4value, label: t.formation.stat4label },
+  ];
 
   return (
     <section className="relative pt-40 pb-32 bg-white dark:bg-[#0a0a0a] overflow-hidden transition-colors duration-300">
@@ -32,7 +41,7 @@ const FormationHero = () => {
           >
             <span className="text-sm tracking-tight font-black uppercase flex items-center gap-2">
               <span className="inline-block w-2 h-2 bg-black rounded-full animate-pulse" />
-              US Business Formation
+              {t.formation.heroBadge}
             </span>
           </motion.div>
 
@@ -42,9 +51,9 @@ const FormationHero = () => {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="text-5xl md:text-7xl font-black tracking-tighter text-black dark:text-white leading-[1.1]"
           >
-            Form Your US LLC
+            {t.formation.heroTitle}
             <span className="block mt-3 relative">
-              Without the Stress
+              {t.formation.heroSubtitle}
               <svg
                 className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-3/4 h-5 text-[#FFC107]"
                 viewBox="0 0 580 20"
@@ -62,7 +71,7 @@ const FormationHero = () => {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="text-xl md:text-2xl text-black/70 dark:text-white/70 leading-relaxed max-w-2xl mx-auto font-medium"
           >
-            We handle everything—state filings, EIN, operating agreement, registered agent, compliance. You get a fully formed US business delivered to your dashboard.
+            {t.formation.heroDesc}
           </motion.p>
 
           <motion.div
@@ -75,7 +84,7 @@ const FormationHero = () => {
               href="/signup"
               className="group inline-flex items-center gap-3 px-8 py-4 text-base font-black uppercase tracking-tight text-black bg-[#FFC107] border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all duration-300"
             >
-              Start Your Business
+              {t.formation.startBusiness}
               <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
 
@@ -83,7 +92,7 @@ const FormationHero = () => {
               href="#how-it-works"
               className="group inline-flex items-center gap-3 px-8 py-4 text-base font-black uppercase tracking-tight text-black dark:text-white bg-transparent border-4 border-black dark:border-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300"
             >
-              See How It Works
+              {t.formation.seeHowItWorks}
             </Link>
           </motion.div>
 
@@ -111,12 +120,7 @@ const FormationHero = () => {
           transition={{ duration: 0.8, delay: 0.5 }}
           className="mt-20 grid grid-cols-2 md:grid-cols-4 border-4 border-black dark:border-white"
         >
-          {[
-            { value: '4 Weeks', label: 'Average Formation Time' },
-            { value: '50 States', label: 'Complete Coverage' },
-            { value: '100%', label: 'Remote Process' },
-            { value: '5 Steps', label: 'Simple Process' },
-          ].map((stat, i) => (
+          {stats.map((stat, i) => (
             <div
               key={i}
               className={`p-8 text-center bg-white dark:bg-[#0a0a0a] ${i % 2 === 0 ? 'border-r-4 border-black dark:border-white' : ''} ${i < 2 ? 'border-b-4 border-black dark:border-white md:border-b-0' : ''} ${i === 1 ? 'md:border-r-4 border-black dark:border-white' : ''} ${i === 2 ? 'md:border-r-4 border-black dark:border-white' : ''}`}

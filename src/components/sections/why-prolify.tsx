@@ -3,49 +3,51 @@
 import React, { useState, useCallback, useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight, Quote } from "lucide-react";
-
-const TESTIMONIALS = [
-  {
-    quote: "Prolify made launching my US business seamless. From formation to bank account, everything was handled professionally. I never had to set foot in the US.",
-    name: "Elena Martinez",
-    title: "Founder, MedTech Solutions",
-    country: "Brazil",
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face",
-  },
-  {
-    quote: "The transparency was incredible. I always knew what step we were on and what came next. My LLC was formed in under 2 weeks — faster than I expected.",
-    name: "James Wilson",
-    title: "CEO, Digital Commerce Co",
-    country: "UK",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face",
-  },
-  {
-    quote: "As a first-time founder, I was nervous about US formation. Prolify walked me through every document and deadline. Zero surprises, zero stress.",
-    name: "Priya Sharma",
-    title: "Founder, CloudSync AI",
-    country: "India",
-    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face",
-  },
-  {
-    quote: "Banking was the hardest part when I tried to do this myself. With Prolify's partner network, I had my account approved in 4 days. Game changer.",
-    name: "Ahmed Al-Rashid",
-    title: "Founder & CTO, Quantum Labs",
-    country: "UAE",
-    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face",
-  },
-];
+import { useI18n } from "@/contexts/I18nContext";
 
 const LOGOS = [
   "Shopify", "Amazon", "Stripe", "QuickBooks", "Mercury", "Relay",
 ];
 
 const WhyProlify = () => {
+  const { t } = useI18n();
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
 
+  const TESTIMONIALS = [
+    {
+      quote: t.whyProlify.t1quote,
+      name: t.whyProlify.t1name,
+      title: t.whyProlify.t1title,
+      country: t.whyProlify.t1country,
+      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face",
+    },
+    {
+      quote: t.whyProlify.t2quote,
+      name: t.whyProlify.t2name,
+      title: t.whyProlify.t2title,
+      country: t.whyProlify.t2country,
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face",
+    },
+    {
+      quote: t.whyProlify.t3quote,
+      name: t.whyProlify.t3name,
+      title: t.whyProlify.t3title,
+      country: t.whyProlify.t3country,
+      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face",
+    },
+    {
+      quote: t.whyProlify.t4quote,
+      name: t.whyProlify.t4name,
+      title: t.whyProlify.t4title,
+      country: t.whyProlify.t4country,
+      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face",
+    },
+  ];
+
   const next = useCallback(() => {
     setActive((prev) => (prev + 1) % TESTIMONIALS.length);
-  }, []);
+  }, [TESTIMONIALS.length]);
 
   useEffect(() => {
     if (paused) return;
@@ -53,7 +55,7 @@ const WhyProlify = () => {
     return () => clearInterval(id);
   }, [paused, next]);
 
-  const t = TESTIMONIALS[active];
+  const testimonial = TESTIMONIALS[active];
 
   return (
     <section className="py-24 md:py-32 px-4 bg-[#FFFDF5] relative overflow-hidden">
@@ -63,16 +65,15 @@ const WhyProlify = () => {
       />
 
       <div className="max-w-5xl mx-auto relative z-10">
-
         <div className="text-center mb-16 space-y-4">
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FFC107]/20 border border-[#FFC107]/50 text-xs font-bold uppercase tracking-widest text-black/70">
-            Trusted by Founders Worldwide
+            {t.whyProlify.badge}
           </span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter text-black">
-            5,000+ founders launched<br className="hidden sm:block" /> their US business with us.
+            {t.whyProlify.title}
           </h2>
           <p className="text-lg text-black/55 max-w-xl mx-auto font-medium leading-relaxed">
-            From India to Brazil to the UAE — international founders trust Prolify to make their US business real.
+            {t.whyProlify.subtitle}
           </p>
         </div>
 
@@ -85,18 +86,18 @@ const WhyProlify = () => {
             <Quote className="absolute top-8 left-8 w-8 h-8 text-[#FFC107]/50" />
 
             <blockquote className="text-xl md:text-2xl font-bold text-black leading-relaxed mb-8 pt-6">
-              &ldquo;{t.quote}&rdquo;
+              &ldquo;{testimonial.quote}&rdquo;
             </blockquote>
 
             <div className="flex items-center gap-4">
               <img
-                src={t.avatar}
-                alt={t.name}
+                src={testimonial.avatar}
+                alt={testimonial.name}
                 className="w-12 h-12 rounded-full object-cover border-2 border-[#FFC107]/60"
               />
               <div>
-                <div className="font-bold text-black text-sm">{t.name}</div>
-                <div className="text-black/50 text-xs font-medium">{t.title} · {t.country}</div>
+                <div className="font-bold text-black text-sm">{testimonial.name}</div>
+                <div className="text-black/50 text-xs font-medium">{testimonial.title} · {testimonial.country}</div>
               </div>
               <div className="ml-auto flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
@@ -126,7 +127,7 @@ const WhyProlify = () => {
 
         <div className="mt-16 pt-10 border-t border-black/8">
           <p className="text-center text-xs font-bold uppercase tracking-widest text-black/35 mb-8">
-            Integrates with your existing tools
+            {t.whyProlify.integratesWith}
           </p>
           <div className="flex flex-wrap items-center justify-center gap-6 md:gap-10">
             {LOGOS.map((logo) => (
@@ -145,7 +146,7 @@ const WhyProlify = () => {
             href="/signup"
             className="group inline-flex items-center gap-2 px-8 py-4 bg-black text-white font-bold text-sm rounded-2xl hover:bg-[#FFC107] hover:text-black transition-all duration-200 hover:shadow-lg"
           >
-            Join 5,000+ Founders
+            {t.whyProlify.joinFounders}
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
           </Link>
         </div>

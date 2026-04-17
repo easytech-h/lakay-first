@@ -2,35 +2,38 @@
 
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
-
-const resources = [
-  {
-    title: "How International Founders Can Open a US Business Bank Account (Without Visiting the US)",
-    description: "Opening a US business bank account from abroad seems impossible—but it's not. This complete guide walks you through account options, required documents, and the exact steps to get your business banking set up remotely.",
-    image: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/project-uploads/71eed71d-1e0c-4248-b7b3-cafb65a01c60/generated_images/professional-modern-illustration-of-us-b-02a41a50-20251209050901.jpg",
-    cta: "Read the Guide"
-  },
-  {
-    title: "US Tax Filing for Non-Residents: Everything International Founders Need to Know in 2025",
-    description: "Navigate US tax requirements with confidence. Learn about filing deadlines, tax treaties, deductions for international founders, and how to stay compliant while minimizing your tax burden—all explained in plain English.",
-    image: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/project-uploads/71eed71d-1e0c-4248-b7b3-cafb65a01c60/generated_images/professional-modern-illustration-of-us-t-7047db80-20251209050901.jpg",
-    cta: "Learn More"
-  },
-  {
-    title: "Delaware vs. Wyoming vs. Your Home State: Choosing the Best State for Your LLC",
-    description: "Not all states are created equal for LLC formation. Discover the pros and cons of Delaware, Wyoming, and other popular states—including costs, privacy, taxes, and what actually matters for international founders.",
-    image: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/project-uploads/71eed71d-1e0c-4248-b7b3-cafb65a01c60/generated_images/professional-modern-illustration-of-us-s-00173721-20251209050901.jpg",
-    cta: "Compare States"
-  },
-  {
-    title: "The Complete Guide to Launching a US E-Commerce Business as an International Founder",
-    description: "From Shopify setup to sales tax compliance, discover how to launch and scale your e-commerce business in the US market. Includes platform comparisons, fulfillment options, and real metrics from successful international sellers.",
-    image: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/project-uploads/71eed71d-1e0c-4248-b7b3-cafb65a01c60/generated_images/professional-modern-illustration-of-us-e-575f440b-20251209051105.jpg",
-    cta: "Start Selling"
-  }
-];
+import { useI18n } from "@/contexts/I18nContext";
 
 export default function ResourcesGuides() {
+  const { t } = useI18n();
+
+  const resources = [
+    {
+      title: t.resources.r1title,
+      description: t.resources.r1desc,
+      image: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/project-uploads/71eed71d-1e0c-4248-b7b3-cafb65a01c60/generated_images/professional-modern-illustration-of-us-b-02a41a50-20251209050901.jpg",
+      cta: t.resources.r1cta,
+    },
+    {
+      title: t.resources.r2title,
+      description: t.resources.r2desc,
+      image: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/project-uploads/71eed71d-1e0c-4248-b7b3-cafb65a01c60/generated_images/professional-modern-illustration-of-us-t-7047db80-20251209050901.jpg",
+      cta: t.resources.r2cta,
+    },
+    {
+      title: t.resources.r3title,
+      description: t.resources.r3desc,
+      image: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/project-uploads/71eed71d-1e0c-4248-b7b3-cafb65a01c60/generated_images/professional-modern-illustration-of-us-s-00173721-20251209050901.jpg",
+      cta: t.resources.r3cta,
+    },
+    {
+      title: t.resources.r4title,
+      description: t.resources.r4desc,
+      image: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/project-uploads/71eed71d-1e0c-4248-b7b3-cafb65a01c60/generated_images/professional-modern-illustration-of-us-e-575f440b-20251209051105.jpg",
+      cta: t.resources.r4cta,
+    },
+  ];
+
   return (
     <section className="relative py-20 bg-white overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(255,193,7,0.06),transparent_50%)]"></div>
@@ -39,14 +42,14 @@ export default function ResourcesGuides() {
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-16 max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 mb-8 px-5 py-3 bg-[#FFC107] border-4 border-black rounded-xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transform hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all duration-300 animate-[slideDown_0.6s_ease-out]">
-            <span className="text-sm font-black text-black uppercase tracking-wider">Knowledge Base</span>
+            <span className="text-sm font-black text-black uppercase tracking-wider">{t.resources.badge}</span>
           </div>
           <h2 className="text-4xl md:text-6xl font-black text-black mb-6 tracking-tighter relative inline-block">
-            The Complete Playbook for International Founders
+            {t.resources.title}
             <div className="absolute -inset-6 bg-[#FFC107]/5 blur-3xl rounded-full -z-10 animate-pulse"></div>
           </h2>
           <p className="text-xl text-black/70 font-semibold">
-            Essential guides to help you launch and scale your US business with confidence.
+            {t.resources.subtitle}
           </p>
         </div>
 

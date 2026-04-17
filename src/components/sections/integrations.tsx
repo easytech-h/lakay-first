@@ -3,71 +3,69 @@
 import { useState } from "react";
 import { ArrowRight, Building2, CreditCard, BookOpen, FileText, ChartBar as BarChart2 } from "lucide-react";
 import Link from "next/link";
-
-const SERVICES = [
-  {
-    id: "formation",
-    icon: Building2,
-    color: "#FFC107",
-    label: "LLC Formation",
-    headline: "Form Your US LLC in Days, Not Months",
-    description:
-      "We handle all state filings, operating agreements, registered agent service, and EIN acquisition — so your business is ready to operate without you ever stepping foot in the US.",
-    features: ["State filing in all 50 states", "Operating Agreement included", "Registered Agent (1 year)", "EIN from the IRS"],
-    cta: "Start Formation",
-    href: "/formation",
-  },
-  {
-    id: "banking",
-    icon: CreditCard,
-    color: "#22C55E",
-    label: "Business Banking",
-    headline: "Open a US Bank Account — Remotely",
-    description:
-      "Get access to a real US business bank account through our partner network without needing a US address, SSN, or in-person visit.",
-    features: ["100% remote setup", "No US address needed", "Partner bank network", "Debit card included"],
-    cta: "Explore Banking",
-    href: "/banking-guidance",
-  },
-  {
-    id: "bookkeeping",
-    icon: BookOpen,
-    color: "#3B82F6",
-    label: "Bookkeeping",
-    headline: "Always Know Where Your Money Stands",
-    description:
-      "Automated transaction tracking, multi-account sync, and professional financial reports — all in a single dashboard. Optional dedicated bookkeeper available.",
-    features: ["Automated expense tracking", "Multi-account sync", "Monthly P&L reports", "Tax-ready records"],
-    cta: "View Bookkeeping",
-    href: "/bookkeeping",
-  },
-  {
-    id: "taxes",
-    icon: FileText,
-    color: "#10B981",
-    label: "Taxes",
-    headline: "Stress-Free Tax Filing With Expert Support",
-    description:
-      "Our in-house tax team handles your annual filings, keeps you fully compliant, and makes sure you never miss a deadline or leave money on the table.",
-    features: ["Annual IRS filings", "State tax compliance", "CPA consultation", "Zero penalties guarantee"],
-    cta: "Explore Taxes",
-    href: "/taxes",
-  },
-  {
-    id: "analytics",
-    icon: BarChart2,
-    color: "#F59E0B",
-    label: "Analytics",
-    headline: "Real-Time Insights for E-Commerce Founders",
-    description:
-      "Connect Shopify, Amazon, and more to see sales, orders, and financial performance in one unified dashboard — no data juggling required.",
-    features: ["Shopify & Amazon sync", "Revenue & order tracking", "Inventory visibility", "Financial dashboards"],
-    cta: "See Analytics",
-    href: "/analytics",
-  },
-];
+import { useI18n } from "@/contexts/I18nContext";
 
 const IntegrationsSection = () => {
+  const { t } = useI18n();
+
+  const SERVICES = [
+    {
+      id: "formation",
+      icon: Building2,
+      color: "#FFC107",
+      label: t.integrations.s1label,
+      headline: t.integrations.s1headline,
+      description: t.integrations.s1desc,
+      features: [t.integrations.s1f1, t.integrations.s1f2, t.integrations.s1f3, t.integrations.s1f4],
+      cta: t.integrations.s1cta,
+      href: "/formation",
+    },
+    {
+      id: "banking",
+      icon: CreditCard,
+      color: "#22C55E",
+      label: t.integrations.s2label,
+      headline: t.integrations.s2headline,
+      description: t.integrations.s2desc,
+      features: [t.integrations.s2f1, t.integrations.s2f2, t.integrations.s2f3, t.integrations.s2f4],
+      cta: t.integrations.s2cta,
+      href: "/banking-guidance",
+    },
+    {
+      id: "bookkeeping",
+      icon: BookOpen,
+      color: "#3B82F6",
+      label: t.integrations.s3label,
+      headline: t.integrations.s3headline,
+      description: t.integrations.s3desc,
+      features: [t.integrations.s3f1, t.integrations.s3f2, t.integrations.s3f3, t.integrations.s3f4],
+      cta: t.integrations.s3cta,
+      href: "/bookkeeping",
+    },
+    {
+      id: "taxes",
+      icon: FileText,
+      color: "#10B981",
+      label: t.integrations.s4label,
+      headline: t.integrations.s4headline,
+      description: t.integrations.s4desc,
+      features: [t.integrations.s4f1, t.integrations.s4f2, t.integrations.s4f3, t.integrations.s4f4],
+      cta: t.integrations.s4cta,
+      href: "/taxes",
+    },
+    {
+      id: "analytics",
+      icon: BarChart2,
+      color: "#F59E0B",
+      label: t.integrations.s5label,
+      headline: t.integrations.s5headline,
+      description: t.integrations.s5desc,
+      features: [t.integrations.s5f1, t.integrations.s5f2, t.integrations.s5f3, t.integrations.s5f4],
+      cta: t.integrations.s5cta,
+      href: "/analytics",
+    },
+  ];
+
   const [activeId, setActiveId] = useState("formation");
   const active = SERVICES.find((s) => s.id === activeId)!;
   const ActiveIcon = active.icon;
@@ -82,13 +80,13 @@ const IntegrationsSection = () => {
       <div className="max-w-6xl mx-auto relative z-10">
         <div className="text-center mb-16 space-y-4">
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FFC107]/10 border border-[#FFC107]/30 text-xs font-bold uppercase tracking-widest text-black/60">
-            Everything You Need
+            {t.integrations.badge}
           </span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter text-black">
-            One Platform.<br className="hidden sm:block" /> Every Service.
+            {t.integrations.title}
           </h2>
           <p className="text-lg text-black/55 max-w-xl mx-auto font-medium leading-relaxed">
-            Stop juggling vendors. Prolify gives you everything to launch and run your US business.
+            {t.integrations.subtitle}
           </p>
         </div>
 
@@ -187,15 +185,15 @@ const IntegrationsSection = () => {
             })}
 
             <div className="bg-black rounded-2xl p-6 mt-2">
-              <p className="text-white/60 text-xs font-bold uppercase tracking-widest mb-2">The Prolify Promise</p>
+              <p className="text-white/60 text-xs font-bold uppercase tracking-widest mb-2">{t.integrations.prolifyPromiseBadge}</p>
               <p className="text-white font-bold text-base leading-snug mb-4">
-                One partner for your entire US business operation — formation to growth.
+                {t.integrations.prolifyPromiseText}
               </p>
               <Link
                 href="/signup"
                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#FFC107] text-black text-sm font-bold rounded-xl hover:bg-[#FFB300] transition-colors"
               >
-                Get Started Free
+                {t.integrations.getStartedFree}
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>

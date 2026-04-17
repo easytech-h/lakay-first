@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Check, ArrowRight, Shield, Zap, Crown, Briefcase, Building2, X } from "lucide-react";
 import Link from "next/link";
 import { formationPlans, managementPlans } from "@/lib/plans";
+import { useI18n } from "@/contexts/I18nContext";
 
 const FORMATION_CONFIG: Record<string, { icon: React.ReactNode; highlight: boolean }> = {
   "formation-starter": { icon: <Shield className="w-5 h-5" />, highlight: false },
@@ -14,6 +15,7 @@ const FORMATION_CONFIG: Record<string, { icon: React.ReactNode; highlight: boole
 export default function ProlifyPricing() {
   const [selectedTab, setSelectedTab] = useState<"new" | "existing">("new");
   const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("annual");
+  const { t } = useI18n();
 
   return (
     <section id="prolify-pricing" className="py-24 md:py-32 px-4 bg-white relative overflow-hidden">
@@ -25,13 +27,13 @@ export default function ProlifyPricing() {
       <div className="max-w-5xl mx-auto relative z-10">
         <div className="text-center mb-14 space-y-4">
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FFC107]/10 border border-[#FFC107]/30 text-xs font-bold uppercase tracking-widest text-black/60">
-            Transparent Pricing
+            {t.pricingSection.badge}
           </span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter text-black">
-            Choose Your<br className="hidden sm:block" /> Package.
+            {t.pricingSection.title}
           </h2>
           <p className="text-lg text-black/55 max-w-xl mx-auto font-medium leading-relaxed">
-            Whether starting fresh or managing an existing business — we have you covered.
+            {t.pricingSection.subtitle}
           </p>
         </div>
 
@@ -46,7 +48,7 @@ export default function ProlifyPricing() {
               }`}
             >
               <Briefcase className="h-4 w-4" />
-              New Business
+              {t.pricingSection.newBusiness}
             </button>
             <button
               onClick={() => setSelectedTab("existing")}
@@ -57,7 +59,7 @@ export default function ProlifyPricing() {
               }`}
             >
               <Building2 className="h-4 w-4" />
-              Existing Business
+              {t.pricingSection.existingBusiness}
             </button>
           </div>
         </div>
@@ -71,7 +73,7 @@ export default function ProlifyPricing() {
                   billingCycle === "monthly" ? "bg-[#FFC107] text-black" : "text-black/50 hover:text-black"
                 }`}
               >
-                Monthly
+                {t.pricingSection.monthly}
               </button>
               <button
                 onClick={() => setBillingCycle("annual")}
@@ -79,7 +81,7 @@ export default function ProlifyPricing() {
                   billingCycle === "annual" ? "bg-[#FFC107] text-black" : "text-black/50 hover:text-black"
                 }`}
               >
-                Annual <span className="text-green-700 ml-1 font-semibold">-20%</span>
+                {t.pricingSection.annual} <span className="text-green-700 ml-1 font-semibold">-20%</span>
               </button>
             </div>
           </div>
@@ -87,8 +89,8 @@ export default function ProlifyPricing() {
 
         <p className="text-center text-black/40 text-xs font-medium mb-10">
           {selectedTab === "new"
-            ? "One-time formation packages + state fees"
-            : "Monthly subscriptions for ongoing business management"}
+            ? t.pricingSection.formationDesc
+            : t.pricingSection.managementDesc}
         </p>
 
         {selectedTab === "new" ? (
@@ -109,7 +111,7 @@ export default function ProlifyPricing() {
                   {plan.popular && (
                     <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-10">
                       <span className="inline-flex items-center gap-1 px-4 py-1 rounded-full bg-black text-white text-xs font-black uppercase tracking-widest shadow-sm">
-                        Most Popular
+                        {t.pricingSection.mostPopular}
                       </span>
                     </div>
                   )}
@@ -133,7 +135,7 @@ export default function ProlifyPricing() {
                         <span className="text-5xl font-black tracking-tighter text-black">${plan.price}</span>
                       </div>
                       <p className={`text-xs font-medium mt-1 ${isHighlight ? "text-black/45" : "text-black/40"}`}>
-                        one-time + state fees
+                        {t.pricingSection.oneTimeFees}
                       </p>
                     </div>
 
@@ -183,7 +185,7 @@ export default function ProlifyPricing() {
                             : "bg-black text-white hover:bg-[#FFC107] hover:text-black"
                         }`}
                       >
-                        {plan.price === 0 ? "Get Started Free" : `Choose ${plan.name}`}
+                        {plan.price === 0 ? t.pricingSection.getStartedFree : `${t.pricingSection.choose} ${plan.name}`}
                         <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                       </button>
                     </Link>
@@ -210,7 +212,7 @@ export default function ProlifyPricing() {
                   {isPopular && (
                     <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-10">
                       <span className="inline-flex items-center gap-1 px-4 py-1 rounded-full bg-black text-white text-xs font-black uppercase tracking-widest shadow-sm">
-                        Most Popular
+                        {t.pricingSection.mostPopular}
                       </span>
                     </div>
                   )}
@@ -265,7 +267,7 @@ export default function ProlifyPricing() {
                             : "bg-black text-white hover:bg-[#FFC107] hover:text-black"
                         }`}
                       >
-                        {displayPrice === 0 ? "Start Free" : `Choose ${plan.name}`}
+                        {displayPrice === 0 ? t.pricingSection.startFree : `${t.pricingSection.choose} ${plan.name}`}
                         <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                       </button>
                     </Link>
@@ -281,11 +283,11 @@ export default function ProlifyPricing() {
             href="/pricing"
             className="inline-flex items-center gap-2 text-sm font-bold text-black/60 hover:text-black transition-colors"
           >
-            View full pricing details
+            {t.pricingSection.viewFullPricing}
             <ArrowRight className="w-4 h-4" />
           </Link>
           <p className="text-xs text-black/40 font-medium mt-3">
-            14-day money-back guarantee. No questions asked.
+            {t.pricingSection.moneyBack}
           </p>
         </div>
       </div>
