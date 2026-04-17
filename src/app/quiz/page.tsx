@@ -3,72 +3,64 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ArrowRight, ChevronLeft, Lightbulb, TrendingUp, Users, DollarSign, Building2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-
-type QuizQuestion = {
-  id: number;
-  question: string;
-  icon: React.ReactNode;
-  options: {
-    text: string;
-    value: "LLC" | "C-Corp" | "neutral";
-  }[];
-};
-
-const quizQuestions: QuizQuestion[] = [
-  {
-    id: 1,
-    question: "Are you planning to raise funding from venture capital or angel investors?",
-    icon: <DollarSign className="h-8 w-8 text-[#FFC107]" />,
-    options: [
-      { text: "Yes, I plan to raise funding soon", value: "C-Corp" },
-      { text: "Maybe in the future", value: "neutral" },
-      { text: "No, I will self-fund or bootstrap", value: "LLC" },
-    ],
-  },
-  {
-    id: 2,
-    question: "How do you envision your company's growth and scaling?",
-    icon: <TrendingUp className="h-8 w-8 text-[#FFC107]" />,
-    options: [
-      { text: "Rapid growth with plans to go public eventually", value: "C-Corp" },
-      { text: "Moderate growth, keeping it manageable", value: "LLC" },
-      { text: "Small lifestyle business", value: "LLC" },
-    ],
-  },
-  {
-    id: 3,
-    question: "Do you plan to offer equity or stock options to employees?",
-    icon: <Users className="h-8 w-8 text-[#FFC107]" />,
-    options: [
-      { text: "Yes, I want to offer stock options", value: "C-Corp" },
-      { text: "Maybe, but it's not a priority", value: "neutral" },
-      { text: "No, I don't plan to", value: "LLC" },
-    ],
-  },
-  {
-    id: 4,
-    question: "How important is management flexibility and simplicity to you?",
-    icon: <Building2 className="h-8 w-8 text-[#FFC107]" />,
-    options: [
-      { text: "Very important - I want minimal administrative burden", value: "LLC" },
-      { text: "Somewhat important", value: "neutral" },
-      { text: "Not important - I'm okay with formal requirements", value: "C-Corp" },
-    ],
-  },
-  {
-    id: 5,
-    question: "Will you have international shareholders or owners?",
-    icon: <Users className="h-8 w-8 text-[#FFC107]" />,
-    options: [
-      { text: "Yes, definitely", value: "LLC" },
-      { text: "Possibly", value: "neutral" },
-      { text: "No, only US-based", value: "neutral" },
-    ],
-  },
-];
+import { useI18n } from "@/contexts/I18nContext";
 
 export default function QuizPage() {
+  const { t } = useI18n();
+
+  const quizQuestions = [
+    {
+      id: 1,
+      question: t.quizPage.q1,
+      icon: <DollarSign className="h-8 w-8 text-[#FFC107]" />,
+      options: [
+        { text: t.quizPage.q1o1, value: "C-Corp" as const },
+        { text: t.quizPage.q1o2, value: "neutral" as const },
+        { text: t.quizPage.q1o3, value: "LLC" as const },
+      ],
+    },
+    {
+      id: 2,
+      question: t.quizPage.q2,
+      icon: <TrendingUp className="h-8 w-8 text-[#FFC107]" />,
+      options: [
+        { text: t.quizPage.q2o1, value: "C-Corp" as const },
+        { text: t.quizPage.q2o2, value: "LLC" as const },
+        { text: t.quizPage.q2o3, value: "LLC" as const },
+      ],
+    },
+    {
+      id: 3,
+      question: t.quizPage.q3,
+      icon: <Users className="h-8 w-8 text-[#FFC107]" />,
+      options: [
+        { text: t.quizPage.q3o1, value: "C-Corp" as const },
+        { text: t.quizPage.q3o2, value: "neutral" as const },
+        { text: t.quizPage.q3o3, value: "LLC" as const },
+      ],
+    },
+    {
+      id: 4,
+      question: t.quizPage.q4,
+      icon: <Building2 className="h-8 w-8 text-[#FFC107]" />,
+      options: [
+        { text: t.quizPage.q4o1, value: "LLC" as const },
+        { text: t.quizPage.q4o2, value: "neutral" as const },
+        { text: t.quizPage.q4o3, value: "C-Corp" as const },
+      ],
+    },
+    {
+      id: 5,
+      question: t.quizPage.q5,
+      icon: <Users className="h-8 w-8 text-[#FFC107]" />,
+      options: [
+        { text: t.quizPage.q5o1, value: "LLC" as const },
+        { text: t.quizPage.q5o2, value: "neutral" as const },
+        { text: t.quizPage.q5o3, value: "neutral" as const },
+      ],
+    },
+  ];
+
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<("LLC" | "C-Corp" | "neutral")[]>([]);
   const [showResult, setShowResult] = useState(false);
@@ -101,44 +93,23 @@ export default function QuizPage() {
     if (cCorpCount > llcCount) {
       return {
         type: "C-Corp",
-        title: "C-Corporation is recommended for you",
-        description:
-          "Based on your answers, a C-Corporation structure would be ideal for your business. C-Corps are perfect for companies planning to raise venture capital, offer stock options to employees, and scale rapidly. They provide the flexibility to issue multiple classes of stock and attract investors.",
-        benefits: [
-          "Ideal for raising venture capital funding",
-          "Can issue stock options to attract top talent",
-          "Multiple classes of stock available",
-          "Preferred by most investors",
-          "Easier to take company public (IPO)",
-        ],
+        title: t.quizPage.ccorpTitle,
+        description: t.quizPage.ccorpDesc,
+        benefits: [t.quizPage.ccorpB1, t.quizPage.ccorpB2, t.quizPage.ccorpB3, t.quizPage.ccorpB4, t.quizPage.ccorpB5],
       };
     } else if (llcCount > cCorpCount) {
       return {
         type: "LLC",
-        title: "Limited Liability Company (LLC) is recommended for you",
-        description:
-          "Based on your answers, an LLC structure would be ideal for your business. LLCs are perfect for small businesses and solopreneurs who want liability protection with minimal administrative burden. They offer flexibility in management and taxation while keeping paperwork simple.",
-        benefits: [
-          "Simple management structure",
-          "Less paperwork and compliance requirements",
-          "Pass-through taxation (avoid double taxation)",
-          "Flexible profit distribution",
-          "Can have unlimited owners including international members",
-        ],
+        title: t.quizPage.llcTitle,
+        description: t.quizPage.llcDesc,
+        benefits: [t.quizPage.llcB1, t.quizPage.llcB2, t.quizPage.llcB3, t.quizPage.llcB4, t.quizPage.llcB5],
       };
     } else {
       return {
         type: "LLC",
-        title: "Both structures could work - we recommend starting with an LLC",
-        description:
-          "Your answers show that either structure could work for your business. We recommend starting with an LLC for its simplicity and flexibility. You can always convert to a C-Corp later if your funding or growth plans change. LLCs are easier to manage and have lower compliance costs, making them ideal for getting started quickly.",
-        benefits: [
-          "Start simple and convert later if needed",
-          "Lower initial costs and maintenance",
-          "Less administrative burden",
-          "Flexible taxation options",
-          "Easy to operate as you grow",
-        ],
+        title: t.quizPage.neutralTitle,
+        description: t.quizPage.neutralDesc,
+        benefits: [t.quizPage.neutralB1, t.quizPage.neutralB2, t.quizPage.neutralB3, t.quizPage.neutralB4, t.quizPage.neutralB5],
       };
     }
   };
@@ -155,9 +126,9 @@ export default function QuizPage() {
             <div className="mb-8">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold text-gray-600 dark:text-gray-400">
-                  Question {currentQuestion + 1} of {quizQuestions.length}
+                  {t.quizPage.questionOf} {currentQuestion + 1} {t.quizPage.of} {quizQuestions.length}
                 </h2>
-                <span className="text-sm text-gray-500 dark:text-gray-500">{Math.round(progress)}% Complete</span>
+                <span className="text-sm text-gray-500 dark:text-gray-500">{Math.round(progress)}{t.quizPage.complete}</span>
               </div>
               <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                 <div
@@ -200,7 +171,7 @@ export default function QuizPage() {
                   className="mt-6 flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors"
                 >
                   <ChevronLeft className="h-4 w-4" />
-                  Previous question
+                  {t.quizPage.prevQuestion}
                 </button>
               )}
             </div>
@@ -222,7 +193,7 @@ export default function QuizPage() {
               </p>
 
               <div className="space-y-3">
-                <h3 className="font-bold text-xl text-black dark:text-white mb-4">Key Benefits:</h3>
+                <h3 className="font-bold text-xl text-black dark:text-white mb-4">{t.quizPage.keyBenefits}</h3>
                 {recommendation?.benefits.map((benefit, index) => (
                   <div key={index} className="flex items-start gap-3">
                     <div className="w-6 h-6 rounded-full bg-[#FFC107] flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -253,7 +224,7 @@ export default function QuizPage() {
                 }}
                 className="inline-flex items-center justify-center px-8 py-4 bg-[#FFC107] hover:bg-[#FFD54F] text-black font-bold rounded-xl border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.3)] transition-all"
               >
-                Continue with {recommendation?.type} <ArrowRight className="ml-2 h-5 w-5" />
+                {t.quizPage.continueWith} {recommendation?.type} <ArrowRight className="ml-2 h-5 w-5" />
               </button>
               <button
                 onClick={() => {
@@ -263,7 +234,7 @@ export default function QuizPage() {
                 }}
                 className="inline-flex items-center justify-center px-8 py-4 bg-white dark:bg-[#171717] hover:bg-gray-100 dark:hover:bg-[#0a0a0a] text-black dark:text-white font-bold rounded-xl border-2 border-black dark:border-white transition-all"
               >
-                Retake Quiz
+                {t.quizPage.retakeQuiz}
               </button>
             </div>
           </div>
@@ -271,7 +242,7 @@ export default function QuizPage() {
 
         <div className="mt-8 text-center">
           <Link href="/onboarding" className="text-sm text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white">
-            ← Back to onboarding
+            {t.quizPage.backToOnboarding}
           </Link>
         </div>
       </div>

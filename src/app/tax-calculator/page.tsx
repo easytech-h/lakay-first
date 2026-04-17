@@ -3,9 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Calculator, Info } from 'lucide-react';
-
-const entityTypes = ['Single-Member LLC', 'S-Corp', 'C-Corp'];
-const filingStatuses = ['Single', 'Married Filing Jointly', 'Head of Household'];
+import { useI18n } from '@/contexts/I18nContext';
 
 function calculateTax(grossRevenue: number, expenses: number, entityType: string, filingStatus: string) {
   const netProfit = Math.max(0, grossRevenue - expenses);
@@ -26,7 +24,6 @@ function calculateTax(grossRevenue: number, expenses: number, entityType: string
     totalTax = seTax + incomeTax;
   } else if (entityType === 'S-Corp') {
     const reasonableSalary = Math.min(netProfit * 0.5, 80000);
-    const distribution = netProfit - reasonableSalary;
     seTax = reasonableSalary * 0.153;
     incomeTax = estimateIncomeTax(netProfit, filingStatus);
     totalTax = seTax + incomeTax;
@@ -81,10 +78,23 @@ function fmt(n: number) {
 }
 
 export default function TaxCalculatorPage() {
+  const { t } = useI18n();
   const [grossRevenue, setGrossRevenue] = useState(150000);
   const [expenses, setExpenses] = useState(30000);
   const [entityType, setEntityType] = useState('Single-Member LLC');
   const [filingStatus, setFilingStatus] = useState('Single');
+
+  const entityTypes = [
+    { key: 'Single-Member LLC', label: t.taxCalculatorPage.entity1 },
+    { key: 'S-Corp', label: t.taxCalculatorPage.entity2 },
+    { key: 'C-Corp', label: t.taxCalculatorPage.entity3 },
+  ];
+
+  const filingStatuses = [
+    { key: 'Single', label: t.taxCalculatorPage.filing1 },
+    { key: 'Married Filing Jointly', label: t.taxCalculatorPage.filing2 },
+    { key: 'Head of Household', label: t.taxCalculatorPage.filing3 },
+  ];
 
   const result = calculateTax(grossRevenue, expenses, entityType, filingStatus);
   const scorp = calculateTax(grossRevenue, expenses, 'S-Corp', filingStatus);
@@ -92,35 +102,32 @@ export default function TaxCalculatorPage() {
   return (
     <main className="min-h-screen bg-white dark:bg-[#0a0a0a] pt-24">
 
-      {/* Hero */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#FFC107]/10 border-2 border-[#FFC107] mb-6">
           <Calculator className="w-5 h-5 text-black dark:text-white" />
-          <span className="text-sm font-semibold text-black dark:text-white">Tax Estimator</span>
+          <span className="text-sm font-semibold text-black dark:text-white">{t.taxCalculatorPage.badge}</span>
         </div>
         <h1 className="text-4xl md:text-5xl font-black text-black dark:text-white mb-4 leading-tight">
-          How much are you actually{' '}
-          <span className="bg-[#FFC107] px-2">paying in taxes?</span>
+          {t.taxCalculatorPage.heroTitle1}{' '}
+          <span className="bg-[#FFC107] px-2">{t.taxCalculatorPage.heroTitle2}</span>
         </h1>
         <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl">
-          Estimate your US federal tax burden based on your entity type, revenue, and filing status. See how S-Corp election could reduce your self-employment tax.
+          {t.taxCalculatorPage.heroSubtitle}
         </p>
       </section>
 
-      {/* Calculator */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
         <div className="grid lg:grid-cols-2 gap-8">
 
-          {/* Inputs */}
           <div className="border-2 border-black dark:border-white rounded-2xl overflow-hidden shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.2)]">
             <div className="bg-black px-6 py-4 border-b-2 border-black">
-              <h2 className="font-black text-white">Your business details</h2>
+              <h2 className="font-black text-white">{t.taxCalculatorPage.inputsTitle}</h2>
             </div>
             <div className="p-6 space-y-6 bg-white dark:bg-[#111]">
 
               <div>
                 <label className="block text-sm font-bold text-black dark:text-white mb-2">
-                  Gross annual revenue
+                  {t.taxCalculatorPage.labelRevenue}
                 </label>
                 <div className="relative">
                   <span className="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-black dark:text-white">$</span>
@@ -135,7 +142,7 @@ export default function TaxCalculatorPage() {
 
               <div>
                 <label className="block text-sm font-bold text-black dark:text-white mb-2">
-                  Business expenses
+                  {t.taxCalculatorPage.labelExpenses}
                 </label>
                 <div className="relative">
                   <span className="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-black dark:text-white">$</span>
@@ -149,38 +156,38 @@ export default function TaxCalculatorPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-black dark:text-white mb-2">Entity type</label>
+                <label className="block text-sm font-bold text-black dark:text-white mb-2">{t.taxCalculatorPage.labelEntityType}</label>
                 <div className="grid grid-cols-3 gap-2">
-                  {entityTypes.map((type) => (
+                  {entityTypes.map(({ key, label }) => (
                     <button
-                      key={type}
-                      onClick={() => setEntityType(type)}
+                      key={key}
+                      onClick={() => setEntityType(key)}
                       className={`py-3 px-2 text-xs font-bold rounded-xl border-2 transition-all ${
-                        entityType === type
+                        entityType === key
                           ? 'bg-[#FFC107] border-black text-black'
                           : 'border-black dark:border-white bg-white dark:bg-[#0a0a0a] text-black dark:text-white hover:bg-[#FFC107]/10'
                       }`}
                     >
-                      {type}
+                      {label}
                     </button>
                   ))}
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-black dark:text-white mb-2">Filing status</label>
+                <label className="block text-sm font-bold text-black dark:text-white mb-2">{t.taxCalculatorPage.labelFilingStatus}</label>
                 <div className="space-y-2">
-                  {filingStatuses.map((status) => (
+                  {filingStatuses.map(({ key, label }) => (
                     <button
-                      key={status}
-                      onClick={() => setFilingStatus(status)}
+                      key={key}
+                      onClick={() => setFilingStatus(key)}
                       className={`w-full py-3 px-4 text-sm font-bold rounded-xl border-2 text-left transition-all ${
-                        filingStatus === status
+                        filingStatus === key
                           ? 'bg-[#FFC107] border-black text-black'
                           : 'border-black dark:border-white bg-white dark:bg-[#0a0a0a] text-black dark:text-white hover:bg-[#FFC107]/10'
                       }`}
                     >
-                      {status}
+                      {label}
                     </button>
                   ))}
                 </div>
@@ -189,41 +196,40 @@ export default function TaxCalculatorPage() {
               <div className="p-4 bg-[#FFC107]/10 border-2 border-[#FFC107] rounded-xl flex gap-3">
                 <Info className="w-5 h-5 text-black dark:text-white flex-shrink-0 mt-0.5" />
                 <p className="text-xs text-gray-600 dark:text-gray-400">
-                  This is an estimate for federal taxes only. State taxes, deductions, and credits vary. Consult a CPA for your actual tax planning.
+                  {t.taxCalculatorPage.disclaimer}
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Results */}
           <div className="space-y-4">
             <div className="border-2 border-black dark:border-white rounded-2xl overflow-hidden shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.2)]">
               <div className="bg-black px-6 py-4 border-b-2 border-black">
-                <h2 className="font-black text-white">Your estimated tax burden</h2>
+                <h2 className="font-black text-white">{t.taxCalculatorPage.resultsTitle}</h2>
               </div>
               <div className="p-6 bg-white dark:bg-[#111] space-y-4">
                 <div className="flex justify-between items-center py-3 border-b border-gray-100 dark:border-gray-800">
-                  <span className="text-sm text-gray-600 dark:text-gray-400">Net profit</span>
+                  <span className="text-sm text-gray-600 dark:text-gray-400">{t.taxCalculatorPage.netProfit}</span>
                   <span className="font-black text-black dark:text-white">{fmt(result.netProfit)}</span>
                 </div>
                 {entityType !== 'C-Corp' && (
                   <div className="flex justify-between items-center py-3 border-b border-gray-100 dark:border-gray-800">
-                    <span className="text-sm text-gray-600 dark:text-gray-400">Self-employment tax</span>
+                    <span className="text-sm text-gray-600 dark:text-gray-400">{t.taxCalculatorPage.seTax}</span>
                     <span className="font-bold text-red-600">{fmt(result.seTax)}</span>
                   </div>
                 )}
                 <div className="flex justify-between items-center py-3 border-b border-gray-100 dark:border-gray-800">
                   <span className="text-sm text-gray-600 dark:text-gray-400">
-                    {entityType === 'C-Corp' ? 'Corporate income tax' : 'Federal income tax (est.)'}
+                    {entityType === 'C-Corp' ? t.taxCalculatorPage.corpIncomeTax : t.taxCalculatorPage.fedIncomeTax}
                   </span>
                   <span className="font-bold text-red-600">{fmt(result.incomeTax)}</span>
                 </div>
                 <div className="flex justify-between items-center py-3 bg-red-50 dark:bg-red-950 rounded-xl px-4">
-                  <span className="font-black text-black dark:text-white">Total estimated tax</span>
+                  <span className="font-black text-black dark:text-white">{t.taxCalculatorPage.totalTax}</span>
                   <span className="font-black text-2xl text-red-600">{fmt(result.totalTax)}</span>
                 </div>
                 <div className="flex justify-between items-center py-2">
-                  <span className="text-sm text-gray-500">Effective rate</span>
+                  <span className="text-sm text-gray-500">{t.taxCalculatorPage.effectiveRate}</span>
                   <span className="font-bold text-black dark:text-white">{result.effectiveRate.toFixed(1)}%</span>
                 </div>
               </div>
@@ -232,33 +238,33 @@ export default function TaxCalculatorPage() {
             {entityType === 'Single-Member LLC' && scorp.savings > 2000 && (
               <div className="border-2 border-[#4CAF50] rounded-2xl overflow-hidden shadow-[4px_4px_0px_0px_rgba(76,175,80,0.5)]">
                 <div className="bg-[#4CAF50] px-6 py-4 border-b-2 border-[#4CAF50]">
-                  <h3 className="font-black text-white">S-Corp opportunity detected</h3>
+                  <h3 className="font-black text-white">{t.taxCalculatorPage.sCorpTitle}</h3>
                 </div>
                 <div className="p-6 bg-green-50 dark:bg-green-950">
                   <p className="text-sm text-green-800 dark:text-green-300 mb-4">
-                    Based on your net profit, an S-Corp election could reduce your annual tax bill by approximately:
+                    {t.taxCalculatorPage.sCorpDesc}
                   </p>
                   <div className="text-4xl font-black text-green-700 dark:text-green-400 mb-4">{fmt(scorp.savings)}/yr</div>
                   <Link
                     href="/signup"
                     className="inline-flex items-center gap-2 text-sm font-bold text-green-700 dark:text-green-400 hover:underline"
                   >
-                    Talk to a CPA about S-Corp election <ArrowRight className="w-4 h-4" />
+                    {t.taxCalculatorPage.sCorpCta} <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
               </div>
             )}
 
             <div className="border-2 border-black dark:border-white rounded-2xl p-6 bg-white dark:bg-[#111]">
-              <h3 className="font-black text-black dark:text-white mb-3">Want a real tax strategy?</h3>
+              <h3 className="font-black text-black dark:text-white mb-3">{t.taxCalculatorPage.strategyTitle}</h3>
               <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                This calculator gives you a starting point. A Prolify CPA can build your full tax plan — entity structure, quarterly estimates, deductions, and S-Corp analysis.
+                {t.taxCalculatorPage.strategyDesc}
               </p>
               <Link
                 href="/signup"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-[#FFC107] text-black font-bold rounded-lg border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
               >
-                Get Your Tax Strategy
+                {t.taxCalculatorPage.strategyCta}
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>

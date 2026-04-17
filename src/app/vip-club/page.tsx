@@ -1,72 +1,34 @@
+'use client';
+
 import Link from 'next/link';
 import { ArrowRight, Crown, CircleCheck as CheckCircle2, Users, Zap, Star, Shield, Globe } from 'lucide-react';
-
-const benefits = [
-  {
-    icon: Users,
-    title: 'Founder peer network',
-    desc: 'Access to a curated community of vetted founders. Not a Discord with 50,000 strangers — a tight network of real operators who share what works.',
-  },
-  {
-    icon: Zap,
-    title: 'Priority support',
-    desc: 'VIP members skip the queue. Tax questions, compliance issues, formation problems — you get a same-day response from a senior team member.',
-  },
-  {
-    icon: Star,
-    title: 'Early access to features',
-    desc: 'New Prolify features go to VIP members first. You shape the product and get the advantage before anyone else.',
-  },
-  {
-    icon: Globe,
-    title: 'Monthly hot seat sessions',
-    desc: 'Monthly small-group sessions where our CPAs and attorneys review your specific business situation — not a generic webinar.',
-  },
-  {
-    icon: Shield,
-    title: 'Annual compliance review',
-    desc: 'A full review of your entity structure, compliance calendar, and tax strategy — once per year, included in your membership.',
-  },
-  {
-    icon: Crown,
-    title: 'Exclusive marketplace rates',
-    desc: 'VIP members get preferred pricing with Marketplace providers — attorneys, accountants, and consultants who reserve capacity for VIP referrals.',
-  },
-];
-
-const included = [
-  'All Prolify platform features (formation, bookkeeping, taxes, analytics)',
-  'Unlimited AI Chief of Staff access',
-  'Full Prolify University course library',
-  'All Prolify Marketplace access',
-  'Priority support queue',
-  'Monthly hot seat sessions with CPAs',
-  'Annual compliance review',
-  'VIP peer network access',
-  'Early feature access',
-  'Exclusive Marketplace provider rates',
-];
-
-const faqs = [
-  {
-    q: 'Who is VIP Club for?',
-    a: 'Founders who are past the "getting started" phase and want white-glove support, a peer network of real operators, and priority access to Prolify\'s senior team. Typically founders with $100K+ in annual revenue who treat their business seriously.',
-  },
-  {
-    q: 'What is the peer network like?',
-    a: 'Applications are reviewed. Not everyone is accepted. The network includes e-commerce sellers, SaaS founders, consultants, and content creators — all running real businesses. No beginners asking basic questions.',
-  },
-  {
-    q: 'What happens in the monthly hot seat sessions?',
-    a: 'Small groups of 5-10 VIP members meet with a Prolify CPA or attorney. You can bring your specific question — your entity structure, a tricky deduction, a compliance concern — and get a live answer. Recordings are available.',
-  },
-  {
-    q: 'Can I upgrade to VIP from another plan?',
-    a: 'Yes. You can upgrade at any time and your VIP access activates immediately. Your existing data, books, and history transfer seamlessly.',
-  },
-];
+import { useI18n } from '@/contexts/I18nContext';
 
 export default function VIPClubPage() {
+  const { t } = useI18n();
+
+  const benefits = [
+    { icon: Users, title: t.vipClubPage.b1title, desc: t.vipClubPage.b1desc },
+    { icon: Zap, title: t.vipClubPage.b2title, desc: t.vipClubPage.b2desc },
+    { icon: Star, title: t.vipClubPage.b3title, desc: t.vipClubPage.b3desc },
+    { icon: Globe, title: t.vipClubPage.b4title, desc: t.vipClubPage.b4desc },
+    { icon: Shield, title: t.vipClubPage.b5title, desc: t.vipClubPage.b5desc },
+    { icon: Crown, title: t.vipClubPage.b6title, desc: t.vipClubPage.b6desc },
+  ];
+
+  const included = [
+    t.vipClubPage.inc1, t.vipClubPage.inc2, t.vipClubPage.inc3,
+    t.vipClubPage.inc4, t.vipClubPage.inc5, t.vipClubPage.inc6,
+    t.vipClubPage.inc7, t.vipClubPage.inc8, t.vipClubPage.inc9, t.vipClubPage.inc10,
+  ];
+
+  const faqs = [
+    { q: t.vipClubPage.faq1q, a: t.vipClubPage.faq1a },
+    { q: t.vipClubPage.faq2q, a: t.vipClubPage.faq2a },
+    { q: t.vipClubPage.faq3q, a: t.vipClubPage.faq3a },
+    { q: t.vipClubPage.faq4q, a: t.vipClubPage.faq4a },
+  ];
+
   return (
     <main className="min-h-screen bg-white pt-24">
 
@@ -75,34 +37,35 @@ export default function VIPClubPage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-28">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-900/10 border border-gray-900/20 mb-10">
             <Crown className="w-4 h-4 text-gray-900" />
-            <span className="text-sm font-bold text-gray-900 uppercase tracking-wider">Prolify VIP Club</span>
+            <span className="text-sm font-bold text-gray-900 uppercase tracking-wider">{t.vipClubPage.badge}</span>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-20 items-center">
             <div>
               <h1 className="text-6xl md:text-7xl font-black text-gray-900 leading-[0.95] mb-8 tracking-tight">
-                White-glove<br />support for<br />founders who{' '}
-                <span className="bg-gray-900 text-[#FFC107] px-4 py-2 rounded-xl inline-block mt-2">play to win.</span>
+                {t.vipClubPage.heroTitle1}<br />{t.vipClubPage.heroTitle2}<br />
+                {t.vipClubPage.heroTitle3}{' '}
+                <span className="bg-gray-900 text-[#FFC107] px-4 py-2 rounded-xl inline-block mt-2">{t.vipClubPage.heroHighlight}</span>
               </h1>
               <p className="text-xl text-gray-900/70 mb-4 leading-relaxed">
-                The Prolify VIP Club is for founders who have moved past the basics and want the full Prolify experience — priority support, peer network, monthly expert sessions, and annual compliance reviews.
+                {t.vipClubPage.heroPara1}
               </p>
               <p className="text-xl text-gray-900/70 mb-10 leading-relaxed">
-                Not a community of beginners. A network of operators who share what works, get answers fast, and hold each other accountable.
+                {t.vipClubPage.heroPara2}
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link
                   href="/signup"
                   className="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 text-[#FFC107] font-black rounded-xl hover:bg-gray-800 transition-all shadow-lg"
                 >
-                  Apply to VIP Club
+                  {t.vipClubPage.ctaApply}
                   <ArrowRight className="w-5 h-5" />
                 </Link>
                 <Link
                   href="/pricing"
                   className="inline-flex items-center gap-2 px-8 py-4 bg-white text-gray-900 font-bold rounded-xl border border-gray-900/20 hover:border-gray-900/40 transition-all"
                 >
-                  See Pricing
+                  {t.vipClubPage.ctaPricing}
                 </Link>
               </div>
             </div>
@@ -110,7 +73,7 @@ export default function VIPClubPage() {
             <div className="border border-gray-900/20 rounded-2xl overflow-hidden shadow-sm">
               <div className="bg-gray-900 px-6 py-4 flex items-center gap-3">
                 <Crown className="w-5 h-5 text-[#FFC107]" />
-                <span className="font-black text-[#FFC107]">Everything included in VIP</span>
+                <span className="font-black text-[#FFC107]">{t.vipClubPage.includedTitle}</span>
               </div>
               <div className="p-6 space-y-3 bg-white">
                 {included.map((item) => (
@@ -127,8 +90,8 @@ export default function VIPClubPage() {
 
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-black mb-3 text-gray-900">What VIP members get</h2>
-          <p className="text-gray-600 mb-12 text-lg">Everything in Prolify, plus the benefits that actually move the needle.</p>
+          <h2 className="text-3xl md:text-4xl font-black mb-3 text-gray-900">{t.vipClubPage.benefitsTitle}</h2>
+          <p className="text-gray-600 mb-12 text-lg">{t.vipClubPage.benefitsSubtitle}</p>
 
           <div className="grid md:grid-cols-3 gap-4">
             {benefits.map(({ icon: Icon, title, desc }) => (
@@ -146,7 +109,7 @@ export default function VIPClubPage() {
 
       <section className="bg-[#FFC107] py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-black text-gray-900 mb-12">VIP Club questions</h2>
+          <h2 className="text-3xl font-black text-gray-900 mb-12">{t.vipClubPage.faqsTitle}</h2>
           <div className="grid md:grid-cols-2 gap-6">
             {faqs.map(({ q, a }) => (
               <div key={q} className="border-l-4 border-gray-900 pl-6">
@@ -162,16 +125,16 @@ export default function VIPClubPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <Crown className="w-12 h-12 text-[#FFC107] mx-auto mb-6" />
           <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
-            Run your business at the highest level.
+            {t.vipClubPage.ctaTitle}
           </h2>
           <p className="text-gray-400 text-xl mb-8">
-            VIP Club memberships are reviewed. Apply today.
+            {t.vipClubPage.ctaSubtitle}
           </p>
           <Link
             href="/signup"
             className="inline-flex items-center justify-center gap-2 px-10 py-5 bg-[#FFC107] text-gray-900 font-black text-lg rounded-xl hover:bg-yellow-400 transition-all shadow-xl"
           >
-            Apply for VIP Access
+            {t.vipClubPage.ctaBtn}
             <ArrowRight className="w-5 h-5" />
           </Link>
         </div>
