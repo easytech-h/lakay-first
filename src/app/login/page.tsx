@@ -12,10 +12,12 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
 import { PrivacyPolicyModal } from "@/components/PrivacyPolicyModal";
 import { TermsModal } from "@/components/TermsModal";
+import { useI18n } from "@/contexts/I18nContext";
 
 export default function LoginPage() {
   const router = useRouter();
   const { signIn, signInWithGoogle } = useAuth();
+  const { t } = useI18n();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
@@ -28,7 +30,7 @@ export default function LoginPage() {
     setError("");
 
     if (!formData.email || !formData.password) {
-      setError("Please fill in all fields");
+      setError(t.auth.fillAllFields);
       return;
     }
 
@@ -39,7 +41,7 @@ export default function LoginPage() {
 
       if (authError) {
         if (authError.message.toLowerCase().includes("invalid") || authError.message.toLowerCase().includes("credentials") || authError.message.toLowerCase().includes("password")) {
-          setError("Invalid email or password. Please check your credentials and try again.");
+          setError(t.auth.invalidCredentials);
         } else {
           setError(authError.message);
         }
@@ -79,17 +81,17 @@ export default function LoginPage() {
             <span className="text-3xl font-black text-black tracking-tight">Prolify</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-black dark:text-white mb-4 tracking-tight">
-            Welcome Back
+            {t.auth.welcomeBack}
           </h1>
           <p className="text-gray-600 dark:text-gray-400 text-lg">
-            Sign in to your Prolify account
+            {t.auth.signInToAccount}
           </p>
         </div>
 
         <div className="bg-white dark:bg-[#171717] rounded-2xl border-2 border-black dark:border-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.3)] p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <Label htmlFor="email" className="text-black dark:text-white">Email Address</Label>
+              <Label htmlFor="email" className="text-black dark:text-white">{t.auth.emailAddress}</Label>
               <div className="relative mt-2">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                 <Input
@@ -106,9 +108,9 @@ export default function LoginPage() {
 
             <div>
               <div className="flex items-center justify-between mb-2">
-                <Label htmlFor="password" className="text-black dark:text-white">Password</Label>
+                <Label htmlFor="password" className="text-black dark:text-white">{t.auth.password}</Label>
                 <Link href="/forgot-password" className="text-sm text-[#FFC107] hover:underline">
-                  Forgot password?
+                  {t.auth.forgotPasswordLink}
                 </Link>
               </div>
               <div className="relative">
@@ -119,7 +121,7 @@ export default function LoginPage() {
                   value={formData.password}
                   onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
                   className="pl-10 border-2 border-black dark:border-white"
-                  placeholder="Enter your password"
+                  placeholder={t.auth.enterPassword}
                   required
                 />
               </div>
@@ -137,7 +139,7 @@ export default function LoginPage() {
               disabled={loading}
               className="w-full bg-[#FFC107] hover:bg-[#FFD54F] text-black font-bold py-6 border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.3)] transition-all disabled:opacity-50"
             >
-              {loading ? "Signing In..." : "Sign In"} <ArrowRight className="ml-2 h-5 w-5" />
+              {loading ? t.auth.signingIn : t.auth.signIn} <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </form>
 
@@ -164,27 +166,27 @@ export default function LoginPage() {
               <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
               <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
             </svg>
-            Continue with Google
+            {t.auth.continueWithGoogle}
           </Button>
 
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600 dark:text-gray-400">
-              Don't have an account?{" "}
+              {t.auth.noAccount}{" "}
               <Link href="/signup" className="text-[#FFC107] hover:underline font-semibold">
-                Create one for free
+                {t.auth.createOneForFree}
               </Link>
             </p>
           </div>
 
           <div className="mt-8 pt-6 border-t-2 border-gray-200 dark:border-gray-700">
             <p className="text-xs text-center text-gray-500 dark:text-gray-400">
-              By signing in, you agree to our{" "}
+              {t.auth.bySigningIn}{" "}
               <TermsModal className="text-[#FFC107] hover:underline">
-                Terms of Service
+                {t.auth.termsOfService}
               </TermsModal>{" "}
-              and{" "}
+              {t.auth.and}{" "}
               <PrivacyPolicyModal className="text-[#FFC107] hover:underline">
-                Privacy Policy
+                {t.auth.privacyPolicy}
               </PrivacyPolicyModal>
             </p>
           </div>
@@ -192,7 +194,7 @@ export default function LoginPage() {
 
         <div className="mt-8 text-center">
           <Link href="/" className="text-sm text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white">
-            ← Back to homepage
+            {t.auth.backToHomepage}
           </Link>
         </div>
       </div>

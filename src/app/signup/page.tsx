@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/lib/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { useI18n } from "@/contexts/I18nContext";
 import GetStartedModal from "@/components/dashboard/GetStartedModal";
 import { formationPlans } from "@/lib/plans";
 
@@ -26,6 +27,7 @@ const ACTION_SECTION_MAP: Record<string, string> = {
 
 function SignupContent() {
   const { signInWithGoogle } = useAuth();
+  const { t } = useI18n();
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -63,28 +65,28 @@ function SignupContent() {
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
-    if (!formData.fullName.trim()) newErrors.fullName = "Full name is required";
+    if (!formData.fullName.trim()) newErrors.fullName = t.auth.fullNameRequired;
     if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
+      newErrors.email = t.auth.emailRequired;
     } else if (!validateEmail(formData.email)) {
-      newErrors.email = "Invalid email format";
+      newErrors.email = t.auth.invalidEmailFormat;
     }
     if (!formData.password) {
-      newErrors.password = "Password is required";
+      newErrors.password = t.auth.passwordRequired;
     } else if (formData.password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters";
+      newErrors.password = t.auth.passwordMinLength;
     }
     if (!formData.confirmPassword) {
-      newErrors.confirmPassword = "Please confirm your password";
+      newErrors.confirmPassword = t.auth.confirmPasswordRequired;
     } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match";
+      newErrors.confirmPassword = t.auth.passwordsDoNotMatch;
     }
     if (!formData.phone.trim()) {
-      newErrors.phone = "Phone number is required";
+      newErrors.phone = t.auth.phoneRequired;
     } else if (!validatePhone(formData.phone)) {
-      newErrors.phone = "Invalid phone number";
+      newErrors.phone = t.auth.invalidPhone;
     }
-    if (!formData.termsAccepted) newErrors.termsAccepted = "You must accept the terms and conditions";
+    if (!formData.termsAccepted) newErrors.termsAccepted = t.auth.mustAcceptTerms;
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -120,7 +122,7 @@ function SignupContent() {
     if (!res.ok) {
       if (res.status === 409) {
         setErrors({
-          submit: "An account with this email already exists. Please sign in instead.",
+          submit: t.auth.emailAlreadyExists,
         });
       } else {
         setErrors({ submit: data.error || "Failed to initiate checkout" });
@@ -151,7 +153,7 @@ function SignupContent() {
         authError.message.toLowerCase().includes("exist")
       ) {
         setErrors({
-          submit: "This email is already registered. Please sign in instead or use a different email.",
+          submit: t.auth.emailAlreadyRegistered,
         });
       } else {
         setErrors({ submit: authError.message });
@@ -236,11 +238,11 @@ function SignupContent() {
 
   const submitLabel = isPaymentFirst
     ? loading
-      ? "Redirecting to payment..."
-      : `Pay & Create Account — $${selectedPlanDetails?.price ?? ""}`
+      ? t.auth.redirectingToPayment
+      : `${t.auth.payAndCreate} — $${selectedPlanDetails?.price ?? ""}`
     : loading
-    ? "Creating Your Account..."
-    : "Create Account";
+    ? t.auth.creatingAccount
+    : t.auth.createAccount;
 
   return (
     <div className="min-h-screen flex overflow-hidden bg-white dark:bg-black">
@@ -262,13 +264,13 @@ function SignupContent() {
                 {selectedPlanDetails.name} Plan — ${selectedPlanDetails.price} one-time
               </div>
               <h2 className="text-4xl font-black text-black mb-4 leading-tight">
-                One step away from your US business.
+                {t.auth.oneStepAway}
               </h2>
               <p className="text-black/80 text-lg mb-8">
-                Enter your details, then complete payment securely via Stripe. Your account is created instantly after.
+                {t.auth.enterDetailsThenPay}
               </p>
               <div className="space-y-3">
-                {["Fill in your details below", "Complete secure Stripe payment", "Account created automatically", "Start forming your business"].map((step, i) => (
+                {[t.auth.paymentFirstStep1, t.auth.paymentFirstStep2, t.auth.paymentFirstStep3, t.auth.paymentFirstStep4].map((step, i) => (
                   <div key={i} className="flex items-center gap-3">
                     <div className="w-7 h-7 rounded-full bg-black text-[#FFC107] font-black text-sm flex items-center justify-center flex-shrink-0">
                       {i + 1}
@@ -281,17 +283,17 @@ function SignupContent() {
           ) : (
             <>
               <h2 className="text-4xl font-black text-black mb-4 leading-tight">
-                Start your US<br />business today.
+                {t.auth.startUSBusiness}
               </h2>
               <p className="text-black/80 text-lg mb-8">
-                Join thousands of founders from 150+ countries who've launched with Prolify.
+                {t.auth.joinFounders}
               </p>
               <div className="space-y-4">
                 {[
-                  "Form LLC or C-Corp in any US state",
-                  "Get your EIN in 10-15 business days",
-                  "Manage compliance, taxes & invoices",
-                  "Dedicated expert support included",
+                  t.auth.signupBenefit1,
+                  t.auth.signupBenefit2,
+                  t.auth.signupBenefit3,
+                  t.auth.signupBenefit4,
                 ].map((item, idx) => (
                   <div key={idx} className="flex items-center gap-3">
                     <div className="w-6 h-6 rounded-full bg-black flex items-center justify-center flex-shrink-0">
@@ -310,8 +312,8 @@ function SignupContent() {
               <User className="h-5 w-5 text-black" />
             </div>
             <div>
-              <p className="text-white text-sm font-bold">"Setup was incredibly easy. Had my LLC in 2 weeks!"</p>
-              <p className="text-white/60 text-xs mt-0.5">Sarah M. — E-commerce founder</p>
+              <p className="text-white text-sm font-bold">{t.auth.setupEasy}</p>
+              <p className="text-white/60 text-xs mt-0.5">{t.auth.setupEasyAuthor}</p>
             </div>
           </div>
         </div>
@@ -334,33 +336,33 @@ function SignupContent() {
                   {selectedPlanDetails.name} Plan — ${selectedPlanDetails.price} one-time
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-400">
-                  Payment collected securely via Stripe after this step
+                  {t.auth.paymentAfterStep}
                 </p>
               </div>
               <Link
                 href="/signup/plan"
                 className="ml-auto text-xs text-gray-400 hover:text-[#FFC107] transition-colors whitespace-nowrap"
               >
-                Change plan
+                {t.auth.changePlan}
               </Link>
             </div>
           )}
 
           <div className="mb-8">
             <h1 className="text-3xl font-black text-black dark:text-white mb-2">
-              {isPaymentFirst ? "Your details" : "Create your account"}
+              {isPaymentFirst ? t.auth.yourDetails : t.auth.createAccount}
             </h1>
             <p className="text-black/70 dark:text-white/70">
-              Already have one?{" "}
+              {t.auth.alreadyHaveOne}{" "}
               <Link href="/login" className="text-[#FFC107] font-bold hover:underline">
-                Sign in
+                {t.auth.signInLink}
               </Link>
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <Label htmlFor="fullName" className="text-sm font-bold text-black dark:text-white">Full Name *</Label>
+              <Label htmlFor="fullName" className="text-sm font-bold text-black dark:text-white">{t.auth.fullName} {t.auth.required}</Label>
               <div className="relative mt-1.5">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-black/40 dark:text-white/40" />
                 <Input
@@ -376,7 +378,7 @@ function SignupContent() {
             </div>
 
             <div>
-              <Label htmlFor="email" className="text-sm font-bold text-black dark:text-white">Email Address *</Label>
+              <Label htmlFor="email" className="text-sm font-bold text-black dark:text-white">{t.auth.emailAddress} {t.auth.required}</Label>
               <div className="relative mt-1.5">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-black/40 dark:text-white/40" />
                 <Input
@@ -392,7 +394,7 @@ function SignupContent() {
             </div>
 
             <div>
-              <Label htmlFor="phone" className="text-sm font-bold text-black dark:text-white">Phone Number *</Label>
+              <Label htmlFor="phone" className="text-sm font-bold text-black dark:text-white">{t.auth.phoneNumber} {t.auth.required}</Label>
               <div className="relative mt-1.5">
                 <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-black/40 dark:text-white/40" />
                 <Input
@@ -408,7 +410,7 @@ function SignupContent() {
             </div>
 
             <div>
-              <Label htmlFor="password" className="text-sm font-bold text-black dark:text-white">Password *</Label>
+              <Label htmlFor="password" className="text-sm font-bold text-black dark:text-white">{t.auth.password} {t.auth.required}</Label>
               <div className="relative mt-1.5">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-black/40 dark:text-white/40" />
                 <Input
@@ -417,14 +419,14 @@ function SignupContent() {
                   value={formData.password}
                   onChange={(e) => updateFormData("password", e.target.value)}
                   className="pl-10 border-2 border-black/20 dark:border-white/20 focus:border-[#FFC107] h-12"
-                  placeholder="Min. 8 characters"
+                  placeholder={t.auth.minCharacters}
                 />
               </div>
               {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
             </div>
 
             <div>
-              <Label htmlFor="confirmPassword" className="text-sm font-bold text-black dark:text-white">Confirm Password *</Label>
+              <Label htmlFor="confirmPassword" className="text-sm font-bold text-black dark:text-white">{t.auth.confirmPassword} {t.auth.required}</Label>
               <div className="relative mt-1.5">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-black/40 dark:text-white/40" />
                 <Input
@@ -433,7 +435,7 @@ function SignupContent() {
                   value={formData.confirmPassword}
                   onChange={(e) => updateFormData("confirmPassword", e.target.value)}
                   className="pl-10 border-2 border-black/20 dark:border-white/20 focus:border-[#FFC107] h-12"
-                  placeholder="Re-enter password"
+                  placeholder={t.auth.reEnterPassword}
                 />
               </div>
               {errors.confirmPassword && (
@@ -450,11 +452,11 @@ function SignupContent() {
                   className="mt-1 border-2 border-black/30 data-[state=checked]:bg-[#FFC107] data-[state=checked]:border-[#FFC107]"
                 />
                 <Label htmlFor="termsAccepted" className="text-sm text-black/80 dark:text-white/80 cursor-pointer">
-                  I accept the{" "}
-                  <TermsModal className="text-[#FFC107] hover:underline font-semibold">Terms</TermsModal>{" "}
-                  and{" "}
-                  <PrivacyPolicyModal className="text-[#FFC107] hover:underline font-semibold">Privacy Policy</PrivacyPolicyModal>{" "}
-                  *
+                  {t.auth.acceptTerms}{" "}
+                  <TermsModal className="text-[#FFC107] hover:underline font-semibold">{t.auth.terms}</TermsModal>{" "}
+                  {t.auth.and}{" "}
+                  <PrivacyPolicyModal className="text-[#FFC107] hover:underline font-semibold">{t.auth.privacyPolicy}</PrivacyPolicyModal>{" "}
+                  {t.auth.required}
                 </Label>
               </div>
               {errors.termsAccepted && (
@@ -469,7 +471,7 @@ function SignupContent() {
                   className="mt-1 border-2 border-black/30 data-[state=checked]:bg-[#FFC107] data-[state=checked]:border-[#FFC107]"
                 />
                 <Label htmlFor="newsletterSubscribed" className="text-sm text-black/80 dark:text-white/80 cursor-pointer">
-                  Subscribe for updates, tips, and exclusive offers
+                  {t.auth.subscribeNewsletter}
                 </Label>
               </div>
             </div>
@@ -483,7 +485,7 @@ function SignupContent() {
                     <>
                       {" "}
                       <Link href="/login" className="text-[#FFC107] hover:underline font-semibold">
-                        Sign in instead
+                        {t.auth.signInInstead}
                       </Link>
                     </>
                   )}
@@ -502,7 +504,7 @@ function SignupContent() {
             {isPaymentFirst && (
               <p className="text-center text-xs text-gray-400 dark:text-gray-600 flex items-center justify-center gap-1.5">
                 <ShieldCheck className="h-3.5 w-3.5" />
-                Secured by Stripe — your payment info never touches our servers
+                {t.auth.securedByStripe}
               </p>
             )}
 
@@ -529,7 +531,7 @@ function SignupContent() {
                     <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
                     <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
                   </svg>
-                  Continue with Google
+                  {t.auth.continueWithGoogle}
                 </Button>
               </>
             )}

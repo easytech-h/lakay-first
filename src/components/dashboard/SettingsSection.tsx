@@ -5,10 +5,12 @@ import { Settings as SettingsIcon, User, Bell, Lock, CreditCard, Save } from "lu
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/AuthContext";
+import { useI18n } from "@/contexts/I18nContext";
 import { supabase } from "@/lib/supabase/client";
 
 export default function SettingsSection() {
   const { user, profile } = useAuth();
+  const { t } = useI18n();
   const [activeTab, setActiveTab] = useState("profile");
   const [profileData, setProfileData] = useState({
     full_name: profile?.full_name || "",
@@ -43,10 +45,10 @@ export default function SettingsSection() {
   };
 
   const tabs = [
-    { id: "profile", label: "Profile", icon: User },
-    { id: "notifications", label: "Notifications", icon: Bell },
-    { id: "security", label: "Security", icon: Lock },
-    { id: "billing", label: "Billing", icon: CreditCard },
+    { id: "profile", label: t.settings.profileTab, icon: User },
+    { id: "notifications", label: t.settings.notificationsTab, icon: Bell },
+    { id: "security", label: t.settings.securityTab, icon: Lock },
+    { id: "billing", label: t.settings.billingTab, icon: CreditCard },
   ];
 
   return (
@@ -54,10 +56,10 @@ export default function SettingsSection() {
       <div>
         <h2 className="text-2xl font-bold text-black dark:text-white flex items-center gap-2">
           <SettingsIcon className="h-7 w-7" />
-          Settings
+          {t.settings.title}
         </h2>
         <p className="text-gray-600 dark:text-gray-400 mt-1">
-          Manage your account settings and preferences
+          {t.settings.description}
         </p>
       </div>
 
@@ -90,12 +92,12 @@ export default function SettingsSection() {
               <div className="space-y-6">
                 <div>
                   <h3 className="text-xl font-bold text-black dark:text-white mb-4">
-                    Profile Information
+                    {t.settings.profileInformation}
                   </h3>
                   <div className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Full Name
+                        {t.settings.fullName}
                       </label>
                       <Input
                         value={profileData.full_name}
@@ -107,16 +109,16 @@ export default function SettingsSection() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Email
+                        {t.settings.email}
                       </label>
                       <Input value={profileData.email} disabled className="opacity-60" />
                       <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
-                        Email cannot be changed
+                        {t.settings.emailCannotChange}
                       </p>
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Phone Number
+                        {t.settings.phoneNumber}
                       </label>
                       <Input
                         value={profileData.phone}
@@ -132,7 +134,7 @@ export default function SettingsSection() {
                   className="bg-black dark:bg-white text-white dark:text-black"
                 >
                   <Save className="h-4 w-4 mr-2" />
-                  Save Changes
+                  {t.settings.saveChanges}
                 </Button>
               </div>
             )}
@@ -140,29 +142,29 @@ export default function SettingsSection() {
             {activeTab === "notifications" && (
               <div className="space-y-6">
                 <h3 className="text-xl font-bold text-black dark:text-white">
-                  Notification Preferences
+                  {t.settings.notificationPreferences}
                 </h3>
                 <div className="space-y-4">
                   {[
                     {
                       key: "email_notifications",
-                      label: "Email Notifications",
-                      description: "Receive email updates about your account",
+                      label: t.settings.emailNotifications,
+                      description: t.settings.emailNotificationsDesc,
                     },
                     {
                       key: "tax_reminders",
-                      label: "Tax Reminders",
-                      description: "Get reminded about upcoming tax deadlines",
+                      label: t.settings.taxReminders,
+                      description: t.settings.taxRemindersDesc,
                     },
                     {
                       key: "compliance_alerts",
-                      label: "Compliance Alerts",
-                      description: "Alerts for compliance requirements and deadlines",
+                      label: t.settings.complianceAlerts,
+                      description: t.settings.complianceAlertsDesc,
                     },
                     {
                       key: "marketing_emails",
-                      label: "Marketing Emails",
-                      description: "Receive updates about new features and offers",
+                      label: t.settings.marketingEmails,
+                      description: t.settings.marketingEmailsDesc,
                     },
                   ].map((item) => (
                     <div
@@ -195,29 +197,29 @@ export default function SettingsSection() {
             {activeTab === "security" && (
               <div className="space-y-6">
                 <h3 className="text-xl font-bold text-black dark:text-white">
-                  Security Settings
+                  {t.settings.securitySettings}
                 </h3>
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Current Password
+                      {t.settings.currentPassword}
                     </label>
-                    <Input type="password" placeholder="Enter current password" />
+                    <Input type="password" placeholder={t.settings.enterCurrentPassword} />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      New Password
+                      {t.settings.newPassword}
                     </label>
-                    <Input type="password" placeholder="Enter new password" />
+                    <Input type="password" placeholder={t.settings.enterNewPassword} />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Confirm New Password
+                      {t.settings.confirmNewPassword}
                     </label>
-                    <Input type="password" placeholder="Confirm new password" />
+                    <Input type="password" placeholder={t.settings.confirmNewPasswordPlaceholder} />
                   </div>
                   <Button className="bg-black dark:bg-white text-white dark:text-black">
-                    Update Password
+                    {t.settings.updatePassword}
                   </Button>
                 </div>
               </div>
@@ -226,26 +228,26 @@ export default function SettingsSection() {
             {activeTab === "billing" && (
               <div className="space-y-6">
                 <h3 className="text-xl font-bold text-black dark:text-white">
-                  Billing & Subscription
+                  {t.settings.billingSubscription}
                 </h3>
                 <div className="bg-gray-50 dark:bg-[#1a1a1a] border-2 border-gray-200 dark:border-gray-800 rounded-xl p-6">
                   <div className="flex items-center justify-between mb-4">
                     <div>
-                      <p className="font-semibold text-black dark:text-white">Current Plan</p>
+                      <p className="font-semibold text-black dark:text-white">{t.settings.currentPlan}</p>
                       <p className="text-2xl font-bold text-black dark:text-white mt-1">
                         Business-in-a-Box
                       </p>
                     </div>
-                    <Button variant="outline">Change Plan</Button>
+                    <Button variant="outline">{t.settings.changePlan}</Button>
                   </div>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Next billing date: March 1, 2026
+                    {t.settings.nextBilling} March 1, 2026
                   </p>
                 </div>
 
                 <div>
                   <h4 className="font-semibold text-black dark:text-white mb-3">
-                    Payment Method
+                    {t.settings.paymentMethod}
                   </h4>
                   <div className="bg-gray-50 dark:bg-[#1a1a1a] border-2 border-gray-200 dark:border-gray-800 rounded-xl p-4 flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -256,7 +258,7 @@ export default function SettingsSection() {
                       </div>
                     </div>
                     <Button size="sm" variant="outline">
-                      Update
+                      {t.settings.update}
                     </Button>
                   </div>
                 </div>

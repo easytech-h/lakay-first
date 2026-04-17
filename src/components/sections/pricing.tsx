@@ -4,8 +4,10 @@ import { useState } from "react";
 import { Check, ArrowRight, X, Briefcase, Building2 } from "lucide-react";
 import { formationPlans, managementPlans } from "@/lib/plans";
 import Link from "next/link";
+import { useI18n } from "@/contexts/I18nContext";
 
 const PricingSection = () => {
+  const { t } = useI18n();
   const [selectedTab, setSelectedTab] = useState<"new" | "existing">("new");
   const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("annual");
 
@@ -19,13 +21,13 @@ const PricingSection = () => {
       <div className="max-w-6xl mx-auto relative z-10">
         <div className="text-center mb-14 space-y-4">
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FFC107]/10 border border-[#FFC107]/30 text-xs font-bold uppercase tracking-widest text-black/60">
-            All Plans
+            {t.pricing.allPlans}
           </span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter text-black">
-            One Price. Everything<br className="hidden sm:block" /> Included.
+            {t.pricing.title.split(".")[0]}.<br className="hidden sm:block" /> {t.pricing.title.split(".").slice(1).join(".").trim()}
           </h2>
           <p className="text-lg text-black/55 max-w-xl mx-auto font-medium leading-relaxed">
-            Whether starting fresh or managing an existing business — we have you covered.
+            {t.pricing.subtitle}
           </p>
         </div>
 
@@ -40,7 +42,7 @@ const PricingSection = () => {
               }`}
             >
               <Briefcase className="h-4 w-4" />
-              New Business
+              {t.pricing.newBusiness}
             </button>
             <button
               onClick={() => setSelectedTab("existing")}
@@ -51,7 +53,7 @@ const PricingSection = () => {
               }`}
             >
               <Building2 className="h-4 w-4" />
-              Existing Business
+              {t.pricing.existingBusiness}
             </button>
           </div>
         </div>
@@ -67,7 +69,7 @@ const PricingSection = () => {
                     : "text-black/50 hover:text-black"
                 }`}
               >
-                Monthly
+                {t.pricing.monthly}
               </button>
               <button
                 onClick={() => setBillingCycle("annual")}
@@ -77,7 +79,7 @@ const PricingSection = () => {
                     : "text-black/50 hover:text-black"
                 }`}
               >
-                Annual <span className="text-green-700 ml-1 font-semibold">-20%</span>
+                {t.pricing.annual} <span className="text-green-700 ml-1 font-semibold">-20%</span>
               </button>
             </div>
           </div>
@@ -85,8 +87,8 @@ const PricingSection = () => {
 
         <p className="text-center text-black/40 text-xs font-medium mb-10">
           {selectedTab === "new"
-            ? "One-time formation packages + state fees"
-            : "Monthly subscriptions for ongoing business management"}
+            ? t.pricing.oneTimeFormation
+            : t.pricing.monthlySubscriptions}
         </p>
 
         {selectedTab === "new" ? (
@@ -105,7 +107,7 @@ const PricingSection = () => {
                   {isPopular && (
                     <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-10">
                       <span className="inline-flex items-center gap-1 px-4 py-1 rounded-full bg-black text-white text-xs font-black uppercase tracking-widest">
-                        Most Popular
+                        {t.pricing.mostPopular}
                       </span>
                     </div>
                   )}
@@ -123,7 +125,7 @@ const PricingSection = () => {
                       </span>
                     </div>
                     <p className={`text-xs font-medium ${isPopular ? "text-black/45" : "text-black/35"}`}>
-                      one-time + state fees
+                      {t.pricing.oneTimePlusFees}
                     </p>
                     <div className={`h-px w-full mt-5 ${isPopular ? "bg-black/15" : "bg-black/6"}`} />
                   </div>
@@ -171,7 +173,7 @@ const PricingSection = () => {
                             : "bg-black text-white hover:bg-[#FFC107] hover:text-black"
                         }`}
                       >
-                        {plan.price === 0 ? "Get Started Free" : `Choose ${plan.name}`}
+                        {plan.price === 0 ? t.pricing.getStartedFree : `${t.pricing.choose} ${plan.name}`}
                         <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                       </button>
                     </Link>
@@ -197,7 +199,7 @@ const PricingSection = () => {
                   {isPopular && (
                     <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-10">
                       <span className="inline-flex items-center gap-1 px-4 py-1 rounded-full bg-black text-white text-xs font-black uppercase tracking-widest">
-                        Most Popular
+                        {t.pricing.mostPopular}
                       </span>
                     </div>
                   )}
@@ -217,7 +219,7 @@ const PricingSection = () => {
                     </div>
                     {billingCycle === "annual" && plan.priceMonthly > 0 && (
                       <p className="text-xs font-semibold text-green-700">
-                        Save ${(plan.priceMonthly - plan.priceAnnual) * 12}/yr
+                        {t.pricing.save} ${(plan.priceMonthly - plan.priceAnnual) * 12}{t.pricing.perYear}
                       </p>
                     )}
                     <div className={`h-px w-full mt-5 ${isPopular ? "bg-black/15" : "bg-black/6"}`} />
@@ -252,7 +254,7 @@ const PricingSection = () => {
                             : "bg-black text-white hover:bg-[#FFC107] hover:text-black"
                         }`}
                       >
-                        {displayPrice === 0 ? "Start Free" : `Choose ${plan.name}`}
+                        {displayPrice === 0 ? t.pricing.startFree : `${t.pricing.choose} ${plan.name}`}
                         <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                       </button>
                     </Link>
@@ -265,9 +267,9 @@ const PricingSection = () => {
 
         <div className="mt-10 text-center">
           <p className="text-black/50 text-sm font-medium">
-            All plans include a{" "}
-            <span className="text-black font-bold bg-[#FFC107] px-2 py-0.5 rounded-lg">14-day money-back guarantee</span>.
-            No questions asked.
+            {t.pricing.allPlansInclude}{" "}
+            <span className="text-black font-bold bg-[#FFC107] px-2 py-0.5 rounded-lg">{t.pricing.moneyBack}</span>.
+            {t.pricing.noQuestionsAsked}
           </p>
         </div>
       </div>
