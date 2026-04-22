@@ -309,26 +309,38 @@ export function DashboardSidebar({
 
         {/* Finance */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
-            {t.dashboard.finance}
-            {!isPaidPlan && <Lock className="h-3 w-3 text-amber-500" />}
-          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              <Collapsible defaultOpen className="group/bookkeeping">
+              <Collapsible
+                defaultOpen={isActiveInGroup([...bookkeepingItems.map(i => i.id), ...analyticsItems.map(i => i.id), "taxes"])}
+                className="group/finance"
+              >
                 <SidebarMenuItem>
                   <CollapsibleTrigger asChild>
                     <SidebarMenuButton
-                      tooltip={t.dashboard.bookkeeping}
-                      className={isPaidPlan ? defaultStyle : "opacity-60 " + defaultStyle}
+                      tooltip={t.dashboard.finance}
+                      className={
+                        isActiveInGroup([...bookkeepingItems.map(i => i.id), ...analyticsItems.map(i => i.id), "taxes"])
+                          ? activeStyle
+                          : isPaidPlan ? defaultStyle : "opacity-60 " + defaultStyle
+                      }
                     >
-                      <BookOpen className="h-5 w-5" />
-                      <span>{t.dashboard.bookkeeping}</span>
-                      <ChevronRight className="ml-auto h-4 w-4 transition-transform group-data-[state=open]/bookkeeping:rotate-90" />
+                      <BarChart3 className="h-5 w-5" />
+                      <span>{t.dashboard.finance}</span>
+                      {!isPaidPlan && state === "expanded" && (
+                        <Lock className="ml-1 h-3 w-3 text-amber-500" />
+                      )}
+                      <ChevronRight className="ml-auto h-4 w-4 transition-transform group-data-[state=open]/finance:rotate-90" />
                     </SidebarMenuButton>
                   </CollapsibleTrigger>
                   <CollapsibleContent>
                     <SidebarMenuSub>
+                      {/* Bookkeeping sub-group label */}
+                      <SidebarMenuSubItem>
+                        <span className="px-2 pt-2 pb-0.5 text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 block">
+                          {t.dashboard.bookkeeping}
+                        </span>
+                      </SidebarMenuSubItem>
                       {bookkeepingItems.map((item) => (
                         <SidebarMenuSubItem key={item.id}>
                           <SidebarMenuSubButton
@@ -344,25 +356,12 @@ export function DashboardSidebar({
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
                       ))}
-                    </SidebarMenuSub>
-                  </CollapsibleContent>
-                </SidebarMenuItem>
-              </Collapsible>
-
-              <Collapsible defaultOpen className="group/analytics">
-                <SidebarMenuItem>
-                  <CollapsibleTrigger asChild>
-                    <SidebarMenuButton
-                      tooltip={t.dashboard.analytics}
-                      className={isPaidPlan ? defaultStyle : "opacity-60 " + defaultStyle}
-                    >
-                      <BarChart3 className="h-5 w-5" />
-                      <span>{t.dashboard.analytics}</span>
-                      <ChevronRight className="ml-auto h-4 w-4 transition-transform group-data-[state=open]/analytics:rotate-90" />
-                    </SidebarMenuButton>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent>
-                    <SidebarMenuSub>
+                      {/* Analytics sub-group label */}
+                      <SidebarMenuSubItem>
+                        <span className="px-2 pt-3 pb-0.5 text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 block">
+                          {t.dashboard.analytics}
+                        </span>
+                      </SidebarMenuSubItem>
                       {analyticsItems.map((item) => (
                         <SidebarMenuSubItem key={item.id}>
                           <SidebarMenuSubButton
@@ -378,69 +377,79 @@ export function DashboardSidebar({
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
                       ))}
+                      {/* Taxes */}
+                      <SidebarMenuSubItem>
+                        <SidebarMenuSubButton
+                          isActive={activeSection === "taxes"}
+                          onClick={() => handleSectionChange("taxes")}
+                          className={subItemStyle("taxes", !isPaidPlan)}
+                        >
+                          <Percent className="h-4 w-4" />
+                          <span>{t.dashboard.taxes}</span>
+                          {!isPaidPlan && state === "expanded" && (
+                            <Lock className="ml-auto h-3 w-3 text-amber-500" />
+                          )}
+                        </SidebarMenuSubButton>
+                      </SidebarMenuSubItem>
                     </SidebarMenuSub>
                   </CollapsibleContent>
                 </SidebarMenuItem>
               </Collapsible>
-
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  isActive={activeSection === "taxes"}
-                  onClick={() => handleSectionChange("taxes")}
-                  tooltip={t.dashboard.taxes}
-                  className={
-                    activeSection === "taxes"
-                      ? activeStyle
-                      : isPaidPlan
-                      ? defaultStyle
-                      : "opacity-60 " + defaultStyle
-                  }
-                >
-                  <Percent className="h-5 w-5" />
-                  <span>{t.dashboard.taxes}</span>
-                  {!isPaidPlan && state === "expanded" && (
-                    <Lock className="ml-auto h-3 w-3 text-amber-500" />
-                  )}
-                </SidebarMenuButton>
-              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
 
         {/* Growth */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
-            {t.dashboard.growth}
-            {!isPaidPlan && <Lock className="h-3 w-3 text-amber-500" />}
-          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {growthNavItems.map((item) => (
-                <SidebarMenuItem key={item.id}>
-                  <SidebarMenuButton
-                    isActive={activeSection === item.id}
-                    onClick={() => handleSectionChange(item.id)}
-                    tooltip={item.label}
-                    className={
-                      activeSection === item.id
-                        ? activeStyle
-                        : isPaidPlan
-                        ? defaultStyle
-                        : "opacity-60 " + defaultStyle
-                    }
-                  >
-                    <item.icon className="h-5 w-5" />
-                    <span>{item.label}</span>
-                    {!isPaidPlan && state === "expanded" ? (
-                      <Lock className="ml-auto h-3 w-3 text-amber-500" />
-                    ) : item.badge && state === "expanded" ? (
-                      <span className="ml-auto rounded-full bg-gradient-to-r from-amber-400 to-yellow-500 px-2 py-0.5 text-[10px] font-bold text-gray-900 shadow-sm">
-                        {item.badge}
-                      </span>
-                    ) : null}
-                  </SidebarMenuButton>
+              <Collapsible
+                defaultOpen={isActiveInGroup(growthNavItems.map(i => i.id))}
+                className="group/growth"
+              >
+                <SidebarMenuItem>
+                  <CollapsibleTrigger asChild>
+                    <SidebarMenuButton
+                      tooltip={t.dashboard.growth}
+                      className={
+                        isActiveInGroup(growthNavItems.map(i => i.id))
+                          ? activeStyle
+                          : isPaidPlan ? defaultStyle : "opacity-60 " + defaultStyle
+                      }
+                    >
+                      <Rocket className="h-5 w-5" />
+                      <span>{t.dashboard.growth}</span>
+                      {!isPaidPlan && state === "expanded" && (
+                        <Lock className="ml-1 h-3 w-3 text-amber-500" />
+                      )}
+                      <ChevronRight className="ml-auto h-4 w-4 transition-transform group-data-[state=open]/growth:rotate-90" />
+                    </SidebarMenuButton>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <SidebarMenuSub>
+                      {growthNavItems.map((item) => (
+                        <SidebarMenuSubItem key={item.id}>
+                          <SidebarMenuSubButton
+                            isActive={activeSection === item.id}
+                            onClick={() => handleSectionChange(item.id)}
+                            className={subItemStyle(item.id, !isPaidPlan)}
+                          >
+                            <item.icon className="h-4 w-4" />
+                            <span>{item.label}</span>
+                            {!isPaidPlan && state === "expanded" ? (
+                              <Lock className="ml-auto h-3 w-3 text-amber-500" />
+                            ) : item.badge && state === "expanded" ? (
+                              <span className="ml-auto rounded-full bg-gradient-to-r from-amber-400 to-yellow-500 px-2 py-0.5 text-[10px] font-bold text-gray-900 shadow-sm">
+                                {item.badge}
+                              </span>
+                            ) : null}
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      ))}
+                    </SidebarMenuSub>
+                  </CollapsibleContent>
                 </SidebarMenuItem>
-              ))}
+              </Collapsible>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
