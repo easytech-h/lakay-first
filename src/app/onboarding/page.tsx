@@ -897,7 +897,7 @@ export default function OnboardingPage() {
                   <div className="flex-1">
                     <h3 className="text-2xl font-bold text-black dark:text-white mb-2">Expedited EIN</h3>
                     <p className="text-gray-600 dark:text-gray-400 mb-3">
-                      Get your EIN number from the IRS up to 2 weeks faster!
+                      Get your EIN number from the IRS up to 1 week faster!
                     </p>
                     <p className="text-3xl font-bold text-black dark:text-white">
                       $300 <span className="text-sm font-normal text-gray-500">One-time</span>
