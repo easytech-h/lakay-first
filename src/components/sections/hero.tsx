@@ -100,10 +100,6 @@ const HeroSection = () => {
     };
   }, []);
 
-  const scrollToPricing = () => {
-    document.getElementById("prolify-pricing")?.scrollIntoView({ behavior: "smooth" });
-  };
-
   return (
     <section className="relative min-h-screen flex flex-col justify-center bg-white overflow-hidden">
       <canvas
@@ -165,12 +161,12 @@ const HeroSection = () => {
             <ArrowRight className="relative z-10 h-4 w-4 transition-all duration-300 group-hover:translate-x-1 group-hover:text-black" />
           </Link>
 
-          <button
-            onClick={scrollToPricing}
+          <Link
+            href="/pricing"
             className="inline-flex items-center justify-center h-14 px-10 rounded-2xl border-2 border-black/10 bg-white/80 text-base font-bold text-black/70 tracking-tight transition-all duration-300 hover:border-black hover:text-black hover:bg-white hover:shadow-sm active:scale-[0.98]"
           >
             {t.hero.ctaSecondary}
-          </button>
+          </Link>
         </div>
 
         <div className="mt-10 flex flex-wrap justify-center gap-2.5 animate-[fadeInUp_0.7s_ease-out_0.55s_both]">
