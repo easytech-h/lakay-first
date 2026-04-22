@@ -188,7 +188,7 @@ const en = {
     signupBenefit2: "Get your EIN in 24 hours",
     signupBenefit3: "Manage compliance, taxes & invoices",
     signupBenefit4: "Dedicated expert support included",
-    setupEasy: "\"Setup was incredibly easy. Had my LLC in 2 weeks!\"",
+    setupEasy: "\"Setup was incredibly easy. Had my LLC in 1 week!\"",
     setupEasyAuthor: "Sarah M. — E-commerce founder",
   },
   pricing: {
