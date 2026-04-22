@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Building2, User, FileText, Calendar, Percent, BookOpen, ChartBar as BarChart3, Rocket, Gift, Settings, Hop as Home, Bot, Store, GraduationCap, Crown, List, ChartPie as PieChart, Layers, ShoppingBag, Package, Sparkles, Megaphone, ChevronRight, LogOut, Mail, Phone, LayoutGrid, Lock, ShieldCheck } from "lucide-react";
+import { Building2, User, FileText, Calendar, Percent, BookOpen, ChartBar as BarChart3, Rocket, Gift, Settings, Hop as Home, Bot, Store, GraduationCap, Crown, List, ChartPie as PieChart, Layers, ShoppingBag, Package, Sparkles, Megaphone, ChevronRight, LogOut, Mail, LayoutGrid, Lock, ShieldCheck, CreditCard, Banknote, BadgeCheck, RefreshCw, FileCheck, TriangleAlert as AlertTriangle, Landmark, Hash } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { useI18n } from "@/contexts/I18nContext";
@@ -36,6 +36,14 @@ type ActiveSection =
   | "company"
   | "documents"
   | "compliance"
+  | "annual-report"
+  | "boi-report"
+  | "registered-agent"
+  | "good-standing"
+  | "licenses"
+  | "insurance"
+  | "reinstatement"
+  | "ein"
   | "taxes"
   | "transactions"
   | "expenses"
@@ -83,6 +91,7 @@ export function DashboardSidebar({
     trackEvent("dashboard_section_viewed", { section });
     onSectionChange(section);
   };
+
   const currentPlan = company?.current_plan || FREE_PLAN_ID;
   const isPaidPlan = currentPlan !== FREE_PLAN_ID && currentPlan !== "free";
 
@@ -90,7 +99,7 @@ export function DashboardSidebar({
   const userEmail = user?.email || "";
   const userInitials = userName
     .split(" ")
-    .map((n) => n[0])
+    .map((n: string) => n[0])
     .join("")
     .toUpperCase()
     .slice(0, 2);
@@ -100,15 +109,28 @@ export function DashboardSidebar({
     window.location.href = "/";
   };
 
-  const mainNavItems: NavItem[] = [
-    { id: "dashboard", label: t.nav.dashboard, icon: Home },
+  const isActiveInGroup = (ids: ActiveSection[]) => ids.includes(activeSection);
+
+  const activeStyle = "bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950 dark:to-teal-950 text-emerald-700 dark:text-emerald-400 font-semibold border-l-2 border-emerald-500";
+  const defaultStyle = "hover:bg-gray-100 dark:hover:bg-gray-800";
+
+  const companyItems: NavItem[] = [
+    { id: "company", label: "Company Profile", icon: Building2 },
     { id: "co-founders", label: t.dashboard.coFounders, icon: User },
-    { id: "company", label: t.dashboard.company, icon: Building2 },
     { id: "documents", label: t.dashboard.documents, icon: FileText },
-    { id: "compliance", label: t.dashboard.compliance, icon: Calendar },
-    { id: "taxes", label: t.dashboard.taxes, icon: Percent },
     { id: "mail-phone", label: t.dashboard.mailPhone, icon: Mail },
-    { id: "services", label: t.dashboard.services, icon: LayoutGrid },
+    { id: "ein", label: "EIN", icon: Hash },
+  ];
+
+  const complianceItems: NavItem[] = [
+    { id: "compliance", label: "Overview", icon: Calendar },
+    { id: "annual-report", label: "Annual Report", icon: FileCheck },
+    { id: "boi-report", label: "BOI Report", icon: AlertTriangle },
+    { id: "registered-agent", label: "Registered Agent", icon: ShieldCheck },
+    { id: "good-standing", label: "Good Standing", icon: BadgeCheck },
+    { id: "licenses", label: "Licenses & Permits", icon: Landmark },
+    { id: "insurance", label: "Business Insurance", icon: CreditCard },
+    { id: "reinstatement", label: "Reinstatement", icon: RefreshCw },
   ];
 
   const bookkeepingItems: NavItem[] = [
@@ -138,6 +160,13 @@ export function DashboardSidebar({
     { id: "settings", label: t.dashboard.settings, icon: Settings },
   ];
 
+  const subItemStyle = (id: ActiveSection, locked = false) =>
+    activeSection === id
+      ? "bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 font-medium"
+      : locked
+      ? "opacity-60"
+      : "";
+
   return (
     <Sidebar collapsible="icon" className="border-r-2 border-gray-200 dark:border-gray-800">
       <SidebarHeader className="border-b-2 border-gray-200 dark:border-gray-800 p-4">
@@ -147,45 +176,138 @@ export function DashboardSidebar({
           </div>
           {state === "expanded" && (
             <div className="flex flex-col">
-              <span className="text-lg font-bold text-gray-900 dark:text-white">
-                Prolify
-              </span>
-              <span className="text-xs text-gray-500 dark:text-gray-400">
-                {t.dashboard.businessPlatform}
-              </span>
+              <span className="text-lg font-bold text-gray-900 dark:text-white">Prolify</span>
+              <span className="text-xs text-gray-500 dark:text-gray-400">{t.dashboard.businessPlatform}</span>
             </div>
           )}
         </div>
       </SidebarHeader>
 
       <SidebarContent className="px-2 py-4">
+        {/* Main */}
         <SidebarGroup>
           <SidebarGroupLabel className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
             {t.dashboard.main}
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {mainNavItems.map((item) => (
-                <SidebarMenuItem key={item.id}>
-                  <SidebarMenuButton
-                    isActive={activeSection === item.id}
-                    onClick={() => handleSectionChange(item.id)}
-                    tooltip={item.label}
-                    className={
-                      activeSection === item.id
-                        ? "bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950 dark:to-teal-950 text-emerald-700 dark:text-emerald-400 font-semibold border-l-2 border-emerald-500"
-                        : "hover:bg-gray-100 dark:hover:bg-gray-800"
-                    }
-                  >
-                    <item.icon className="h-5 w-5" />
-                    <span>{item.label}</span>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  isActive={activeSection === "dashboard"}
+                  onClick={() => handleSectionChange("dashboard")}
+                  tooltip={t.nav.dashboard}
+                  className={activeSection === "dashboard" ? activeStyle : defaultStyle}
+                >
+                  <Home className="h-5 w-5" />
+                  <span>{t.nav.dashboard}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  isActive={activeSection === "services"}
+                  onClick={() => handleSectionChange("services")}
+                  tooltip={t.dashboard.services}
+                  className={activeSection === "services" ? activeStyle : defaultStyle}
+                >
+                  <LayoutGrid className="h-5 w-5" />
+                  <span>{t.dashboard.services}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
 
+        {/* Company */}
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <Collapsible
+                defaultOpen={isActiveInGroup(companyItems.map(i => i.id))}
+                className="group/company"
+              >
+                <SidebarMenuItem>
+                  <CollapsibleTrigger asChild>
+                    <SidebarMenuButton
+                      tooltip="Company"
+                      className={
+                        isActiveInGroup(companyItems.map(i => i.id))
+                          ? activeStyle
+                          : defaultStyle
+                      }
+                    >
+                      <Building2 className="h-5 w-5" />
+                      <span>Company</span>
+                      <ChevronRight className="ml-auto h-4 w-4 transition-transform group-data-[state=open]/company:rotate-90" />
+                    </SidebarMenuButton>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <SidebarMenuSub>
+                      {companyItems.map((item) => (
+                        <SidebarMenuSubItem key={item.id}>
+                          <SidebarMenuSubButton
+                            isActive={activeSection === item.id}
+                            onClick={() => handleSectionChange(item.id)}
+                            className={subItemStyle(item.id)}
+                          >
+                            <item.icon className="h-4 w-4" />
+                            <span>{item.label}</span>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      ))}
+                    </SidebarMenuSub>
+                  </CollapsibleContent>
+                </SidebarMenuItem>
+              </Collapsible>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Compliance */}
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <Collapsible
+                defaultOpen={isActiveInGroup(complianceItems.map(i => i.id))}
+                className="group/compliance"
+              >
+                <SidebarMenuItem>
+                  <CollapsibleTrigger asChild>
+                    <SidebarMenuButton
+                      tooltip="Compliance"
+                      className={
+                        isActiveInGroup(complianceItems.map(i => i.id))
+                          ? activeStyle
+                          : defaultStyle
+                      }
+                    >
+                      <ShieldCheck className="h-5 w-5" />
+                      <span>Compliance</span>
+                      <ChevronRight className="ml-auto h-4 w-4 transition-transform group-data-[state=open]/compliance:rotate-90" />
+                    </SidebarMenuButton>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <SidebarMenuSub>
+                      {complianceItems.map((item) => (
+                        <SidebarMenuSubItem key={item.id}>
+                          <SidebarMenuSubButton
+                            isActive={activeSection === item.id}
+                            onClick={() => handleSectionChange(item.id)}
+                            className={subItemStyle(item.id)}
+                          >
+                            <item.icon className="h-4 w-4" />
+                            <span>{item.label}</span>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      ))}
+                    </SidebarMenuSub>
+                  </CollapsibleContent>
+                </SidebarMenuItem>
+              </Collapsible>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Finance */}
         <SidebarGroup>
           <SidebarGroupLabel className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
             {t.dashboard.finance}
@@ -193,16 +315,16 @@ export function DashboardSidebar({
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              <Collapsible defaultOpen className="group/collapsible">
+              <Collapsible defaultOpen className="group/bookkeeping">
                 <SidebarMenuItem>
                   <CollapsibleTrigger asChild>
                     <SidebarMenuButton
                       tooltip={t.dashboard.bookkeeping}
-                      className={isPaidPlan ? "hover:bg-gray-100 dark:hover:bg-gray-800" : "opacity-60 hover:bg-gray-100 dark:hover:bg-gray-800"}
+                      className={isPaidPlan ? defaultStyle : "opacity-60 " + defaultStyle}
                     >
                       <BookOpen className="h-5 w-5" />
                       <span>{t.dashboard.bookkeeping}</span>
-                      <ChevronRight className="ml-auto h-4 w-4 transition-transform group-data-[state=open]/collapsible:rotate-90" />
+                      <ChevronRight className="ml-auto h-4 w-4 transition-transform group-data-[state=open]/bookkeeping:rotate-90" />
                     </SidebarMenuButton>
                   </CollapsibleTrigger>
                   <CollapsibleContent>
@@ -212,15 +334,13 @@ export function DashboardSidebar({
                           <SidebarMenuSubButton
                             isActive={activeSection === item.id}
                             onClick={() => handleSectionChange(item.id)}
-                            className={
-                              activeSection === item.id
-                                ? "bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 font-medium"
-                                : isPaidPlan ? "" : "opacity-60"
-                            }
+                            className={subItemStyle(item.id, !isPaidPlan)}
                           >
                             <item.icon className="h-4 w-4" />
                             <span>{item.label}</span>
-                            {!isPaidPlan && state === "expanded" && <Lock className="ml-auto h-3 w-3 text-amber-500" />}
+                            {!isPaidPlan && state === "expanded" && (
+                              <Lock className="ml-auto h-3 w-3 text-amber-500" />
+                            )}
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
                       ))}
@@ -229,16 +349,16 @@ export function DashboardSidebar({
                 </SidebarMenuItem>
               </Collapsible>
 
-              <Collapsible defaultOpen className="group/collapsible">
+              <Collapsible defaultOpen className="group/analytics">
                 <SidebarMenuItem>
                   <CollapsibleTrigger asChild>
                     <SidebarMenuButton
                       tooltip={t.dashboard.analytics}
-                      className={isPaidPlan ? "hover:bg-gray-100 dark:hover:bg-gray-800" : "opacity-60 hover:bg-gray-100 dark:hover:bg-gray-800"}
+                      className={isPaidPlan ? defaultStyle : "opacity-60 " + defaultStyle}
                     >
                       <BarChart3 className="h-5 w-5" />
                       <span>{t.dashboard.analytics}</span>
-                      <ChevronRight className="ml-auto h-4 w-4 transition-transform group-data-[state=open]/collapsible:rotate-90" />
+                      <ChevronRight className="ml-auto h-4 w-4 transition-transform group-data-[state=open]/analytics:rotate-90" />
                     </SidebarMenuButton>
                   </CollapsibleTrigger>
                   <CollapsibleContent>
@@ -248,15 +368,13 @@ export function DashboardSidebar({
                           <SidebarMenuSubButton
                             isActive={activeSection === item.id}
                             onClick={() => handleSectionChange(item.id)}
-                            className={
-                              activeSection === item.id
-                                ? "bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 font-medium"
-                                : isPaidPlan ? "" : "opacity-60"
-                            }
+                            className={subItemStyle(item.id, !isPaidPlan)}
                           >
                             <item.icon className="h-4 w-4" />
                             <span>{item.label}</span>
-                            {!isPaidPlan && state === "expanded" && <Lock className="ml-auto h-3 w-3 text-amber-500" />}
+                            {!isPaidPlan && state === "expanded" && (
+                              <Lock className="ml-auto h-3 w-3 text-amber-500" />
+                            )}
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
                       ))}
@@ -264,10 +382,32 @@ export function DashboardSidebar({
                   </CollapsibleContent>
                 </SidebarMenuItem>
               </Collapsible>
+
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  isActive={activeSection === "taxes"}
+                  onClick={() => handleSectionChange("taxes")}
+                  tooltip={t.dashboard.taxes}
+                  className={
+                    activeSection === "taxes"
+                      ? activeStyle
+                      : isPaidPlan
+                      ? defaultStyle
+                      : "opacity-60 " + defaultStyle
+                  }
+                >
+                  <Percent className="h-5 w-5" />
+                  <span>{t.dashboard.taxes}</span>
+                  {!isPaidPlan && state === "expanded" && (
+                    <Lock className="ml-auto h-3 w-3 text-amber-500" />
+                  )}
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
 
+        {/* Growth */}
         <SidebarGroup>
           <SidebarGroupLabel className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
             {t.dashboard.growth}
@@ -283,10 +423,10 @@ export function DashboardSidebar({
                     tooltip={item.label}
                     className={
                       activeSection === item.id
-                        ? "bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950 dark:to-teal-950 text-emerald-700 dark:text-emerald-400 font-semibold border-l-2 border-emerald-500"
+                        ? activeStyle
                         : isPaidPlan
-                        ? "hover:bg-gray-100 dark:hover:bg-gray-800"
-                        : "opacity-60 hover:bg-gray-100 dark:hover:bg-gray-800"
+                        ? defaultStyle
+                        : "opacity-60 " + defaultStyle
                     }
                   >
                     <item.icon className="h-5 w-5" />
@@ -305,6 +445,7 @@ export function DashboardSidebar({
           </SidebarGroupContent>
         </SidebarGroup>
 
+        {/* Bottom */}
         <SidebarGroup className="mt-auto">
           <SidebarGroupContent>
             <SidebarMenu>
@@ -320,8 +461,8 @@ export function DashboardSidebar({
                           ? "bg-gradient-to-r from-amber-100 to-yellow-100 dark:from-amber-950 dark:to-yellow-950 text-amber-700 dark:text-amber-400 font-semibold border-l-2 border-amber-500"
                           : "bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-950/50 dark:to-yellow-950/50 hover:from-amber-100 hover:to-yellow-100 dark:hover:from-amber-900 dark:hover:to-yellow-900 text-amber-700 dark:text-amber-400 font-medium shadow-sm"
                         : activeSection === item.id
-                        ? "bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950 dark:to-teal-950 text-emerald-700 dark:text-emerald-400 font-semibold border-l-2 border-emerald-500"
-                        : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                        ? activeStyle
+                        : defaultStyle
                     }
                   >
                     <item.icon className="h-5 w-5" />
