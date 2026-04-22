@@ -287,6 +287,14 @@ function DashboardContent() {
       return;
     }
 
+    const addCompany = searchParams.get("add_company");
+    if (addCompany === "true") {
+      setParamsConsumed(true);
+      setShowAddCompanyModal(true);
+      router.replace("/dashboard", { scroll: false });
+      return;
+    }
+
     const newUser = searchParams.get("new_user");
     if (newUser === "true") {
       setParamsConsumed(true);

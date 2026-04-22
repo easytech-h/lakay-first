@@ -226,6 +226,10 @@ function SignupContent() {
       window.location.href = "/dashboard?start_formation=true";
       return;
     }
+    if (action === "add-company") {
+      window.location.href = "/dashboard?add_company=true";
+      return;
+    }
     const section = ACTION_SECTION_MAP[action];
     const url = section ? `/dashboard?section=${section}` : "/dashboard";
     window.location.href = url;
