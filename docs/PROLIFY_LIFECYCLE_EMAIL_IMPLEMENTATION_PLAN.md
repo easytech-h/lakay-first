@@ -13,7 +13,7 @@ This document turns the lifecycle specification into an execution plan the team 
 
 ## 2) Phase Plan (recommended rollout)
 
-- Phase 0 - Foundations (1-2 weeks)
+- Phase 0 - Foundations (1 week)
   - Event taxonomy implemented and validated.
   - Contact identity model and properties in HubSpot.
   - Sender domains and inbox routing configured.
