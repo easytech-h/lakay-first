@@ -58,6 +58,7 @@ const AddExistingCompanyModal = dynamicImport(() => import("@/components/dashboa
 const MailPhoneSection = dynamicImport(() => import("@/components/dashboard/MailPhoneSection"));
 const ServicesSection = dynamicImport(() => import("@/components/dashboard/ServicesSection"));
 const KYCVerificationSection = dynamicImport(() => import("@/components/dashboard/KYCVerificationSection"));
+const ServicePurchasePanel = dynamicImport(() => import("@/components/dashboard/ServicePurchasePanel"));
 
 type OnboardingData = {
   company_name: string;
@@ -914,141 +915,84 @@ function DashboardContent() {
               {activeSection === "documents" && <DocumentsSection />}
               {activeSection === "compliance" && <ComplianceDatesSection />}
               {activeSection === "annual-report" && (
-                <div className="flex flex-col items-center justify-center min-h-[60vh] p-8 text-center">
-                  <div className="w-16 h-16 rounded-2xl bg-[#FFC107]/15 flex items-center justify-center mb-6">
-                    <FileText className="w-8 h-8 text-[#FFC107]" />
-                  </div>
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">Annual Report</h2>
-                  <p className="text-gray-500 dark:text-gray-400 max-w-sm mb-8 text-sm">
-                    Keep your business in good standing by filing your annual report on time. We handle everything for you.
-                  </p>
-                  <button
-                    onClick={() => setShowAnnualReportModal(true)}
-                    className="flex items-center gap-2 px-6 py-3 bg-[#FFC107] hover:bg-[#FFB300] text-black font-bold rounded-xl transition-colors"
-                  >
-                    <FileText className="h-4 w-4" />
-                    File Annual Report
-                  </button>
-                </div>
+                <ServicePurchasePanel
+                  serviceIds={["renewal", "initial-report", "amended-annual-report"]}
+                  title="Annual Report"
+                  description="Keep your business in good standing by filing your annual report on time. Select the service that applies to your situation and we handle the filing."
+                  icon={FileText}
+                  iconBgClass="bg-[#FFC107]/15"
+                  iconColorClass="text-[#FFC107]"
+                />
               )}
               {activeSection === "boi-report" && (
-                <div className="flex flex-col items-center justify-center min-h-[60vh] p-8 text-center">
-                  <div className="w-16 h-16 rounded-2xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center mb-6">
-                    <AlertTriangle className="w-8 h-8 text-amber-600 dark:text-amber-400" />
-                  </div>
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">BOI Report</h2>
-                  <p className="text-gray-500 dark:text-gray-400 max-w-sm mb-8 text-sm">
-                    The Beneficial Ownership Information (BOI) report is required by FinCEN. We file it for you accurately and on time.
-                  </p>
-                  <button
-                    onClick={() => setActiveSection("services")}
-                    className="flex items-center gap-2 px-6 py-3 bg-[#FFC107] hover:bg-[#FFB300] text-black font-bold rounded-xl transition-colors"
-                  >
-                    Purchase BOI Filing Service
-                  </button>
-                </div>
+                <ServicePurchasePanel
+                  serviceIds={["beneficial-ownership", "beneficial-ownership-amendment"]}
+                  title="BOI Report"
+                  description="The Beneficial Ownership Information (BOI) report is required by FinCEN under the Corporate Transparency Act. We file it accurately and on time."
+                  icon={AlertTriangle}
+                  iconBgClass="bg-amber-100 dark:bg-amber-900/30"
+                  iconColorClass="text-amber-600 dark:text-amber-400"
+                />
               )}
               {activeSection === "registered-agent" && (
-                <div className="flex flex-col items-center justify-center min-h-[60vh] p-8 text-center">
-                  <div className="w-16 h-16 rounded-2xl bg-[#FFC107]/15 flex items-center justify-center mb-6">
-                    <ShieldCheck className="w-8 h-8 text-[#FFC107]" />
-                  </div>
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">Registered Agent</h2>
-                  <p className="text-gray-500 dark:text-gray-400 max-w-sm mb-8 text-sm">
-                    Your registered agent receives official legal and government documents on your behalf. Stay covered with our service.
-                  </p>
-                  <button
-                    onClick={() => setActiveSection("services")}
-                    className="flex items-center gap-2 px-6 py-3 bg-[#FFC107] hover:bg-[#FFB300] text-black font-bold rounded-xl transition-colors"
-                  >
-                    Get Registered Agent Service
-                  </button>
-                </div>
+                <ServicePurchasePanel
+                  serviceIds={["registered-agent-service", "change-registered-agent", "registered-agent-resignation", "boc3"]}
+                  title="Registered Agent"
+                  description="Your registered agent receives official legal and government documents on your behalf. Stay compliant and protect your privacy."
+                  icon={ShieldCheck}
+                  iconBgClass="bg-[#FFC107]/15"
+                  iconColorClass="text-[#FFC107]"
+                />
               )}
               {activeSection === "good-standing" && (
-                <div className="flex flex-col items-center justify-center min-h-[60vh] p-8 text-center">
-                  <div className="w-16 h-16 rounded-2xl bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center mb-6">
-                    <Award className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
-                  </div>
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">Good Standing</h2>
-                  <p className="text-gray-500 dark:text-gray-400 max-w-sm mb-8 text-sm">
-                    A certificate of good standing proves your business is active and compliant. Required for bank accounts, loans, and contracts.
-                  </p>
-                  <button
-                    onClick={() => setShowGoodStandingModal(true)}
-                    className="flex items-center gap-2 px-6 py-3 bg-[#FFC107] hover:bg-[#FFB300] text-black font-bold rounded-xl transition-colors"
-                  >
-                    Request Certificate
-                  </button>
-                </div>
+                <ServicePurchasePanel
+                  serviceIds={["good-standing"]}
+                  title="Good Standing"
+                  description="A certificate of good standing proves your business is active and compliant with the state. Required by banks, investors, and partners."
+                  icon={Award}
+                  iconBgClass="bg-emerald-100 dark:bg-emerald-900/30"
+                  iconColorClass="text-emerald-600 dark:text-emerald-400"
+                />
               )}
               {activeSection === "licenses" && (
-                <div className="flex flex-col items-center justify-center min-h-[60vh] p-8 text-center">
-                  <div className="w-16 h-16 rounded-2xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mb-6">
-                    <Landmark className="w-8 h-8 text-blue-600 dark:text-blue-400" />
-                  </div>
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">Licenses & Permits</h2>
-                  <p className="text-gray-500 dark:text-gray-400 max-w-sm mb-8 text-sm">
-                    Operating legally requires the right licenses and permits. We identify what you need and help you get them.
-                  </p>
-                  <button
-                    onClick={() => setActiveSection("services")}
-                    className="flex items-center gap-2 px-6 py-3 bg-[#FFC107] hover:bg-[#FFB300] text-black font-bold rounded-xl transition-colors"
-                  >
-                    Get License Research Service
-                  </button>
-                </div>
+                <ServicePurchasePanel
+                  serviceIds={["foreign-registration", "apostille"]}
+                  title="Licenses & Permits"
+                  description="Operating legally requires the right licenses, permits, and registrations. We help you get compliant fast."
+                  icon={Landmark}
+                  iconBgClass="bg-blue-100 dark:bg-blue-900/30"
+                  iconColorClass="text-blue-600 dark:text-blue-400"
+                />
               )}
               {activeSection === "insurance" && (
-                <div className="flex flex-col items-center justify-center min-h-[60vh] p-8 text-center">
-                  <div className="w-16 h-16 rounded-2xl bg-sky-100 dark:bg-sky-900/30 flex items-center justify-center mb-6">
-                    <CreditCard className="w-8 h-8 text-sky-600 dark:text-sky-400" />
-                  </div>
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">Business Insurance</h2>
-                  <p className="text-gray-500 dark:text-gray-400 max-w-sm mb-8 text-sm">
-                    Protect your business with the right coverage. General liability, professional liability, and more — all through one partner.
-                  </p>
-                  <button
-                    onClick={() => setActiveSection("services")}
-                    className="flex items-center gap-2 px-6 py-3 bg-[#FFC107] hover:bg-[#FFB300] text-black font-bold rounded-xl transition-colors"
-                  >
-                    Explore Insurance Options
-                  </button>
-                </div>
+                <ServicePurchasePanel
+                  serviceIds={["virtual-office-mail-scanning", "virtual-office-pro", "virtual-office-unlimited"]}
+                  title="Business Insurance"
+                  description="Protect your business with professional coverage options. General liability, virtual office, and more — all in one place."
+                  icon={CreditCard}
+                  iconBgClass="bg-sky-100 dark:bg-sky-900/30"
+                  iconColorClass="text-sky-600 dark:text-sky-400"
+                />
               )}
               {activeSection === "reinstatement" && (
-                <div className="flex flex-col items-center justify-center min-h-[60vh] p-8 text-center">
-                  <div className="w-16 h-16 rounded-2xl bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center mb-6">
-                    <RefreshCw className="w-8 h-8 text-orange-600 dark:text-orange-400" />
-                  </div>
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">Reinstatement</h2>
-                  <p className="text-gray-500 dark:text-gray-400 max-w-sm mb-8 text-sm">
-                    If your business was dissolved or revoked, we can help reinstate it. Get back to operating legally as quickly as possible.
-                  </p>
-                  <button
-                    onClick={() => setActiveSection("services")}
-                    className="flex items-center gap-2 px-6 py-3 bg-[#FFC107] hover:bg-[#FFB300] text-black font-bold rounded-xl transition-colors"
-                  >
-                    Start Reinstatement Process
-                  </button>
-                </div>
+                <ServicePurchasePanel
+                  serviceIds={["business-reinstatement", "dissolution", "withdrawal"]}
+                  title="Reinstatement"
+                  description="If your business was dissolved or revoked, we can help reinstate it and get you back to operating legally as quickly as possible."
+                  icon={RefreshCw}
+                  iconBgClass="bg-orange-100 dark:bg-orange-900/30"
+                  iconColorClass="text-orange-600 dark:text-orange-400"
+                />
               )}
               {activeSection === "ein" && (
-                <div className="flex flex-col items-center justify-center min-h-[60vh] p-8 text-center">
-                  <div className="w-16 h-16 rounded-2xl bg-[#FFC107]/15 flex items-center justify-center mb-6">
-                    <FileText className="w-8 h-8 text-[#FFC107]" />
-                  </div>
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">EIN (Employer Identification Number)</h2>
-                  <p className="text-gray-500 dark:text-gray-400 max-w-sm mb-8 text-sm">
-                    Your EIN is your business tax ID. Required for opening a bank account, hiring employees, and filing taxes.
-                  </p>
-                  <button
-                    onClick={() => setShowEINModal(true)}
-                    className="flex items-center gap-2 px-6 py-3 bg-[#FFC107] hover:bg-[#FFB300] text-black font-bold rounded-xl transition-colors"
-                  >
-                    Request EIN
-                  </button>
-                </div>
+                <ServicePurchasePanel
+                  serviceIds={["ein", "ein-non-us", "ein-amendment", "s-corp-election"]}
+                  title="EIN — Employer Identification Number"
+                  description="Your EIN is your business tax ID. Required for opening a bank account, hiring employees, and filing taxes. Select the option that fits your situation."
+                  icon={FileText}
+                  iconBgClass="bg-[#FFC107]/15"
+                  iconColorClass="text-[#FFC107]"
+                />
               )}
               {activeSection === "taxes" && <TaxesSection />}
               {activeSection === "transactions" && <TransactionsSection />}
