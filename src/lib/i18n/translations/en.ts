@@ -185,7 +185,7 @@ const en = {
     paymentFirstStep3: "Account created automatically",
     paymentFirstStep4: "Start forming your business",
     signupBenefit1: "Form LLC or C-Corp in any US state",
-    signupBenefit2: "Get your EIN in 10-15 business days",
+    signupBenefit2: "Get your EIN in 24 hours",
     signupBenefit3: "Manage compliance, taxes & invoices",
     signupBenefit4: "Dedicated expert support included",
     setupEasy: "\"Setup was incredibly easy. Had my LLC in 2 weeks!\"",
