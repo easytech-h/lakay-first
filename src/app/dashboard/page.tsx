@@ -419,14 +419,18 @@ function DashboardContent() {
       setShowAddCompanyModal(true);
       return;
     }
+    if (action === "form-company") {
+      setStartFreshWizard(true);
+      setShowOnboardingWizard(true);
+      return;
+    }
     if (action === "annual-report") {
       setShowAnnualReportModal(true);
       return;
     }
     const sectionMap: Record<string, ActiveSection> = {
-      "form-company": "company",
       "registered-agent": "compliance",
-      "ein": "company",
+      "ein": "ein",
       "chat": "ai-chief",
     };
     const target = sectionMap[action];
