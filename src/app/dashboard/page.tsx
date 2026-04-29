@@ -44,6 +44,15 @@ const UpgradePlanSection = dynamicImport(() => import("@/components/dashboard/Up
 const TransactionsSection = dynamicImport(() => import("@/components/dashboard/bookkeeping/TransactionsSection"));
 const ReportsSection = dynamicImport(() => import("@/components/dashboard/bookkeeping/ReportsSection"));
 const ChartOfAccountsSection = dynamicImport(() => import("@/components/dashboard/bookkeeping/ChartOfAccountsSection"));
+const BookkeepingModule = dynamicImport(() => import("@/components/dashboard/bookkeeping/BookkeepingModule"));
+const FinancialStatementsSection = dynamicImport(() => import("@/components/dashboard/bookkeeping/FinancialStatementsSection"));
+const BkTransactionsSection = dynamicImport(() => import("@/components/dashboard/bookkeeping/BkTransactionsSection"));
+const BkChartOfAccountsSection = dynamicImport(() => import("@/components/dashboard/bookkeeping/BkChartOfAccountsSection"));
+const BkCashAccountsSection = dynamicImport(() => import("@/components/dashboard/bookkeeping/BkCashAccountsSection"));
+const BkCashChangeSection = dynamicImport(() => import("@/components/dashboard/bookkeeping/BkCashChangeSection"));
+const BkCashSpendSection = dynamicImport(() => import("@/components/dashboard/bookkeeping/BkCashSpendSection"));
+const BkBankTransactionsSection = dynamicImport(() => import("@/components/dashboard/bookkeeping/BkBankTransactionsSection"));
+const BkSettingsSection = dynamicImport(() => import("@/components/dashboard/bookkeeping/BkSettingsSection"));
 const OrdersSection = dynamicImport(() => import("@/components/dashboard/analytics/OrdersSection"));
 const InventorySection = dynamicImport(() => import("@/components/dashboard/analytics/InventorySection"));
 const FinancialsSection = dynamicImport(() => import("@/components/dashboard/analytics/FinancialsSection"));
@@ -109,6 +118,14 @@ type ActiveSection =
   | "invoices"
   | "reports"
   | "chart-of-accounts"
+  | "bk-financial-statements"
+  | "bk-transactions"
+  | "bk-chart-of-accounts"
+  | "bk-cash-accounts"
+  | "bk-cash-change"
+  | "bk-cash-spend"
+  | "bk-bank-transactions"
+  | "bk-settings"
   | "orders"
   | "inventory"
   | "financials"
@@ -130,6 +147,14 @@ const RESTRICTED_SECTIONS: ActiveSection[] = [
   "invoices",
   "reports",
   "chart-of-accounts",
+  "bk-financial-statements",
+  "bk-transactions",
+  "bk-chart-of-accounts",
+  "bk-cash-accounts",
+  "bk-cash-change",
+  "bk-cash-spend",
+  "bk-bank-transactions",
+  "bk-settings",
   "orders",
   "inventory",
   "financials",
@@ -139,6 +164,17 @@ const RESTRICTED_SECTIONS: ActiveSection[] = [
   "marketplace",
   "learn",
   "vip",
+];
+
+const BK_SECTIONS: ActiveSection[] = [
+  "bk-financial-statements",
+  "bk-transactions",
+  "bk-chart-of-accounts",
+  "bk-cash-accounts",
+  "bk-cash-change",
+  "bk-cash-spend",
+  "bk-bank-transactions",
+  "bk-settings",
 ];
 
 const FREE_PLAN_ID = "free";
@@ -1012,6 +1048,23 @@ function DashboardContent() {
               {activeSection === "invoices" && <InvoicesSection />}
               {activeSection === "reports" && <ReportsSection />}
               {activeSection === "chart-of-accounts" && <ChartOfAccountsSection />}
+              {BK_SECTIONS.includes(activeSection) && (
+                <div className="-m-4 md:-m-5 flex-1 flex flex-col overflow-hidden">
+                  <BookkeepingModule
+                    activeSection={activeSection as string}
+                    onSectionChange={(s: string) => setActiveSection(s as ActiveSection)}
+                  >
+                    {activeSection === "bk-financial-statements" && <FinancialStatementsSection />}
+                    {activeSection === "bk-transactions" && <BkTransactionsSection />}
+                    {activeSection === "bk-chart-of-accounts" && <BkChartOfAccountsSection />}
+                    {activeSection === "bk-cash-accounts" && <BkCashAccountsSection />}
+                    {activeSection === "bk-cash-change" && <BkCashChangeSection />}
+                    {activeSection === "bk-cash-spend" && <BkCashSpendSection />}
+                    {activeSection === "bk-bank-transactions" && <BkBankTransactionsSection />}
+                    {activeSection === "bk-settings" && <BkSettingsSection />}
+                  </BookkeepingModule>
+                </div>
+              )}
               {activeSection === "orders" && <OrdersSection />}
               {activeSection === "inventory" && <InventorySection />}
               {activeSection === "financials" && <FinancialsSection />}

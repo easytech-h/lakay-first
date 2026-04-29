@@ -50,6 +50,14 @@ type ActiveSection =
   | "invoices"
   | "reports"
   | "chart-of-accounts"
+  | "bk-financial-statements"
+  | "bk-transactions"
+  | "bk-chart-of-accounts"
+  | "bk-cash-accounts"
+  | "bk-cash-change"
+  | "bk-cash-spend"
+  | "bk-bank-transactions"
+  | "bk-settings"
   | "orders"
   | "inventory"
   | "financials"
@@ -134,10 +142,20 @@ export function DashboardSidebar({
   ];
 
   const bookkeepingItems: NavItem[] = [
-    { id: "transactions", label: t.dashboard.transactions, icon: List },
-    { id: "invoices", label: t.dashboard.invoices, icon: FileText },
-    { id: "reports", label: t.dashboard.reports, icon: PieChart },
-    { id: "chart-of-accounts", label: t.dashboard.chartOfAccounts, icon: Layers },
+    { id: "bk-financial-statements", label: "Financial Statements", icon: PieChart },
+    { id: "bk-transactions", label: "Transactions", icon: List },
+    { id: "bk-chart-of-accounts", label: "Chart of Accounts", icon: Layers },
+  ];
+
+  const cashItems: NavItem[] = [
+    { id: "bk-cash-accounts", label: "Accounts", icon: Landmark },
+    { id: "bk-cash-change", label: "Change in Cash", icon: BarChart3 },
+    { id: "bk-cash-spend", label: "Cash Spend", icon: CreditCard },
+  ];
+
+  const bookkeepingSingleItems: NavItem[] = [
+    { id: "bk-bank-transactions", label: "Bank Transactions", icon: BookOpen },
+    { id: "bk-settings", label: "Bookkeeping Settings", icon: Settings },
   ];
 
   const analyticsItems: NavItem[] = [
@@ -312,7 +330,7 @@ export function DashboardSidebar({
           <SidebarGroupContent>
             <SidebarMenu>
               <Collapsible
-                defaultOpen={isActiveInGroup([...bookkeepingItems.map(i => i.id), ...analyticsItems.map(i => i.id), "taxes"])}
+                defaultOpen={isActiveInGroup([...bookkeepingItems.map(i => i.id), ...cashItems.map(i => i.id), ...bookkeepingSingleItems.map(i => i.id), ...analyticsItems.map(i => i.id), "taxes"])}
                 className="group/finance"
               >
                 <SidebarMenuItem>
@@ -320,7 +338,7 @@ export function DashboardSidebar({
                     <SidebarMenuButton
                       tooltip={t.dashboard.finance}
                       className={
-                        isActiveInGroup([...bookkeepingItems.map(i => i.id), ...analyticsItems.map(i => i.id), "taxes"])
+                        isActiveInGroup([...bookkeepingItems.map(i => i.id), ...cashItems.map(i => i.id), ...bookkeepingSingleItems.map(i => i.id), ...analyticsItems.map(i => i.id), "taxes"])
                           ? activeStyle
                           : isPaidPlan ? defaultStyle : "opacity-60 " + defaultStyle
                       }
@@ -342,6 +360,43 @@ export function DashboardSidebar({
                         </span>
                       </SidebarMenuSubItem>
                       {bookkeepingItems.map((item) => (
+                        <SidebarMenuSubItem key={item.id}>
+                          <SidebarMenuSubButton
+                            isActive={activeSection === item.id}
+                            onClick={() => handleSectionChange(item.id)}
+                            className={subItemStyle(item.id, !isPaidPlan)}
+                          >
+                            <item.icon className="h-4 w-4" />
+                            <span>{item.label}</span>
+                            {!isPaidPlan && state === "expanded" && (
+                              <Lock className="ml-auto h-3 w-3 text-amber-500" />
+                            )}
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      ))}
+                      {/* Cash sub-group label */}
+                      <SidebarMenuSubItem>
+                        <span className="px-2 pt-3 pb-0.5 text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 block">
+                          Cash
+                        </span>
+                      </SidebarMenuSubItem>
+                      {cashItems.map((item) => (
+                        <SidebarMenuSubItem key={item.id}>
+                          <SidebarMenuSubButton
+                            isActive={activeSection === item.id}
+                            onClick={() => handleSectionChange(item.id)}
+                            className={subItemStyle(item.id, !isPaidPlan)}
+                          >
+                            <item.icon className="h-4 w-4" />
+                            <span>{item.label}</span>
+                            {!isPaidPlan && state === "expanded" && (
+                              <Lock className="ml-auto h-3 w-3 text-amber-500" />
+                            )}
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      ))}
+                      {/* Bank Transactions + Settings */}
+                      {bookkeepingSingleItems.map((item) => (
                         <SidebarMenuSubItem key={item.id}>
                           <SidebarMenuSubButton
                             isActive={activeSection === item.id}
