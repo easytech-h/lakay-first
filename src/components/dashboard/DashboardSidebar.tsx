@@ -330,7 +330,7 @@ export function DashboardSidebar({
           <SidebarGroupContent>
             <SidebarMenu>
               <Collapsible
-                defaultOpen={isActiveInGroup([...bookkeepingItems.map(i => i.id), ...cashItems.map(i => i.id), ...bookkeepingSingleItems.map(i => i.id), ...analyticsItems.map(i => i.id), "taxes"])}
+                defaultOpen={isActiveInGroup([...analyticsItems.map(i => i.id), "taxes", ...bookkeepingItems.map(i => i.id), ...cashItems.map(i => i.id), ...bookkeepingSingleItems.map(i => i.id)])}
                 className="group/finance"
               >
                 <SidebarMenuItem>
@@ -338,7 +338,7 @@ export function DashboardSidebar({
                     <SidebarMenuButton
                       tooltip={t.dashboard.finance}
                       className={
-                        isActiveInGroup([...bookkeepingItems.map(i => i.id), ...cashItems.map(i => i.id), ...bookkeepingSingleItems.map(i => i.id), ...analyticsItems.map(i => i.id), "taxes"])
+                        isActiveInGroup([...analyticsItems.map(i => i.id), "taxes", ...bookkeepingItems.map(i => i.id), ...cashItems.map(i => i.id), ...bookkeepingSingleItems.map(i => i.id)])
                           ? activeStyle
                           : isPaidPlan ? defaultStyle : "opacity-60 " + defaultStyle
                       }
@@ -353,64 +353,24 @@ export function DashboardSidebar({
                   </CollapsibleTrigger>
                   <CollapsibleContent>
                     <SidebarMenuSub>
-                      {/* Bookkeeping sub-group label */}
+                      {/* Single Bookkeeping entry */}
                       <SidebarMenuSubItem>
-                        <span className="px-2 pt-2 pb-0.5 text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 block">
-                          {t.dashboard.bookkeeping}
-                        </span>
+                        <SidebarMenuSubButton
+                          isActive={isActiveInGroup([...bookkeepingItems.map(i => i.id), ...cashItems.map(i => i.id), ...bookkeepingSingleItems.map(i => i.id)])}
+                          onClick={() => handleSectionChange("bk-financial-statements")}
+                          className={
+                            isActiveInGroup([...bookkeepingItems.map(i => i.id), ...cashItems.map(i => i.id), ...bookkeepingSingleItems.map(i => i.id)])
+                              ? "bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 font-medium"
+                              : !isPaidPlan ? "opacity-60" : ""
+                          }
+                        >
+                          <BookOpen className="h-4 w-4" />
+                          <span>{t.dashboard.bookkeeping}</span>
+                          {!isPaidPlan && state === "expanded" && (
+                            <Lock className="ml-auto h-3 w-3 text-amber-500" />
+                          )}
+                        </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
-                      {bookkeepingItems.map((item) => (
-                        <SidebarMenuSubItem key={item.id}>
-                          <SidebarMenuSubButton
-                            isActive={activeSection === item.id}
-                            onClick={() => handleSectionChange(item.id)}
-                            className={subItemStyle(item.id, !isPaidPlan)}
-                          >
-                            <item.icon className="h-4 w-4" />
-                            <span>{item.label}</span>
-                            {!isPaidPlan && state === "expanded" && (
-                              <Lock className="ml-auto h-3 w-3 text-amber-500" />
-                            )}
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
-                      ))}
-                      {/* Cash sub-group label */}
-                      <SidebarMenuSubItem>
-                        <span className="px-2 pt-3 pb-0.5 text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 block">
-                          Cash
-                        </span>
-                      </SidebarMenuSubItem>
-                      {cashItems.map((item) => (
-                        <SidebarMenuSubItem key={item.id}>
-                          <SidebarMenuSubButton
-                            isActive={activeSection === item.id}
-                            onClick={() => handleSectionChange(item.id)}
-                            className={subItemStyle(item.id, !isPaidPlan)}
-                          >
-                            <item.icon className="h-4 w-4" />
-                            <span>{item.label}</span>
-                            {!isPaidPlan && state === "expanded" && (
-                              <Lock className="ml-auto h-3 w-3 text-amber-500" />
-                            )}
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
-                      ))}
-                      {/* Bank Transactions + Settings */}
-                      {bookkeepingSingleItems.map((item) => (
-                        <SidebarMenuSubItem key={item.id}>
-                          <SidebarMenuSubButton
-                            isActive={activeSection === item.id}
-                            onClick={() => handleSectionChange(item.id)}
-                            className={subItemStyle(item.id, !isPaidPlan)}
-                          >
-                            <item.icon className="h-4 w-4" />
-                            <span>{item.label}</span>
-                            {!isPaidPlan && state === "expanded" && (
-                              <Lock className="ml-auto h-3 w-3 text-amber-500" />
-                            )}
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
-                      ))}
                       {/* Analytics sub-group label */}
                       <SidebarMenuSubItem>
                         <span className="px-2 pt-3 pb-0.5 text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 block">
