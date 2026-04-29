@@ -330,7 +330,7 @@ export function DashboardSidebar({
           <SidebarGroupContent>
             <SidebarMenu>
               <Collapsible
-                defaultOpen={isActiveInGroup([...analyticsItems.map(i => i.id), "taxes", ...bookkeepingItems.map(i => i.id), ...cashItems.map(i => i.id), ...bookkeepingSingleItems.map(i => i.id)])}
+                defaultOpen={isActiveInGroup(["bk-dashboard" as ActiveSection, ...analyticsItems.map(i => i.id), "taxes", ...bookkeepingItems.map(i => i.id), ...cashItems.map(i => i.id), ...bookkeepingSingleItems.map(i => i.id)])}
                 className="group/finance"
               >
                 <SidebarMenuItem>
@@ -338,7 +338,7 @@ export function DashboardSidebar({
                     <SidebarMenuButton
                       tooltip={t.dashboard.finance}
                       className={
-                        isActiveInGroup([...analyticsItems.map(i => i.id), "taxes", ...bookkeepingItems.map(i => i.id), ...cashItems.map(i => i.id), ...bookkeepingSingleItems.map(i => i.id)])
+                        isActiveInGroup(["bk-dashboard" as ActiveSection, ...analyticsItems.map(i => i.id), "taxes", ...bookkeepingItems.map(i => i.id), ...cashItems.map(i => i.id), ...bookkeepingSingleItems.map(i => i.id)])
                           ? activeStyle
                           : isPaidPlan ? defaultStyle : "opacity-60 " + defaultStyle
                       }
@@ -356,10 +356,10 @@ export function DashboardSidebar({
                       {/* Single Bookkeeping entry */}
                       <SidebarMenuSubItem>
                         <SidebarMenuSubButton
-                          isActive={isActiveInGroup([...bookkeepingItems.map(i => i.id), ...cashItems.map(i => i.id), ...bookkeepingSingleItems.map(i => i.id)])}
-                          onClick={() => handleSectionChange("bk-financial-statements")}
+                          isActive={isActiveInGroup(["bk-dashboard" as ActiveSection, ...bookkeepingItems.map(i => i.id), ...cashItems.map(i => i.id), ...bookkeepingSingleItems.map(i => i.id)])}
+                          onClick={() => handleSectionChange("bk-dashboard")}
                           className={
-                            isActiveInGroup([...bookkeepingItems.map(i => i.id), ...cashItems.map(i => i.id), ...bookkeepingSingleItems.map(i => i.id)])
+                            isActiveInGroup(["bk-dashboard" as ActiveSection, ...bookkeepingItems.map(i => i.id), ...cashItems.map(i => i.id), ...bookkeepingSingleItems.map(i => i.id)])
                               ? "bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 font-medium"
                               : !isPaidPlan ? "opacity-60" : ""
                           }

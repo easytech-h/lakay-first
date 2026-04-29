@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import {
-  FileText, List, Layers, Landmark, TrendingDown, CreditCard,
+  LayoutDashboard, FileText, List, Layers, Landmark, TrendingDown, CreditCard,
   Receipt, Settings, ChevronDown, ChevronRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export type BookkeepingSection =
+  | "bk-dashboard"
   | "bk-financial-statements"
   | "bk-transactions"
   | "bk-chart-of-accounts"
@@ -28,6 +29,8 @@ interface NavGroup {
   defaultOpen: boolean;
   items: { id: BookkeepingSection; label: string; icon: React.ElementType }[];
 }
+
+const TOP_ITEM = { id: "bk-dashboard" as BookkeepingSection, label: "Overview", icon: LayoutDashboard };
 
 const GROUPS: NavGroup[] = [
   {
@@ -80,6 +83,15 @@ function BookkeepingSidebar({
   return (
     <nav className="w-[220px] shrink-0 bg-[#F9FAFB] border-r border-[#E5E7EB] flex flex-col overflow-y-auto">
       <div className="p-3 space-y-1">
+        {/* Overview top item */}
+        <div className="mb-2">
+          <button onClick={() => onSectionChange(TOP_ITEM.id)} className={itemCls(TOP_ITEM.id)}>
+            <TOP_ITEM.icon className="h-4 w-4 shrink-0" />
+            <span>{TOP_ITEM.label}</span>
+          </button>
+        </div>
+
+        {/* Grouped items */}
         {GROUPS.map((group) => (
           <div key={group.label} className="mb-1">
             <button
@@ -124,12 +136,14 @@ function BookkeepingSidebar({
   );
 }
 
+const ALL_ITEMS = [TOP_ITEM, ...GROUPS.flatMap(g => g.items), ...SINGLES];
+
 export default function BookkeepingModule({ activeSection, onSectionChange, children }: BookkeepingModuleProps) {
   return (
     <div className="flex h-full min-h-0">
       {/* Mobile tab bar */}
       <div className="md:hidden w-full border-b border-[#E5E7EB] bg-[#F9FAFB] overflow-x-auto flex gap-1 px-3 py-2 absolute top-0 left-0 right-0 z-10">
-        {[...GROUPS.flatMap((g) => g.items), ...SINGLES].map((item) => (
+        {ALL_ITEMS.map((item) => (
           <button
             key={item.id}
             onClick={() => onSectionChange(item.id)}

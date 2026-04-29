@@ -45,6 +45,7 @@ const TransactionsSection = dynamicImport(() => import("@/components/dashboard/b
 const ReportsSection = dynamicImport(() => import("@/components/dashboard/bookkeeping/ReportsSection"));
 const ChartOfAccountsSection = dynamicImport(() => import("@/components/dashboard/bookkeeping/ChartOfAccountsSection"));
 const BookkeepingModule = dynamicImport(() => import("@/components/dashboard/bookkeeping/BookkeepingModule"));
+const BkDashboardSection = dynamicImport(() => import("@/components/dashboard/bookkeeping/BkDashboardSection"));
 const FinancialStatementsSection = dynamicImport(() => import("@/components/dashboard/bookkeeping/FinancialStatementsSection"));
 const BkTransactionsSection = dynamicImport(() => import("@/components/dashboard/bookkeeping/BkTransactionsSection"));
 const BkChartOfAccountsSection = dynamicImport(() => import("@/components/dashboard/bookkeeping/BkChartOfAccountsSection"));
@@ -118,6 +119,7 @@ type ActiveSection =
   | "invoices"
   | "reports"
   | "chart-of-accounts"
+  | "bk-dashboard"
   | "bk-financial-statements"
   | "bk-transactions"
   | "bk-chart-of-accounts"
@@ -147,6 +149,7 @@ const RESTRICTED_SECTIONS: ActiveSection[] = [
   "invoices",
   "reports",
   "chart-of-accounts",
+  "bk-dashboard",
   "bk-financial-statements",
   "bk-transactions",
   "bk-chart-of-accounts",
@@ -167,6 +170,7 @@ const RESTRICTED_SECTIONS: ActiveSection[] = [
 ];
 
 const BK_SECTIONS: ActiveSection[] = [
+  "bk-dashboard",
   "bk-financial-statements",
   "bk-transactions",
   "bk-chart-of-accounts",
@@ -818,6 +822,9 @@ function DashboardContent() {
                     </div>
                   )}
 
+                  {/* Connect Bank Account card */}
+                  <ConnectBankCard onNavigate={() => setActiveSection("bk-dashboard" as ActiveSection)} />
+
                   <div className="bg-white dark:bg-[#111] border border-black/8 dark:border-white/8 rounded-xl overflow-hidden">
                     <div className="px-5 py-3.5 border-b border-black/6 dark:border-white/6 flex items-center justify-between">
                       <h2 className="text-sm font-bold text-black dark:text-white flex items-center gap-2">
@@ -1054,6 +1061,7 @@ function DashboardContent() {
                     activeSection={activeSection as string}
                     onSectionChange={(s: string) => setActiveSection(s as ActiveSection)}
                   >
+                    {activeSection === "bk-dashboard" && <BkDashboardSection onNavigate={(s) => setActiveSection(s as ActiveSection)} />}
                     {activeSection === "bk-financial-statements" && <FinancialStatementsSection />}
                     {activeSection === "bk-transactions" && <BkTransactionsSection />}
                     {activeSection === "bk-chart-of-accounts" && <BkChartOfAccountsSection />}
@@ -1098,6 +1106,60 @@ function DashboardContent() {
         />
       )}
     </SidebarProvider>
+  );
+}
+
+function ConnectBankCard({ onNavigate }: { onNavigate: () => void }) {
+  const { user } = useAuth();
+  const [connected, setConnected] = useState<number>(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!user) return;
+    (async () => {
+      const { count } = await supabase
+        .from("bank_connections")
+        .select("*", { count: "exact", head: true })
+        .eq("user_id", user.id)
+        .eq("status", "active");
+      setConnected(count || 0);
+      setLoading(false);
+    })();
+  }, [user]);
+
+  if (loading) return null;
+
+  return (
+    <div
+      onClick={onNavigate}
+      className="bg-white dark:bg-[#111] border border-black/8 dark:border-white/8 rounded-xl p-5 flex items-center gap-4 cursor-pointer hover:border-[#FFC107]/60 hover:shadow-sm transition-all group"
+    >
+      <div className="h-11 w-11 rounded-xl bg-[#FFC107]/15 flex items-center justify-center shrink-0 group-hover:bg-[#FFC107]/25 transition-colors">
+        <Landmark className="h-5 w-5 text-[#FFC107]" />
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-bold text-black dark:text-white">
+          {connected > 0 ? "Bookkeeping & Bank Accounts" : "Connect Your Bank Account"}
+        </p>
+        <p className="text-xs text-black/40 dark:text-white/40 mt-0.5">
+          {connected > 0
+            ? `${connected} account${connected !== 1 ? "s" : ""} connected · Sync balances & transactions`
+            : "Sync live balances and transactions via Stripe Financial Connections"}
+        </p>
+      </div>
+      <div className="flex items-center gap-2 shrink-0">
+        {connected > 0 ? (
+          <span className="text-xs font-semibold bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 border border-green-200 dark:border-green-800 px-2.5 py-1 rounded-full hidden sm:block">
+            {connected} connected
+          </span>
+        ) : (
+          <span className="text-xs font-semibold bg-[#FFC107]/15 text-black dark:text-[#FFC107] border border-[#FFC107]/30 px-2.5 py-1 rounded-full hidden sm:block">
+            Connect now
+          </span>
+        )}
+        <ChevronRight className="h-4 w-4 text-black/20 dark:text-white/20 group-hover:text-[#FFC107] group-hover:translate-x-0.5 transition-all" />
+      </div>
+    </div>
   );
 }
 
