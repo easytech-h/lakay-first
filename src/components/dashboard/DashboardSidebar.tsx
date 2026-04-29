@@ -173,9 +173,7 @@ export function DashboardSidebar({
   ];
 
   const bottomNavItems: NavItem[] = [
-    { id: "kyc", label: t.dashboard.identityVerification, icon: ShieldCheck },
     { id: "upgrade-plan", label: t.dashboard.upgradePlan, icon: Rocket, highlight: true },
-    { id: "settings", label: t.dashboard.settings, icon: Settings },
   ];
 
   const subItemStyle = (id: ActiveSection, locked = false) =>
