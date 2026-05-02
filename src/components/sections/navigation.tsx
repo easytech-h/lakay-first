@@ -166,7 +166,6 @@ export default function Navigation() {
                 </Popover>
               </nav>
             <div className="hidden md:flex items-center gap-2 flex-shrink-0">
-              <LanguageSwitcher />
               {!loading && (
                 user ? (
                   <Link href="/dashboard" className="inline-flex items-center justify-center whitespace-nowrap font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white disabled:pointer-events-none disabled:opacity-50 h-8 rounded-md px-3 text-xs bg-black dark:bg-white hover:bg-white dark:hover:bg-black text-white dark:text-black hover:text-black dark:hover:text-white border-2 border-black dark:border-white">
@@ -288,9 +287,6 @@ export default function Navigation() {
               </PopoverContent>
             </Popover>
             <div className="pt-4 space-y-3 border-t-2 border-black dark:border-white">
-              <div className="flex items-center gap-2">
-                <LanguageSwitcher />
-              </div>
               {!loading && (
                 user ? (
                   <Link href="/dashboard" className="block w-full text-center bg-black dark:bg-white hover:bg-white dark:hover:bg-black text-white dark:text-black hover:text-black dark:hover:text-white text-sm font-bold py-2 px-4 rounded-md transition-colors border-2 border-black dark:border-white">
