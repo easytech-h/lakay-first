@@ -54,7 +54,7 @@ function NavLink({
         "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150",
         active
           ? "bg-[#FFC107] text-black shadow-sm"
-          : "text-white/60 hover:text-white hover:bg-white/8"
+          : "text-black/50 dark:text-white/60 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/8"
       )}
     >
       <item.icon className={cn("flex-shrink-0", collapsed ? "h-5 w-5" : "h-4 w-4")} />
@@ -94,7 +94,7 @@ function NavGroup({
         <button
           className={cn(
             "w-full flex items-center justify-center p-2.5 rounded-xl transition-all",
-            active ? "bg-[#FFC107]/20 text-[#FFC107]" : "text-white/40 hover:text-white hover:bg-white/8"
+            active ? "bg-[#FFC107]/20 text-[#FFC107]" : "text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/8"
           )}
           title={label}
         >
@@ -110,7 +110,7 @@ function NavGroup({
         onClick={() => setOpen(!open)}
         className={cn(
           "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150",
-          active ? "text-white" : "text-white/50 hover:text-white/80"
+          active ? "text-black dark:text-white" : "text-black/50 dark:text-white/50 hover:text-black/80 dark:hover:text-white/80"
         )}
       >
         <Icon className="h-4 w-4 flex-shrink-0" />
@@ -118,7 +118,7 @@ function NavGroup({
         <ChevronDown className={cn("h-3.5 w-3.5 transition-transform duration-200", open && "rotate-180")} />
       </button>
       {open && (
-        <div className="ml-3 mt-0.5 pl-3 border-l border-white/10 space-y-0.5">
+        <div className="ml-3 mt-0.5 pl-3 border-l border-black/10 dark:border-white/10 space-y-0.5">
           {children}
         </div>
       )}
@@ -142,7 +142,7 @@ function SubNavLink({
         "w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all",
         active
           ? "bg-[#FFC107]/15 text-[#FFC107]"
-          : "text-white/40 hover:text-white/80 hover:bg-white/6"
+          : "text-black/40 dark:text-white/40 hover:text-black/80 dark:hover:text-white/80 hover:bg-black/5 dark:hover:bg-white/6"
       )}
     >
       <item.icon className="h-3.5 w-3.5 flex-shrink-0" />
@@ -193,22 +193,22 @@ export function DashboardSidebar({ activeSection, onSectionChange }: DashboardSi
   return (
     <aside
       className={cn(
-        "flex flex-col h-screen bg-[#0A0A0A] border-r border-white/6 transition-all duration-300 flex-shrink-0",
+        "flex flex-col h-screen bg-white dark:bg-[#0A0A0A] border-r border-black/8 dark:border-white/6 transition-all duration-300 flex-shrink-0",
         collapsed ? "w-[60px]" : "w-[220px]"
       )}
     >
       {/* Logo */}
-      <div className={cn("flex items-center h-14 px-4 border-b border-white/6", collapsed ? "justify-center" : "gap-3")}>
+      <div className={cn("flex items-center h-14 px-4 border-b border-black/8 dark:border-white/6", collapsed ? "justify-center" : "gap-3")}>
         <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#FFC107] flex-shrink-0">
           <span className="text-sm font-black text-black">P</span>
         </div>
         {!collapsed && (
-          <span className="text-base font-black text-white tracking-tight">Prolify</span>
+          <span className="text-base font-black text-black dark:text-white tracking-tight">Prolify</span>
         )}
         {!collapsed && (
           <button
             onClick={() => setCollapsed(true)}
-            className="ml-auto text-white/20 hover:text-white/60 transition-colors"
+            className="ml-auto text-black/20 dark:text-white/20 hover:text-black/60 dark:hover:text-white/60 transition-colors"
           >
             <ChevronRight className="h-4 w-4" />
           </button>
@@ -218,7 +218,7 @@ export function DashboardSidebar({ activeSection, onSectionChange }: DashboardSi
       {collapsed && (
         <button
           onClick={() => setCollapsed(false)}
-          className="flex items-center justify-center py-2 text-white/20 hover:text-white/60 transition-colors border-b border-white/6"
+          className="flex items-center justify-center py-2 text-black/20 dark:text-white/20 hover:text-black/60 dark:hover:text-white/60 transition-colors border-b border-black/8 dark:border-white/6"
         >
           <ChevronRight className="h-4 w-4 rotate-180" />
         </button>
@@ -231,7 +231,7 @@ export function DashboardSidebar({ activeSection, onSectionChange }: DashboardSi
         <NavLink item={{ id: "services", label: t.dashboard.services, icon: LayoutGrid }} active={activeSection === "services"} onClick={() => handleNav("services")} collapsed={collapsed} />
 
         {/* Divider */}
-        <div className="my-3 border-t border-white/6" />
+        <div className="my-3 border-t border-black/8 dark:border-white/6" />
 
         {/* Company group */}
         <NavGroup
@@ -259,7 +259,7 @@ export function DashboardSidebar({ activeSection, onSectionChange }: DashboardSi
           ))}
         </NavGroup>
 
-        <div className="my-3 border-t border-white/6" />
+        <div className="my-3 border-t border-black/8 dark:border-white/6" />
 
         {/* Prolite */}
         <NavLink
@@ -269,7 +269,7 @@ export function DashboardSidebar({ activeSection, onSectionChange }: DashboardSi
           collapsed={collapsed}
         />
 
-        <div className="my-3 border-t border-white/6" />
+        <div className="my-3 border-t border-black/8 dark:border-white/6" />
 
         {/* Upgrade */}
         <NavLink
@@ -287,11 +287,11 @@ export function DashboardSidebar({ activeSection, onSectionChange }: DashboardSi
       </nav>
 
       {/* Footer */}
-      <div className={cn("border-t border-white/6 p-3", collapsed ? "flex justify-center" : "")}>
+      <div className={cn("border-t border-black/8 dark:border-white/6 p-3", collapsed ? "flex justify-center" : "")}>
         {collapsed ? (
           <button
             onClick={async () => { await signOut(); window.location.href = "/"; }}
-            className="p-2 rounded-xl text-white/30 hover:text-red-400 hover:bg-red-400/10 transition-all"
+            className="p-2 rounded-xl text-black/30 dark:text-white/30 hover:text-red-500 hover:bg-red-500/10 transition-all"
             title="Sign out"
           >
             <LogOut className="h-4 w-4" />
@@ -302,12 +302,12 @@ export function DashboardSidebar({ activeSection, onSectionChange }: DashboardSi
               <span className="text-xs font-black text-[#FFC107]">{userInitials}</span>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-bold text-white truncate">{userName}</p>
-              <p className="text-[10px] text-white/30 truncate">{userEmail}</p>
+              <p className="text-xs font-bold text-black dark:text-white truncate">{userName}</p>
+              <p className="text-[10px] text-black/30 dark:text-white/30 truncate">{userEmail}</p>
             </div>
             <button
               onClick={async () => { await signOut(); window.location.href = "/"; }}
-              className="p-1.5 rounded-lg text-white/20 hover:text-red-400 hover:bg-red-400/10 transition-all flex-shrink-0"
+              className="p-1.5 rounded-lg text-black/20 dark:text-white/20 hover:text-red-500 hover:bg-red-500/10 transition-all flex-shrink-0"
             >
               <LogOut className="h-3.5 w-3.5" />
             </button>

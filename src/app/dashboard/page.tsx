@@ -705,9 +705,9 @@ function DashboardContent() {
                     ))}
                   </div>
 
-                  {/* Companies + Prolite CTA */}
+                  {/* Companies */}
                   <div className="grid lg:grid-cols-3 gap-4">
-                    <div className="lg:col-span-2 bg-white dark:bg-[#141414] border border-black/6 dark:border-white/6 rounded-2xl overflow-hidden">
+                    <div className="lg:col-span-3 bg-white dark:bg-[#141414] border border-black/6 dark:border-white/6 rounded-2xl overflow-hidden">
                       <div className="px-5 py-4 flex items-center justify-between border-b border-black/4 dark:border-white/4">
                         <span className="text-sm font-bold text-black dark:text-white">Companies</span>
                         <button onClick={() => setShowAddCompanyModal(true)} className="flex items-center gap-1 text-xs font-semibold text-[#FFC107] hover:text-[#FFB300] transition-colors">
@@ -759,26 +759,6 @@ function DashboardContent() {
                       </div>
                     </div>
 
-                    {/* Prolite CTA */}
-                    <button
-                      onClick={() => setActiveSection("ai-chief")}
-                      className="bg-[#0A0A0A] dark:bg-[#111] border border-white/8 rounded-2xl p-5 flex flex-col justify-between min-h-[200px] text-left hover:border-[#FFC107]/40 transition-all group"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="h-9 w-9 rounded-xl bg-[#FFC107]/15 flex items-center justify-center">
-                          <Bot className="h-5 w-5 text-[#FFC107]" />
-                        </div>
-                        <span className="text-[10px] font-black bg-[#FFC107]/15 text-[#FFC107] px-2 py-0.5 rounded-full uppercase tracking-wider">AI</span>
-                      </div>
-                      <div>
-                        <p className="text-xs font-bold text-white/40 uppercase tracking-wider mb-1">Prolite</p>
-                        <p className="text-lg font-black text-white leading-snug">Your AI Chief of Staff</p>
-                        <p className="text-xs text-white/40 mt-1.5 leading-relaxed">Ask anything about your business, compliance, or taxes.</p>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-xs font-bold text-[#FFC107] group-hover:gap-2.5 transition-all">
-                        Open Prolite <ArrowUpRight className="h-3.5 w-3.5" />
-                      </div>
-                    </button>
                   </div>
 
                   {/* Bank */}
