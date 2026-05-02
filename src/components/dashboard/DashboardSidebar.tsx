@@ -1,31 +1,81 @@
 "use client";
 
 import * as React from "react";
-import { Building2, FileText, Calendar, ShieldCheck, Bot, Rocket, Settings, Hop as Home, ChevronRight, LogOut, Mail, LayoutGrid, BadgeCheck, RefreshCw, FileCheck, TriangleAlert as AlertTriangle, Landmark, CreditCard, Hash, User, ChevronDown } from "lucide-react";
+import { Building2, User, FileText, Calendar, Percent, BookOpen, ChartBar as BarChart3, Rocket, Gift, Settings, Hop as Home, Bot, Store, GraduationCap, Crown, List, ChartPie as PieChart, Layers, ShoppingBag, Package, Sparkles, Megaphone, ChevronRight, LogOut, Mail, LayoutGrid, Lock, ShieldCheck, CreditCard, Banknote, BadgeCheck, RefreshCw, FileCheck, TriangleAlert as AlertTriangle, Landmark, Hash } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { useI18n } from "@/contexts/I18nContext";
-import { cn } from "@/lib/utils";
 
 const FREE_PLAN_ID = "free";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+  useSidebar,
+} from "@/components/ui/sidebar";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 type ActiveSection =
-  | "dashboard" | "co-founders" | "company" | "documents" | "compliance"
-  | "annual-report" | "boi-report" | "registered-agent" | "good-standing"
-  | "licenses" | "insurance" | "reinstatement" | "ein" | "taxes"
-  | "transactions" | "expenses" | "invoices" | "reports" | "chart-of-accounts"
-  | "bk-financial-statements" | "bk-transactions" | "bk-chart-of-accounts"
-  | "bk-cash-accounts" | "bk-cash-change" | "bk-cash-spend"
-  | "bk-bank-transactions" | "bk-settings" | "orders" | "inventory"
-  | "financials" | "ads" | "revenue" | "ai-chief" | "marketplace"
-  | "learn" | "vip" | "upgrade-plan" | "settings" | "mail-phone"
-  | "services" | "kyc";
+  | "dashboard"
+  | "co-founders"
+  | "company"
+  | "documents"
+  | "compliance"
+  | "annual-report"
+  | "boi-report"
+  | "registered-agent"
+  | "good-standing"
+  | "licenses"
+  | "insurance"
+  | "reinstatement"
+  | "ein"
+  | "taxes"
+  | "transactions"
+  | "expenses"
+  | "invoices"
+  | "reports"
+  | "chart-of-accounts"
+  | "bk-financial-statements"
+  | "bk-transactions"
+  | "bk-chart-of-accounts"
+  | "bk-cash-accounts"
+  | "bk-cash-change"
+  | "bk-cash-spend"
+  | "bk-bank-transactions"
+  | "bk-settings"
+  | "orders"
+  | "inventory"
+  | "financials"
+  | "ads"
+  | "revenue"
+  | "ai-chief"
+  | "marketplace"
+  | "learn"
+  | "vip"
+  | "upgrade-plan"
+  | "settings"
+  | "mail-phone"
+  | "services"
+  | "kyc";
 
 interface DashboardSidebarProps {
   activeSection: ActiveSection;
   onSectionChange: (section: ActiveSection) => void;
-  collapsed?: boolean;
-  onToggleCollapse?: () => void;
 }
 
 interface NavItem {
@@ -33,140 +83,44 @@ interface NavItem {
   label: string;
   icon: React.ComponentType<{ className?: string }>;
   badge?: string;
+  highlight?: boolean;
 }
 
-function NavLink({
-  item,
-  active,
-  onClick,
-  collapsed,
-}: {
-  item: NavItem;
-  active: boolean;
-  onClick: () => void;
-  collapsed: boolean;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      title={collapsed ? item.label : undefined}
-      className={cn(
-        "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150",
-        active
-          ? "bg-[#FFC107] text-black shadow-sm"
-          : "text-white/60 hover:text-white hover:bg-white/8"
-      )}
-    >
-      <item.icon className={cn("flex-shrink-0", collapsed ? "h-5 w-5" : "h-4 w-4")} />
-      {!collapsed && <span className="flex-1 text-left truncate">{item.label}</span>}
-      {!collapsed && item.badge && (
-        <span className={cn(
-          "text-[10px] font-black px-1.5 py-0.5 rounded-full",
-          active ? "bg-black/20 text-black" : "bg-[#FFC107]/20 text-[#FFC107]"
-        )}>
-          {item.badge}
-        </span>
-      )}
-    </button>
-  );
-}
-
-function NavGroup({
-  label,
-  icon: Icon,
-  children,
-  defaultOpen,
-  collapsed,
-  active,
-}: {
-  label: string;
-  icon: React.ComponentType<{ className?: string }>;
-  children: React.ReactNode;
-  defaultOpen?: boolean;
-  collapsed?: boolean;
-  active?: boolean;
-}) {
-  const [open, setOpen] = React.useState(defaultOpen ?? false);
-
-  if (collapsed) {
-    return (
-      <div className="relative group/tooltip">
-        <button
-          className={cn(
-            "w-full flex items-center justify-center p-2.5 rounded-xl transition-all",
-            active ? "bg-[#FFC107]/20 text-[#FFC107]" : "text-white/40 hover:text-white hover:bg-white/8"
-          )}
-          title={label}
-        >
-          <Icon className="h-5 w-5" />
-        </button>
-      </div>
-    );
-  }
-
-  return (
-    <div>
-      <button
-        onClick={() => setOpen(!open)}
-        className={cn(
-          "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150",
-          active ? "text-white" : "text-white/50 hover:text-white/80"
-        )}
-      >
-        <Icon className="h-4 w-4 flex-shrink-0" />
-        <span className="flex-1 text-left truncate">{label}</span>
-        <ChevronDown className={cn("h-3.5 w-3.5 transition-transform duration-200", open && "rotate-180")} />
-      </button>
-      {open && (
-        <div className="ml-3 mt-0.5 pl-3 border-l border-white/10 space-y-0.5">
-          {children}
-        </div>
-      )}
-    </div>
-  );
-}
-
-function SubNavLink({
-  item,
-  active,
-  onClick,
-}: {
-  item: NavItem;
-  active: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={cn(
-        "w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all",
-        active
-          ? "bg-[#FFC107]/15 text-[#FFC107]"
-          : "text-white/40 hover:text-white/80 hover:bg-white/6"
-      )}
-    >
-      <item.icon className="h-3.5 w-3.5 flex-shrink-0" />
-      <span className="truncate">{item.label}</span>
-    </button>
-  );
-}
-
-export function DashboardSidebar({ activeSection, onSectionChange }: DashboardSidebarProps) {
+export function DashboardSidebar({
+  activeSection,
+  onSectionChange,
+}: DashboardSidebarProps) {
   const { user, profile, company, signOut } = useAuth();
+  const { state } = useSidebar();
   const { trackEvent } = useAnalytics();
   const { t } = useI18n();
-  const [collapsed, setCollapsed] = React.useState(false);
 
-  const handleNav = (section: ActiveSection) => {
+  const handleSectionChange = (section: ActiveSection) => {
     trackEvent("dashboard_section_viewed", { section });
     onSectionChange(section);
   };
 
   const currentPlan = company?.current_plan || FREE_PLAN_ID;
   const isPaidPlan = currentPlan !== FREE_PLAN_ID && currentPlan !== "free";
+
   const userName = profile?.full_name || user?.email?.split("@")[0] || "User";
   const userEmail = user?.email || "";
-  const userInitials = userName.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2);
+  const userInitials = userName
+    .split(" ")
+    .map((n: string) => n[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+
+  const handleSignOut = async () => {
+    await signOut();
+    window.location.href = "/";
+  };
+
+  const isActiveInGroup = (ids: ActiveSection[]) => ids.includes(activeSection);
+
+  const activeStyle = "bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950 dark:to-teal-950 text-emerald-700 dark:text-emerald-400 font-semibold border-l-2 border-emerald-500";
+  const defaultStyle = "hover:bg-gray-100 dark:hover:bg-gray-800";
 
   const companyItems: NavItem[] = [
     { id: "company", label: "Company Profile", icon: Building2 },
@@ -187,133 +141,269 @@ export function DashboardSidebar({ activeSection, onSectionChange }: DashboardSi
     { id: "reinstatement", label: "Reinstatement", icon: RefreshCw },
   ];
 
-  const isInCompany = companyItems.some(i => i.id === activeSection);
-  const isInCompliance = complianceItems.some(i => i.id === activeSection);
+  const bookkeepingItems: NavItem[] = [
+    { id: "bk-financial-statements", label: "Financial Statements", icon: PieChart },
+    { id: "bk-transactions", label: "Transactions", icon: List },
+    { id: "bk-chart-of-accounts", label: "Chart of Accounts", icon: Layers },
+  ];
+
+  const cashItems: NavItem[] = [
+    { id: "bk-cash-accounts", label: "Accounts", icon: Landmark },
+    { id: "bk-cash-change", label: "Change in Cash", icon: BarChart3 },
+    { id: "bk-cash-spend", label: "Cash Spend", icon: CreditCard },
+  ];
+
+  const bookkeepingSingleItems: NavItem[] = [
+    { id: "bk-bank-transactions", label: "Bank Transactions", icon: BookOpen },
+    { id: "bk-settings", label: "Bookkeeping Settings", icon: Settings },
+  ];
+
+  const analyticsItems: NavItem[] = [
+    { id: "orders", label: t.dashboard.orders, icon: ShoppingBag },
+    { id: "inventory", label: t.dashboard.inventory, icon: Package },
+    { id: "financials", label: t.dashboard.financials, icon: Sparkles },
+    { id: "ads", label: t.dashboard.ads, icon: Megaphone },
+  ];
+
+  const growthNavItems: NavItem[] = [
+    { id: "ai-chief", label: "Prolite", icon: Bot, badge: "AI" },
+  ];
+
+  const bottomNavItems: NavItem[] = [
+    { id: "upgrade-plan", label: t.dashboard.upgradePlan, icon: Rocket, highlight: true },
+  ];
+
+  const subItemStyle = (id: ActiveSection, locked = false) =>
+    activeSection === id
+      ? "bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 font-medium"
+      : locked
+      ? "opacity-60"
+      : "";
 
   return (
-    <aside
-      className={cn(
-        "flex flex-col h-screen bg-[#0A0A0A] border-r border-white/6 transition-all duration-300 flex-shrink-0",
-        collapsed ? "w-[60px]" : "w-[220px]"
-      )}
-    >
-      {/* Logo */}
-      <div className={cn("flex items-center h-14 px-4 border-b border-white/6", collapsed ? "justify-center" : "gap-3")}>
-        <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#FFC107] flex-shrink-0">
-          <span className="text-sm font-black text-black">P</span>
-        </div>
-        {!collapsed && (
-          <span className="text-base font-black text-white tracking-tight">Prolify</span>
-        )}
-        {!collapsed && (
-          <button
-            onClick={() => setCollapsed(true)}
-            className="ml-auto text-white/20 hover:text-white/60 transition-colors"
-          >
-            <ChevronRight className="h-4 w-4" />
-          </button>
-        )}
-      </div>
-
-      {collapsed && (
-        <button
-          onClick={() => setCollapsed(false)}
-          className="flex items-center justify-center py-2 text-white/20 hover:text-white/60 transition-colors border-b border-white/6"
-        >
-          <ChevronRight className="h-4 w-4 rotate-180" />
-        </button>
-      )}
-
-      {/* Nav */}
-      <nav className="flex-1 overflow-y-auto px-2 py-4 space-y-0.5 scrollbar-hide">
-        {/* Main */}
-        <NavLink item={{ id: "dashboard", label: "Home", icon: Home }} active={activeSection === "dashboard"} onClick={() => handleNav("dashboard")} collapsed={collapsed} />
-        <NavLink item={{ id: "services", label: t.dashboard.services, icon: LayoutGrid }} active={activeSection === "services"} onClick={() => handleNav("services")} collapsed={collapsed} />
-
-        {/* Divider */}
-        <div className="my-3 border-t border-white/6" />
-
-        {/* Company group */}
-        <NavGroup
-          label="Company"
-          icon={Building2}
-          defaultOpen={isInCompany}
-          collapsed={collapsed}
-          active={isInCompany}
-        >
-          {companyItems.map(item => (
-            <SubNavLink key={item.id} item={item} active={activeSection === item.id} onClick={() => handleNav(item.id)} />
-          ))}
-        </NavGroup>
-
-        {/* Compliance group */}
-        <NavGroup
-          label="Compliance"
-          icon={ShieldCheck}
-          defaultOpen={isInCompliance}
-          collapsed={collapsed}
-          active={isInCompliance}
-        >
-          {complianceItems.map(item => (
-            <SubNavLink key={item.id} item={item} active={activeSection === item.id} onClick={() => handleNav(item.id)} />
-          ))}
-        </NavGroup>
-
-        <div className="my-3 border-t border-white/6" />
-
-        {/* Prolite */}
-        <NavLink
-          item={{ id: "ai-chief", label: "Prolite", icon: Bot, badge: "AI" }}
-          active={activeSection === "ai-chief"}
-          onClick={() => handleNav("ai-chief")}
-          collapsed={collapsed}
-        />
-
-        <div className="my-3 border-t border-white/6" />
-
-        {/* Upgrade */}
-        <NavLink
-          item={{ id: "upgrade-plan", label: "Upgrade Plan", icon: Rocket }}
-          active={activeSection === "upgrade-plan"}
-          onClick={() => handleNav("upgrade-plan")}
-          collapsed={collapsed}
-        />
-        <NavLink
-          item={{ id: "settings", label: "Settings", icon: Settings }}
-          active={activeSection === "settings"}
-          onClick={() => handleNav("settings")}
-          collapsed={collapsed}
-        />
-      </nav>
-
-      {/* Footer */}
-      <div className={cn("border-t border-white/6 p-3", collapsed ? "flex justify-center" : "")}>
-        {collapsed ? (
-          <button
-            onClick={async () => { await signOut(); window.location.href = "/"; }}
-            className="p-2 rounded-xl text-white/30 hover:text-red-400 hover:bg-red-400/10 transition-all"
-            title="Sign out"
-          >
-            <LogOut className="h-4 w-4" />
-          </button>
-        ) : (
-          <div className="flex items-center gap-2.5">
-            <div className="h-8 w-8 rounded-xl bg-[#FFC107]/20 flex items-center justify-center flex-shrink-0">
-              <span className="text-xs font-black text-[#FFC107]">{userInitials}</span>
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-bold text-white truncate">{userName}</p>
-              <p className="text-[10px] text-white/30 truncate">{userEmail}</p>
-            </div>
-            <button
-              onClick={async () => { await signOut(); window.location.href = "/"; }}
-              className="p-1.5 rounded-lg text-white/20 hover:text-red-400 hover:bg-red-400/10 transition-all flex-shrink-0"
-            >
-              <LogOut className="h-3.5 w-3.5" />
-            </button>
+    <Sidebar collapsible="icon" className="border-r-2 border-gray-200 dark:border-gray-800">
+      <SidebarHeader className="border-b-2 border-gray-200 dark:border-gray-800 p-4">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 shadow-lg">
+            <span className="text-lg font-bold text-white">P</span>
           </div>
-        )}
-      </div>
-    </aside>
+          {state === "expanded" && (
+            <div className="flex flex-col">
+              <span className="text-lg font-bold text-gray-900 dark:text-white">Prolify</span>
+              <span className="text-xs text-gray-500 dark:text-gray-400">{t.dashboard.businessPlatform}</span>
+            </div>
+          )}
+        </div>
+      </SidebarHeader>
+
+      <SidebarContent className="px-2 py-4">
+        {/* Main */}
+        <SidebarGroup>
+          <SidebarGroupLabel className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+            {t.dashboard.main}
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  isActive={activeSection === "dashboard"}
+                  onClick={() => handleSectionChange("dashboard")}
+                  tooltip={t.nav.dashboard}
+                  className={activeSection === "dashboard" ? activeStyle : defaultStyle}
+                >
+                  <Home className="h-5 w-5" />
+                  <span>{t.nav.dashboard}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  isActive={activeSection === "services"}
+                  onClick={() => handleSectionChange("services")}
+                  tooltip={t.dashboard.services}
+                  className={activeSection === "services" ? activeStyle : defaultStyle}
+                >
+                  <LayoutGrid className="h-5 w-5" />
+                  <span>{t.dashboard.services}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Company */}
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <Collapsible
+                defaultOpen={isActiveInGroup(companyItems.map(i => i.id))}
+                className="group/company"
+              >
+                <SidebarMenuItem>
+                  <CollapsibleTrigger asChild>
+                    <SidebarMenuButton
+                      tooltip="Company"
+                      className={
+                        isActiveInGroup(companyItems.map(i => i.id))
+                          ? activeStyle
+                          : defaultStyle
+                      }
+                    >
+                      <Building2 className="h-5 w-5" />
+                      <span>Company</span>
+                      <ChevronRight className="ml-auto h-4 w-4 transition-transform group-data-[state=open]/company:rotate-90" />
+                    </SidebarMenuButton>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <SidebarMenuSub>
+                      {companyItems.map((item) => (
+                        <SidebarMenuSubItem key={item.id}>
+                          <SidebarMenuSubButton
+                            isActive={activeSection === item.id}
+                            onClick={() => handleSectionChange(item.id)}
+                            className={subItemStyle(item.id)}
+                          >
+                            <item.icon className="h-4 w-4" />
+                            <span>{item.label}</span>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      ))}
+                    </SidebarMenuSub>
+                  </CollapsibleContent>
+                </SidebarMenuItem>
+              </Collapsible>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Compliance */}
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <Collapsible
+                defaultOpen={isActiveInGroup(complianceItems.map(i => i.id))}
+                className="group/compliance"
+              >
+                <SidebarMenuItem>
+                  <CollapsibleTrigger asChild>
+                    <SidebarMenuButton
+                      tooltip="Compliance"
+                      className={
+                        isActiveInGroup(complianceItems.map(i => i.id))
+                          ? activeStyle
+                          : defaultStyle
+                      }
+                    >
+                      <ShieldCheck className="h-5 w-5" />
+                      <span>Compliance</span>
+                      <ChevronRight className="ml-auto h-4 w-4 transition-transform group-data-[state=open]/compliance:rotate-90" />
+                    </SidebarMenuButton>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <SidebarMenuSub>
+                      {complianceItems.map((item) => (
+                        <SidebarMenuSubItem key={item.id}>
+                          <SidebarMenuSubButton
+                            isActive={activeSection === item.id}
+                            onClick={() => handleSectionChange(item.id)}
+                            className={subItemStyle(item.id)}
+                          >
+                            <item.icon className="h-4 w-4" />
+                            <span>{item.label}</span>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      ))}
+                    </SidebarMenuSub>
+                  </CollapsibleContent>
+                </SidebarMenuItem>
+              </Collapsible>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Prolite (AI Chief of Staff) */}
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  isActive={activeSection === "ai-chief"}
+                  onClick={() => handleSectionChange("ai-chief")}
+                  tooltip="Prolite"
+                  className={activeSection === "ai-chief" ? activeStyle : defaultStyle}
+                >
+                  <Bot className="h-5 w-5" />
+                  <span>Prolite</span>
+                  {state === "expanded" && (
+                    <span className="ml-auto rounded-full bg-gradient-to-r from-amber-400 to-yellow-500 px-2 py-0.5 text-[10px] font-bold text-gray-900 shadow-sm">
+                      AI
+                    </span>
+                  )}
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Bottom */}
+        <SidebarGroup className="mt-auto">
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {bottomNavItems.map((item) => (
+                <SidebarMenuItem key={item.id}>
+                  <SidebarMenuButton
+                    isActive={activeSection === item.id}
+                    onClick={() => handleSectionChange(item.id)}
+                    tooltip={item.label}
+                    className={
+                      item.highlight
+                        ? activeSection === item.id
+                          ? "bg-gradient-to-r from-amber-100 to-yellow-100 dark:from-amber-950 dark:to-yellow-950 text-amber-700 dark:text-amber-400 font-semibold border-l-2 border-amber-500"
+                          : "bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-950/50 dark:to-yellow-950/50 hover:from-amber-100 hover:to-yellow-100 dark:hover:from-amber-900 dark:hover:to-yellow-900 text-amber-700 dark:text-amber-400 font-medium shadow-sm"
+                        : activeSection === item.id
+                        ? activeStyle
+                        : defaultStyle
+                    }
+                  >
+                    <item.icon className="h-5 w-5" />
+                    <span>{item.label}</span>
+                    {item.highlight && state === "expanded" && (
+                      <Gift className="ml-auto h-4 w-4 text-amber-600 dark:text-amber-400" />
+                    )}
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+
+      <SidebarFooter className="border-t-2 border-gray-200 dark:border-gray-800 p-2">
+        <div className="flex items-center gap-2 px-2 py-1.5">
+          <Avatar className="h-8 w-8 border-2 border-emerald-500 flex-shrink-0">
+            <AvatarFallback className="bg-gradient-to-br from-emerald-500 to-teal-600 text-white text-xs font-semibold">
+              {userInitials}
+            </AvatarFallback>
+          </Avatar>
+          {state === "expanded" && (
+            <>
+              <div className="flex flex-1 flex-col items-start text-left text-sm min-w-0">
+                <span className="font-semibold text-gray-900 dark:text-white truncate max-w-[140px]">
+                  {userName}
+                </span>
+                <span className="text-xs text-gray-500 dark:text-gray-400 truncate max-w-[140px]">
+                  {userEmail}
+                </span>
+              </div>
+              <button
+                onClick={handleSignOut}
+                className="ml-auto h-7 w-7 flex items-center justify-center rounded-md hover:bg-red-100 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+              >
+                <LogOut className="h-4 w-4" />
+              </button>
+            </>
+          )}
+        </div>
+      </SidebarFooter>
+    </Sidebar>
   );
 }
