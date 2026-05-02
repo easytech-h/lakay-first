@@ -927,37 +927,6 @@ function DashboardContent() {
                     </div>
                   </div>
 
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="bg-[#FFC107] rounded-xl border border-[#FFB300] p-6 relative overflow-hidden">
-                      <div className="absolute top-0 right-0 w-24 h-24 bg-black/8 rounded-full -mr-8 -mt-8" />
-                      <div className="relative z-10">
-                        <Crown className="h-8 w-8 text-black mb-3" />
-                        <h3 className="text-lg font-bold text-black mb-1">{t.dashboard.upgradeYourPlan}</h3>
-                        <p className="text-black/70 text-sm mb-4">{t.dashboard.unlockPremium}</p>
-                        <Button
-                          onClick={() => handleSectionChange("upgrade-plan")}
-                          className="bg-black text-white hover:bg-black/90 font-bold text-sm h-9 px-5 rounded-lg"
-                        >
-                          {t.dashboard.viewPlans} <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
-                        </Button>
-                      </div>
-                    </div>
-
-                    <div className="bg-black dark:bg-[#111] rounded-xl border border-black dark:border-white/10 p-6 relative overflow-hidden">
-                      <div className="absolute top-0 right-0 w-24 h-24 bg-[#FFC107]/10 rounded-full -mr-8 -mt-8" />
-                      <div className="relative z-10">
-                        <Rocket className="h-8 w-8 text-[#FFC107] mb-3" />
-                        <h3 className="text-lg font-bold text-white mb-1">{t.dashboard.needHelp}</h3>
-                        <p className="text-white/60 text-sm mb-4">{t.dashboard.teamHelps}</p>
-                        <Button
-                          onClick={() => handleSectionChange("ai-chief")}
-                          className="bg-[#FFC107] hover:bg-[#FFB300] text-black font-bold text-sm h-9 px-5 rounded-lg"
-                        >
-                          {t.dashboard.contactSupport}
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
                 </>
               )}
 
