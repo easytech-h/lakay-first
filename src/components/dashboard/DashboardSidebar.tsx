@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Building2, FileText, Calendar, ShieldCheck, Bot, Rocket, Settings, Hop as Home, ChevronRight, LogOut, Mail, LayoutGrid, BadgeCheck, RefreshCw, FileCheck, TriangleAlert as AlertTriangle, Landmark, CreditCard, Hash, User, ChevronDown } from "lucide-react";
+import { Building2, FileText, Calendar, ShieldCheck, Bot, Rocket, Hop as Home, ChevronRight, LogOut, Mail, LayoutGrid, BadgeCheck, RefreshCw, FileCheck, TriangleAlert as AlertTriangle, Landmark, CreditCard, Hash, User, ChevronDown } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { useI18n } from "@/contexts/I18nContext";
@@ -276,12 +276,6 @@ export function DashboardSidebar({ activeSection, onSectionChange }: DashboardSi
           item={{ id: "upgrade-plan", label: "Upgrade Plan", icon: Rocket }}
           active={activeSection === "upgrade-plan"}
           onClick={() => handleNav("upgrade-plan")}
-          collapsed={collapsed}
-        />
-        <NavLink
-          item={{ id: "settings", label: "Settings", icon: Settings }}
-          active={activeSection === "settings"}
-          onClick={() => handleNav("settings")}
           collapsed={collapsed}
         />
       </nav>
