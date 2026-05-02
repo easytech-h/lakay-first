@@ -2,20 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { CircleAlert as AlertCircle, ArrowRight, DollarSign, Banknote, Target, Crown, Rocket, BookOpen, Percent, FileText, Lock, Building2, Check, ChevronRight, Search, Package, Briefcase, MapPin, Users, ClipboardList, Plus, Shield, Award, TrendingUp, Activity, Mail, Phone, TriangleAlert as AlertTriangle, Landmark, CreditCard, RefreshCw, ShieldCheck } from "lucide-react";
+import { CircleAlert as AlertCircle, DollarSign, Banknote, Crown, BookOpen, Percent, FileText, Lock, Building2, Check, ChevronRight, Search, Package, Briefcase, MapPin, Users, ClipboardList, Plus, Shield, Award, TrendingUp, Activity, Mail, Phone, TriangleAlert as AlertTriangle, Landmark, CreditCard, RefreshCw, ShieldCheck, Zap, ArrowUpRight, Bot } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { useAuth } from "@/contexts/AuthContext";
 import { useI18n } from "@/contexts/I18nContext";
 import { supabase } from "@/lib/supabase/client";
-import {
-  SidebarProvider,
-  SidebarInset,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
 import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
-import { Separator } from "@/components/ui/separator";
-import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import {
   Dialog,
   DialogContent,
@@ -555,69 +548,34 @@ function DashboardContent() {
   }
 
   return (
-    <SidebarProvider defaultOpen>
+    <div className="flex h-screen overflow-hidden bg-gray-50 dark:bg-[#0D0D0D]">
       <DashboardSidebar
         activeSection={activeSection}
         onSectionChange={handleSectionChange}
       />
-      <SidebarInset>
-        <header className="sticky top-0 z-40 flex h-14 shrink-0 items-center gap-2 border-b border-black/8 dark:border-white/8 bg-white/95 dark:bg-black/95 backdrop-blur-sm px-4 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-          <div className="flex items-center gap-2 flex-1 min-w-0">
-            <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="mr-2 h-4" />
-            <div className="min-w-0">
-              <h1 className="text-base font-bold text-black dark:text-white truncate">
-                {t.dashboard.welcomeBack} <span className="text-[#FFC107]">{userName}</span>
-              </h1>
-            </div>
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        <header className="flex h-14 shrink-0 items-center justify-between border-b border-black/6 dark:border-white/6 bg-white dark:bg-[#0D0D0D] px-5">
+          <div className="text-sm font-semibold text-black/40 dark:text-white/30 capitalize">
+            {activeSection === "dashboard" ? "Overview" : activeSection.replace(/-/g, " ")}
           </div>
-          <div className="flex items-center gap-2 flex-shrink-0">
-            <LanguageSwitcher />
-            <Button
-              onClick={() => {
-                setStartFreshWizard(true);
-                setShowOnboardingWizard(true);
-              }}
-              className="h-8 px-3 bg-[#FFC107] hover:bg-[#FFB300] text-black font-semibold text-xs rounded-lg border border-[#FFB300] shadow-sm"
-            >
-              <Building2 className="h-3.5 w-3.5 mr-1" />
-              <span className="hidden sm:inline">{t.dashboard.formCompany}</span>
-              <span className="sm:hidden">{t.dashboard.form}</span>
-            </Button>
+          <div className="flex items-center gap-2">
             <Button
               onClick={() => setShowEINModal(true)}
               variant="outline"
-              className="h-8 px-3 font-semibold text-xs rounded-lg border border-black/15 dark:border-white/15"
+              className="h-8 px-3 font-semibold text-xs rounded-lg border border-black/12 dark:border-white/12 bg-transparent"
             >
-              <FileText className="h-3.5 w-3.5 mr-1" />
+              <FileText className="h-3.5 w-3.5 mr-1.5" />
               <span className="hidden sm:inline">{t.dashboard.requestEIN}</span>
-              <span className="sm:hidden">{t.dashboard.ein}</span>
+            </Button>
+            <Button
+              onClick={() => { setStartFreshWizard(true); setShowOnboardingWizard(true); }}
+              className="h-8 px-3 bg-[#FFC107] hover:bg-[#FFB300] text-black font-bold text-xs rounded-lg"
+            >
+              <Building2 className="h-3.5 w-3.5 mr-1.5" />
+              <span className="hidden sm:inline">{t.dashboard.formCompany}</span>
             </Button>
           </div>
         </header>
-
-        <div className="border-b border-black/8 dark:border-white/8 bg-white dark:bg-black px-4 py-2">
-          <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-hide">
-            {[
-              { action: "add-company", label: t.dashboard.addExistingCompany, icon: Plus },
-              { action: "annual-report", label: t.dashboard.fileAnnualReport, icon: FileText },
-              { action: "registered-agent", label: t.dashboard.registeredAgent, icon: Shield },
-              { action: "good-standing", label: t.dashboard.goodStanding, icon: Award },
-            ].map((item) => {
-              const Icon = item.icon;
-              return (
-                <button
-                  key={item.action}
-                  onClick={() => handleGetStartedAction(item.action)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-black hover:border-[#FFC107] hover:bg-[#FFC107]/5 transition-all text-xs font-semibold text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white whitespace-nowrap"
-                >
-                  <Icon className="h-3.5 w-3.5 text-[#FFC107]" />
-                  {item.label}
-                </button>
-              );
-            })}
-          </div>
-        </div>
 
         <EINRequestModal
           open={showEINModal}
@@ -691,247 +649,180 @@ function DashboardContent() {
           </DialogContent>
         </Dialog>
 
-        <div className="flex flex-1 flex-col gap-5 p-4 md:p-5">
+        <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-[#0D0D0D]">
           {showAccessRestriction ? (
-            <AccessRestrictedMessage />
+            <div className="p-6"><AccessRestrictedMessage /></div>
           ) : (
             <>
               {activeSection === "dashboard" && (
-                <>
+                <div className="p-6 space-y-6 max-w-5xl">
                   {onboardingChecked && incompleteDraft && !showOnboardingWizard && (
                     <ProfileCompletionBanner
                       onboardingData={incompleteDraft}
-                      onResume={() => {
-                        setStartFreshWizard(false);
-                        setShowOnboardingWizard(true);
-                      }}
+                      onResume={() => { setStartFreshWizard(false); setShowOnboardingWizard(true); }}
                     />
                   )}
 
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <div className="bg-[#FFC107] rounded-xl p-4 col-span-2 md:col-span-1 flex flex-col justify-between min-h-[110px]">
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="h-8 w-8 rounded-lg bg-black/15 flex items-center justify-center">
-                          <Crown className="h-4 w-4 text-black" />
-                        </div>
-                        <span className="text-xs font-bold bg-black/10 px-2 py-0.5 rounded-full text-black/70">{t.dashboard.plan}</span>
+                  {/* Greeting */}
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-widest text-black/30 dark:text-white/25 mb-1">Good day</p>
+                    <h2 className="text-3xl font-black text-black dark:text-white tracking-tight leading-tight">
+                      {userName}<span className="text-[#FFC107]">.</span>
+                    </h2>
+                  </div>
+
+                  {/* Top row: plan card + 3 stats */}
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                    <button
+                      onClick={() => setActiveSection("upgrade-plan")}
+                      className="bg-[#FFC107] rounded-2xl p-5 flex flex-col justify-between min-h-[130px] hover:bg-[#FFB300] transition-colors text-left group"
+                    >
+                      <div className="flex items-start justify-between">
+                        <Crown className="h-5 w-5 text-black/60" />
+                        <ArrowUpRight className="h-4 w-4 text-black/40 group-hover:text-black/70 transition-colors" />
                       </div>
                       <div>
-                        <p className="text-2xl font-bold text-black capitalize leading-none mb-1">
+                        <p className="text-xs font-bold text-black/50 uppercase tracking-wider mb-0.5">Plan</p>
+                        <p className="text-2xl font-black text-black capitalize leading-none">
                           {onboardingData?.selected_plan || company?.current_plan || "Free"}
                         </p>
-                        <button
-                          onClick={() => setActiveSection("upgrade-plan")}
-                          className="text-xs font-semibold text-black/70 hover:text-black flex items-center gap-1 transition-colors"
-                        >
-                          {t.dashboard.upgrade} <ChevronRight className="h-3 w-3" />
-                        </button>
                       </div>
-                    </div>
-
+                    </button>
                     {[
-                      { icon: DollarSign, label: t.dashboard.revenueMTD, value: "$0", sub: t.dashboard.thisMonth },
-                      { icon: FileText, label: t.dashboard.documents, value: "0", sub: t.dashboard.filesStored },
-                      { icon: Activity, label: t.dashboard.tasksDue, value: "3", sub: t.dashboard.actionNeeded },
-                    ].map((card) => (
-                      <div
-                        key={card.label}
-                        className="bg-white dark:bg-[#111] border border-black/8 dark:border-white/8 rounded-xl p-4 flex flex-col justify-between min-h-[110px] hover:border-[#FFC107]/50 transition-all hover:shadow-sm"
-                      >
-                        <div className="flex items-center justify-between mb-3">
-                          <div className="h-8 w-8 rounded-lg bg-[#FFC107]/15 flex items-center justify-center">
-                            <card.icon className="h-4 w-4 text-[#FFC107]" />
-                          </div>
+                      { icon: DollarSign, label: "Revenue MTD", value: "$0", sub: "this month" },
+                      { icon: FileText, label: "Documents", value: "0", sub: "stored" },
+                      { icon: Activity, label: "Tasks", value: "3", sub: "pending" },
+                    ].map((s) => (
+                      <div key={s.label} className="bg-white dark:bg-[#141414] border border-black/6 dark:border-white/6 rounded-2xl p-5 flex flex-col justify-between min-h-[130px]">
+                        <div className="h-8 w-8 rounded-xl bg-black/4 dark:bg-white/6 flex items-center justify-center">
+                          <s.icon className="h-4 w-4 text-black/40 dark:text-white/30" />
                         </div>
                         <div>
-                          <p className="text-2xl font-bold text-black dark:text-white leading-none mb-0.5">{card.value}</p>
-                          <p className="text-xs text-black/40 dark:text-white/40">{card.sub}</p>
+                          <p className="text-2xl font-black text-black dark:text-white leading-none">{s.value}</p>
+                          <p className="text-xs text-black/35 dark:text-white/30 mt-0.5 font-medium">{s.label}</p>
                         </div>
                       </div>
                     ))}
                   </div>
 
-                  {(onboardingData || company || userCompanies.length > 0) && (
-                    <div className="bg-white dark:bg-[#111] border border-black/8 dark:border-white/8 rounded-xl overflow-hidden">
-                      <div className="px-5 py-3.5 border-b border-black/6 dark:border-white/6 flex items-center justify-between">
-                        <h2 className="text-sm font-bold text-black dark:text-white flex items-center gap-2">
-                          <div className="h-1.5 w-1.5 rounded-full bg-[#FFC107]" />
-                          {t.dashboard.yourCompanies}
-                        </h2>
-                        <button
-                          onClick={() => setShowAddCompanyModal(true)}
-                          className="flex items-center gap-1.5 text-xs font-semibold text-[#FFC107] hover:text-[#FFB300] transition-colors"
-                        >
-                          <Plus className="h-3.5 w-3.5" />
-                          {t.dashboard.addCompany}
+                  {/* Companies + Prolite CTA */}
+                  <div className="grid lg:grid-cols-3 gap-4">
+                    <div className="lg:col-span-2 bg-white dark:bg-[#141414] border border-black/6 dark:border-white/6 rounded-2xl overflow-hidden">
+                      <div className="px-5 py-4 flex items-center justify-between border-b border-black/4 dark:border-white/4">
+                        <span className="text-sm font-bold text-black dark:text-white">Companies</span>
+                        <button onClick={() => setShowAddCompanyModal(true)} className="flex items-center gap-1 text-xs font-semibold text-[#FFC107] hover:text-[#FFB300] transition-colors">
+                          <Plus className="h-3.5 w-3.5" /> Add
                         </button>
                       </div>
-
-                      <div className="divide-y divide-black/5 dark:divide-white/5">
+                      <div className="divide-y divide-black/4 dark:divide-white/4">
                         {(onboardingData || company) && (
-                          <div className="px-5 py-3.5 flex items-center justify-between gap-4">
-                            <div className="flex items-center gap-3 min-w-0">
-                              <div className="h-9 w-9 rounded-lg bg-[#FFC107]/15 flex items-center justify-center flex-shrink-0">
-                                <Building2 className="h-4.5 w-4.5 text-[#FFC107]" />
-                              </div>
-                              <div className="min-w-0">
-                                <p className="text-sm font-bold text-black dark:text-white truncate">
-                                  {onboardingData?.company_name || company?.name || t.dashboard.myCompany}
-                                </p>
-                                <p className="text-xs text-black/40 dark:text-white/40 truncate">
-                                  {onboardingData
-                                    ? `${onboardingData.entity_type} · ${onboardingData.formation_state}`
-                                    : company?.business_type || ""}
-                                </p>
-                              </div>
+                          <div className="px-5 py-4 flex items-center gap-3 group hover:bg-black/[0.015] dark:hover:bg-white/[0.03] transition-colors cursor-pointer" onClick={() => setActiveSection("company")}>
+                            <div className="h-10 w-10 rounded-xl bg-[#FFC107] flex items-center justify-center flex-shrink-0">
+                              <span className="text-sm font-black text-black">
+                                {(onboardingData?.company_name || company?.name || "C").charAt(0).toUpperCase()}
+                              </span>
                             </div>
-                            <button
-                              onClick={() => setActiveSection("company")}
-                              className="text-xs font-semibold text-black/40 dark:text-white/40 hover:text-[#FFC107] transition-colors flex-shrink-0"
-                            >
-                              {t.dashboard.manage}
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-bold text-black dark:text-white truncate">
+                                {onboardingData?.company_name || company?.name || t.dashboard.myCompany}
+                              </p>
+                              <p className="text-xs text-black/35 dark:text-white/30 truncate mt-0.5">
+                                {onboardingData ? `${onboardingData.entity_type} · ${onboardingData.formation_state}` : company?.business_type || ""}
+                              </p>
+                            </div>
+                            <ArrowUpRight className="h-4 w-4 text-black/15 dark:text-white/15 group-hover:text-[#FFC107] transition-colors flex-shrink-0" />
+                          </div>
+                        )}
+                        {userCompanies.map((uc) => (
+                          <div key={uc.id} className="px-5 py-4 flex items-center gap-3">
+                            <div className="h-10 w-10 rounded-xl bg-black/5 dark:bg-white/6 flex items-center justify-center flex-shrink-0">
+                              <span className="text-sm font-black text-black/40 dark:text-white/30">{uc.name.charAt(0).toUpperCase()}</span>
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-bold text-black dark:text-white truncate">{uc.name}</p>
+                              <p className="text-xs text-black/35 dark:text-white/30 truncate mt-0.5">{uc.entity_type} · {uc.formation_state}</p>
+                            </div>
+                            <span className="text-[10px] font-bold bg-black/5 dark:bg-white/6 text-black/30 dark:text-white/25 px-2 py-0.5 rounded-full uppercase tracking-wide flex-shrink-0">added</span>
+                          </div>
+                        ))}
+                        {!onboardingData && !company && userCompanies.length === 0 && (
+                          <div className="px-5 py-10 text-center">
+                            <div className="h-12 w-12 rounded-2xl bg-black/4 dark:bg-white/4 flex items-center justify-center mx-auto mb-3">
+                              <Building2 className="h-5 w-5 text-black/20 dark:text-white/20" />
+                            </div>
+                            <p className="text-sm font-semibold text-black/30 dark:text-white/25">No companies yet</p>
+                            <button onClick={() => { setStartFreshWizard(true); setShowOnboardingWizard(true); }} className="mt-3 text-xs font-bold text-[#FFC107] hover:text-[#FFB300] transition-colors">
+                              Form your first company →
                             </button>
                           </div>
                         )}
-
-                        {userCompanies.map((uc) => (
-                          <div key={uc.id} className="px-5 py-3.5 flex items-center justify-between gap-4">
-                            <div className="flex items-center gap-3 min-w-0">
-                              <div className="h-9 w-9 rounded-lg bg-gray-100 dark:bg-white/8 flex items-center justify-center flex-shrink-0">
-                                <Building2 className="h-4.5 w-4.5 text-gray-500 dark:text-white/40" />
-                              </div>
-                              <div className="min-w-0">
-                                <p className="text-sm font-bold text-black dark:text-white truncate">{uc.name}</p>
-                                <p className="text-xs text-black/40 dark:text-white/40 truncate">
-                                  {uc.entity_type} · {uc.formation_state}
-                                </p>
-                              </div>
-                            </div>
-                            <span className="text-xs bg-gray-100 dark:bg-white/8 text-gray-500 dark:text-white/40 px-2 py-0.5 rounded-full flex-shrink-0 font-medium">
-                              {t.dashboard.added}
-                            </span>
-                          </div>
-                        ))}
-
-                        {!onboardingData && !company && userCompanies.length === 0 && (
-                          <div className="px-5 py-6 text-center">
-                            <p className="text-sm text-black/40 dark:text-white/40">{t.dashboard.noCompaniesYet}</p>
-                          </div>
-                        )}
                       </div>
                     </div>
-                  )}
 
-                  {/* Connect Bank Account card */}
+                    {/* Prolite CTA */}
+                    <button
+                      onClick={() => setActiveSection("ai-chief")}
+                      className="bg-[#0A0A0A] dark:bg-[#111] border border-white/8 rounded-2xl p-5 flex flex-col justify-between min-h-[200px] text-left hover:border-[#FFC107]/40 transition-all group"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="h-9 w-9 rounded-xl bg-[#FFC107]/15 flex items-center justify-center">
+                          <Bot className="h-5 w-5 text-[#FFC107]" />
+                        </div>
+                        <span className="text-[10px] font-black bg-[#FFC107]/15 text-[#FFC107] px-2 py-0.5 rounded-full uppercase tracking-wider">AI</span>
+                      </div>
+                      <div>
+                        <p className="text-xs font-bold text-white/40 uppercase tracking-wider mb-1">Prolite</p>
+                        <p className="text-lg font-black text-white leading-snug">Your AI Chief of Staff</p>
+                        <p className="text-xs text-white/40 mt-1.5 leading-relaxed">Ask anything about your business, compliance, or taxes.</p>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-xs font-bold text-[#FFC107] group-hover:gap-2.5 transition-all">
+                        Open Prolite <ArrowUpRight className="h-3.5 w-3.5" />
+                      </div>
+                    </button>
+                  </div>
+
+                  {/* Bank */}
                   <ConnectBankCard onNavigate={() => setActiveSection("bk-dashboard" as ActiveSection)} />
 
-                  <div className="bg-white dark:bg-[#111] border border-black/8 dark:border-white/8 rounded-xl overflow-hidden">
-                    <div className="px-5 py-3.5 border-b border-black/6 dark:border-white/6 flex items-center justify-between">
-                      <h2 className="text-sm font-bold text-black dark:text-white flex items-center gap-2">
-                        <div className="h-1.5 w-1.5 rounded-full bg-[#FFC107]" />
-                        {t.dashboard.servicesTools}
-                      </h2>
-                      <span className="text-xs text-black/30 dark:text-white/30 font-medium">8 {t.dashboard.available}</span>
+                  {/* Services grid */}
+                  <div>
+                    <div className="flex items-center justify-between mb-3">
+                      <p className="text-xs font-bold text-black/35 dark:text-white/30 uppercase tracking-widest">Services</p>
+                      <span className="text-xs text-black/25 dark:text-white/20">8 available</span>
                     </div>
-
-                    <div className="divide-y divide-black/5 dark:divide-white/5">
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
                       {[
-                        {
-                          icon: BookOpen,
-                          title: t.dashboard.bookkeepingService,
-                          description: t.dashboard.bookkeepingDesc,
-                          badge: "$30/mo",
-                          badgeStyle: "bg-[#FFC107]/15 text-black dark:text-[#FFC107] border border-[#FFC107]/30",
-                          action: "transactions" as ActiveSection,
-                        },
-                        {
-                          icon: Percent,
-                          title: t.dashboard.salesTaxService,
-                          description: t.dashboard.salesTaxDesc,
-                          badge: t.dashboard.complianceBadge,
-                          badgeStyle: "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800",
-                          action: "taxes" as ActiveSection,
-                        },
-                        {
-                          icon: Banknote,
-                          title: t.dashboard.bankAccountService,
-                          description: t.dashboard.bankAccountDesc,
-                          badge: t.dashboard.comingSoon,
-                          badgeStyle: "bg-gray-100 dark:bg-white/8 text-gray-400 dark:text-white/30 border border-black/8 dark:border-white/8",
-                          action: null,
-                        },
-                        {
-                          icon: TrendingUp,
-                          title: t.dashboard.tiktokAdsService,
-                          description: t.dashboard.tiktokAdsDesc,
-                          badge: t.dashboard.growthBadge,
-                          badgeStyle: "bg-pink-50 dark:bg-pink-900/20 text-pink-600 dark:text-pink-400 border border-pink-200 dark:border-pink-800",
-                          action: "ads" as ActiveSection,
-                        },
-                        {
-                          icon: FileText,
-                          title: t.dashboard.annualReportService,
-                          description: t.dashboard.annualReportDesc,
-                          badge: t.dashboard.complianceBadge,
-                          badgeStyle: "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800",
-                          action: "compliance" as ActiveSection,
-                        },
-                        {
-                          icon: DollarSign,
-                          title: t.dashboard.taxPrepService,
-                          description: t.dashboard.taxPrepDesc,
-                          badge: t.dashboard.taxBadge,
-                          badgeStyle: "bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800",
-                          action: "taxes" as ActiveSection,
-                        },
-                        {
-                          icon: Mail,
-                          title: t.dashboard.virtualMailService,
-                          description: t.dashboard.virtualMailDesc,
-                          badge: t.dashboard.serviceBadge,
-                          badgeStyle: "bg-sky-50 dark:bg-sky-900/20 text-sky-600 dark:text-sky-400 border border-sky-200 dark:border-sky-800",
-                          action: "mail-phone" as ActiveSection,
-                        },
-                        {
-                          icon: Phone,
-                          title: t.dashboard.businessPhoneService,
-                          description: t.dashboard.businessPhoneDesc,
-                          badge: t.dashboard.serviceBadge,
-                          badgeStyle: "bg-sky-50 dark:bg-sky-900/20 text-sky-600 dark:text-sky-400 border border-sky-200 dark:border-sky-800",
-                          action: "mail-phone" as ActiveSection,
-                        },
-                      ].map((service) => (
-                        <div
-                          key={service.title}
-                          className="flex items-center gap-4 px-5 py-3.5 hover:bg-black/2 dark:hover:bg-white/2 transition-colors group cursor-pointer"
-                          onClick={() => {
-                            if (service.action) handleSectionChange(service.action);
-                            else alert("Coming soon!");
-                          }}
+                        { icon: BookOpen, title: "Bookkeeping", desc: "Track income & expenses", badge: "$30/mo", action: "transactions" as ActiveSection, accent: "text-[#FFC107]", bg: "bg-[#FFC107]/8 dark:bg-[#FFC107]/10" },
+                        { icon: Percent, title: "Sales Tax", desc: "Stay compliant", badge: "Compliance", action: "taxes" as ActiveSection, accent: "text-blue-500", bg: "bg-blue-500/8 dark:bg-blue-500/10" },
+                        { icon: FileText, title: "Annual Report", desc: "File on time", badge: "Compliance", action: "compliance" as ActiveSection, accent: "text-emerald-500", bg: "bg-emerald-500/8 dark:bg-emerald-500/10" },
+                        { icon: Mail, title: "Virtual Mail", desc: "US business address", badge: "Service", action: "mail-phone" as ActiveSection, accent: "text-sky-500", bg: "bg-sky-500/8 dark:bg-sky-500/10" },
+                        { icon: TrendingUp, title: "TikTok Ads", desc: "Scale with ads", badge: "Growth", action: "ads" as ActiveSection, accent: "text-pink-500", bg: "bg-pink-500/8 dark:bg-pink-500/10" },
+                        { icon: DollarSign, title: "Tax Prep", desc: "Expert filing", badge: "Tax", action: "taxes" as ActiveSection, accent: "text-emerald-500", bg: "bg-emerald-500/8 dark:bg-emerald-500/10" },
+                        { icon: Phone, title: "Business Phone", desc: "Virtual number", badge: "Service", action: "mail-phone" as ActiveSection, accent: "text-sky-500", bg: "bg-sky-500/8 dark:bg-sky-500/10" },
+                        { icon: Banknote, title: "Bank Account", desc: "Coming soon", badge: "Soon", action: null, accent: "text-black/30 dark:text-white/20", bg: "bg-black/4 dark:bg-white/4" },
+                      ].map((s) => (
+                        <button
+                          key={s.title}
+                          onClick={() => { if (s.action) handleSectionChange(s.action); }}
+                          className="bg-white dark:bg-[#141414] border border-black/6 dark:border-white/6 rounded-2xl p-4 flex flex-col gap-3 text-left hover:border-black/15 dark:hover:border-white/12 hover:shadow-sm transition-all"
                         >
-                          <div className="h-9 w-9 rounded-lg bg-black/4 dark:bg-white/6 flex items-center justify-center flex-shrink-0 group-hover:bg-[#FFC107]/12 transition-colors">
-                            <service.icon className="h-4 w-4 text-black/50 dark:text-white/50 group-hover:text-[#FFC107] transition-colors" />
+                          <div className={`h-8 w-8 rounded-xl ${s.bg} flex items-center justify-center`}>
+                            <s.icon className={`h-4 w-4 ${s.accent}`} />
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-semibold text-black dark:text-white">{service.title}</p>
-                            <p className="text-xs text-black/40 dark:text-white/40 truncate">{service.description}</p>
+                          <div className="flex-1">
+                            <p className="text-xs font-bold text-black dark:text-white">{s.title}</p>
+                            <p className="text-[11px] text-black/35 dark:text-white/25 mt-0.5">{s.desc}</p>
                           </div>
-                          <div className="flex items-center gap-3 flex-shrink-0">
-                            <span className={`text-xs font-semibold px-2 py-0.5 rounded-full hidden sm:block ${service.badgeStyle}`}>
-                              {service.badge}
-                            </span>
-                            <ChevronRight className="h-3.5 w-3.5 text-black/20 dark:text-white/20 group-hover:text-[#FFC107] group-hover:translate-x-0.5 transition-all" />
-                          </div>
-                        </div>
+                          <span className="text-[10px] font-bold text-black/25 dark:text-white/20 uppercase tracking-wider">{s.badge}</span>
+                        </button>
                       ))}
                     </div>
                   </div>
-
-                </>
+                </div>
               )}
 
               {activeSection === "co-founders" && (
-                <CoFoundersSection onNavigateToVIPClub={() => setActiveSection("vip")} />
+                <div className="p-6"><CoFoundersSection onNavigateToVIPClub={() => setActiveSection("vip")} /></div>
               )}
               {activeSection === "company" && (
                 <CompanySection onSaved={handleCompanySaved} />
@@ -1059,7 +950,7 @@ function DashboardContent() {
             </>
           )}
         </div>
-      </SidebarInset>
+      </div>
 
       <PlanSelectionModal
         isOpen={showPlanModal}
@@ -1074,7 +965,7 @@ function DashboardContent() {
           onAction={handleGetStartedAction}
         />
       )}
-    </SidebarProvider>
+    </div>
   );
 }
 
@@ -1101,16 +992,16 @@ function ConnectBankCard({ onNavigate }: { onNavigate: () => void }) {
   return (
     <div
       onClick={onNavigate}
-      className="bg-white dark:bg-[#111] border border-black/8 dark:border-white/8 rounded-xl p-5 flex items-center gap-4 cursor-pointer hover:border-[#FFC107]/60 hover:shadow-sm transition-all group"
+      className="bg-white dark:bg-[#141414] border border-black/6 dark:border-white/6 rounded-2xl p-5 flex items-center gap-4 cursor-pointer hover:border-[#FFC107]/50 hover:shadow-sm transition-all group"
     >
-      <div className="h-11 w-11 rounded-xl bg-[#FFC107]/15 flex items-center justify-center shrink-0 group-hover:bg-[#FFC107]/25 transition-colors">
+      <div className="h-11 w-11 rounded-xl bg-[#FFC107]/10 flex items-center justify-center shrink-0 group-hover:bg-[#FFC107]/20 transition-colors">
         <Landmark className="h-5 w-5 text-[#FFC107]" />
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-sm font-bold text-black dark:text-white">
           {connected > 0 ? "Bookkeeping & Bank Accounts" : "Connect Your Bank Account"}
         </p>
-        <p className="text-xs text-black/40 dark:text-white/40 mt-0.5">
+        <p className="text-xs text-black/35 dark:text-white/30 mt-0.5">
           {connected > 0
             ? `${connected} account${connected !== 1 ? "s" : ""} connected · Sync balances & transactions`
             : "Sync live balances and transactions via Stripe Financial Connections"}
@@ -1118,15 +1009,15 @@ function ConnectBankCard({ onNavigate }: { onNavigate: () => void }) {
       </div>
       <div className="flex items-center gap-2 shrink-0">
         {connected > 0 ? (
-          <span className="text-xs font-semibold bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 border border-green-200 dark:border-green-800 px-2.5 py-1 rounded-full hidden sm:block">
+          <span className="text-xs font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-full">
             {connected} connected
           </span>
         ) : (
-          <span className="text-xs font-semibold bg-[#FFC107]/15 text-black dark:text-[#FFC107] border border-[#FFC107]/30 px-2.5 py-1 rounded-full hidden sm:block">
-            Connect now
+          <span className="text-xs font-bold bg-[#FFC107]/10 text-black dark:text-[#FFC107] px-2.5 py-1 rounded-full">
+            Connect
           </span>
         )}
-        <ChevronRight className="h-4 w-4 text-black/20 dark:text-white/20 group-hover:text-[#FFC107] group-hover:translate-x-0.5 transition-all" />
+        <ArrowUpRight className="h-4 w-4 text-black/20 dark:text-white/20 group-hover:text-[#FFC107] transition-all" />
       </div>
     </div>
   );
