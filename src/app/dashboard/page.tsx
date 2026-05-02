@@ -655,7 +655,7 @@ function DashboardContent() {
           ) : (
             <>
               {activeSection === "dashboard" && (
-                <div className="p-6 space-y-6 max-w-5xl">
+                <div className="p-6 space-y-6 max-w-5xl mx-auto w-full">
                   {onboardingChecked && incompleteDraft && !showOnboardingWizard && (
                     <ProfileCompletionBanner
                       onboardingData={incompleteDraft}
@@ -706,60 +706,15 @@ function DashboardContent() {
                   </div>
 
                   {/* Companies */}
-                  <div className="grid lg:grid-cols-3 gap-4">
-                    <div className="lg:col-span-3 bg-white dark:bg-[#141414] border border-black/6 dark:border-white/6 rounded-2xl overflow-hidden">
-                      <div className="px-5 py-4 flex items-center justify-between border-b border-black/4 dark:border-white/4">
-                        <span className="text-sm font-bold text-black dark:text-white">Companies</span>
-                        <button onClick={() => setShowAddCompanyModal(true)} className="flex items-center gap-1 text-xs font-semibold text-[#FFC107] hover:text-[#FFB300] transition-colors">
-                          <Plus className="h-3.5 w-3.5" /> Add
-                        </button>
-                      </div>
-                      <div className="divide-y divide-black/4 dark:divide-white/4">
-                        {(onboardingData || company) && (
-                          <div className="px-5 py-4 flex items-center gap-3 group hover:bg-black/[0.015] dark:hover:bg-white/[0.03] transition-colors cursor-pointer" onClick={() => setActiveSection("company")}>
-                            <div className="h-10 w-10 rounded-xl bg-[#FFC107] flex items-center justify-center flex-shrink-0">
-                              <span className="text-sm font-black text-black">
-                                {(onboardingData?.company_name || company?.name || "C").charAt(0).toUpperCase()}
-                              </span>
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm font-bold text-black dark:text-white truncate">
-                                {onboardingData?.company_name || company?.name || t.dashboard.myCompany}
-                              </p>
-                              <p className="text-xs text-black/35 dark:text-white/30 truncate mt-0.5">
-                                {onboardingData ? `${onboardingData.entity_type} · ${onboardingData.formation_state}` : company?.business_type || ""}
-                              </p>
-                            </div>
-                            <ArrowUpRight className="h-4 w-4 text-black/15 dark:text-white/15 group-hover:text-[#FFC107] transition-colors flex-shrink-0" />
-                          </div>
-                        )}
-                        {userCompanies.map((uc) => (
-                          <div key={uc.id} className="px-5 py-4 flex items-center gap-3">
-                            <div className="h-10 w-10 rounded-xl bg-black/5 dark:bg-white/6 flex items-center justify-center flex-shrink-0">
-                              <span className="text-sm font-black text-black/40 dark:text-white/30">{uc.name.charAt(0).toUpperCase()}</span>
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm font-bold text-black dark:text-white truncate">{uc.name}</p>
-                              <p className="text-xs text-black/35 dark:text-white/30 truncate mt-0.5">{uc.entity_type} · {uc.formation_state}</p>
-                            </div>
-                            <span className="text-[10px] font-bold bg-black/5 dark:bg-white/6 text-black/30 dark:text-white/25 px-2 py-0.5 rounded-full uppercase tracking-wide flex-shrink-0">added</span>
-                          </div>
-                        ))}
-                        {!onboardingData && !company && userCompanies.length === 0 && (
-                          <div className="px-5 py-10 text-center">
-                            <div className="h-12 w-12 rounded-2xl bg-black/4 dark:bg-white/4 flex items-center justify-center mx-auto mb-3">
-                              <Building2 className="h-5 w-5 text-black/20 dark:text-white/20" />
-                            </div>
-                            <p className="text-sm font-semibold text-black/30 dark:text-white/25">No companies yet</p>
-                            <button onClick={() => { setStartFreshWizard(true); setShowOnboardingWizard(true); }} className="mt-3 text-xs font-bold text-[#FFC107] hover:text-[#FFB300] transition-colors">
-                              Form your first company →
-                            </button>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                  </div>
+                  <CompaniesCard
+                    onboardingData={onboardingData}
+                    company={company}
+                    userCompanies={userCompanies}
+                    onSelectCompany={() => setActiveSection("company")}
+                    onAddCompany={() => setShowAddCompanyModal(true)}
+                    onFormCompany={() => { setStartFreshWizard(true); setShowOnboardingWizard(true); }}
+                    t={t}
+                  />
 
                   {/* Bank */}
                   <ConnectBankCard onNavigate={() => setActiveSection("bk-dashboard" as ActiveSection)} />
@@ -999,6 +954,102 @@ function ConnectBankCard({ onNavigate }: { onNavigate: () => void }) {
         )}
         <ArrowUpRight className="h-4 w-4 text-black/20 dark:text-white/20 group-hover:text-[#FFC107] transition-all" />
       </div>
+    </div>
+  );
+}
+
+function CompaniesCard({
+  onboardingData,
+  company,
+  userCompanies,
+  onSelectCompany,
+  onAddCompany,
+  onFormCompany,
+  t,
+}: {
+  onboardingData: OnboardingData | null;
+  company: { name?: string; current_plan?: string; business_type?: string } | null | undefined;
+  userCompanies: UserCompany[];
+  onSelectCompany: () => void;
+  onAddCompany: () => void;
+  onFormCompany: () => void;
+  t: ReturnType<typeof useI18n>["t"];
+}) {
+  const [open, setOpen] = useState(false);
+  const hasCompanies = !!(onboardingData || company) || userCompanies.length > 0;
+  const totalCount = (onboardingData || company ? 1 : 0) + userCompanies.length;
+
+  return (
+    <div className="bg-white dark:bg-[#141414] border border-black/6 dark:border-white/6 rounded-2xl overflow-hidden">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full px-5 py-4 flex items-center justify-between hover:bg-black/[0.015] dark:hover:bg-white/[0.02] transition-colors"
+      >
+        <div className="flex items-center gap-2.5">
+          <Building2 className="h-4 w-4 text-black/40 dark:text-white/30" />
+          <span className="text-sm font-bold text-black dark:text-white">Companies</span>
+          {totalCount > 0 && (
+            <span className="text-[10px] font-bold bg-black/6 dark:bg-white/8 text-black/40 dark:text-white/30 px-2 py-0.5 rounded-full">
+              {totalCount}
+            </span>
+          )}
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={(e) => { e.stopPropagation(); onAddCompany(); }}
+            className="flex items-center gap-1 text-xs font-semibold text-[#FFC107] hover:text-[#FFB300] transition-colors"
+          >
+            <Plus className="h-3.5 w-3.5" /> Add
+          </button>
+          <ChevronRight className={`h-4 w-4 text-black/25 dark:text-white/25 transition-transform duration-200 ${open ? "rotate-90" : ""}`} />
+        </div>
+      </button>
+
+      {open && (
+        <div className="border-t border-black/4 dark:border-white/4 divide-y divide-black/4 dark:divide-white/4">
+          {(onboardingData || company) && (
+            <div className="px-5 py-4 flex items-center gap-3 group hover:bg-black/[0.015] dark:hover:bg-white/[0.03] transition-colors cursor-pointer" onClick={onSelectCompany}>
+              <div className="h-10 w-10 rounded-xl bg-[#FFC107] flex items-center justify-center flex-shrink-0">
+                <span className="text-sm font-black text-black">
+                  {(onboardingData?.company_name || company?.name || "C").charAt(0).toUpperCase()}
+                </span>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-bold text-black dark:text-white truncate">
+                  {onboardingData?.company_name || company?.name || t.dashboard.myCompany}
+                </p>
+                <p className="text-xs text-black/35 dark:text-white/30 truncate mt-0.5">
+                  {onboardingData ? `${onboardingData.entity_type} · ${onboardingData.formation_state}` : company?.business_type || ""}
+                </p>
+              </div>
+              <ArrowUpRight className="h-4 w-4 text-black/15 dark:text-white/15 group-hover:text-[#FFC107] transition-colors flex-shrink-0" />
+            </div>
+          )}
+          {userCompanies.map((uc) => (
+            <div key={uc.id} className="px-5 py-4 flex items-center gap-3">
+              <div className="h-10 w-10 rounded-xl bg-black/5 dark:bg-white/6 flex items-center justify-center flex-shrink-0">
+                <span className="text-sm font-black text-black/40 dark:text-white/30">{uc.name.charAt(0).toUpperCase()}</span>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-bold text-black dark:text-white truncate">{uc.name}</p>
+                <p className="text-xs text-black/35 dark:text-white/30 truncate mt-0.5">{uc.entity_type} · {uc.formation_state}</p>
+              </div>
+              <span className="text-[10px] font-bold bg-black/5 dark:bg-white/6 text-black/30 dark:text-white/25 px-2 py-0.5 rounded-full uppercase tracking-wide flex-shrink-0">added</span>
+            </div>
+          ))}
+          {!hasCompanies && (
+            <div className="px-5 py-10 text-center">
+              <div className="h-12 w-12 rounded-2xl bg-black/4 dark:bg-white/4 flex items-center justify-center mx-auto mb-3">
+                <Building2 className="h-5 w-5 text-black/20 dark:text-white/20" />
+              </div>
+              <p className="text-sm font-semibold text-black/30 dark:text-white/25">No companies yet</p>
+              <button onClick={onFormCompany} className="mt-3 text-xs font-bold text-[#FFC107] hover:text-[#FFB300] transition-colors">
+                Form your first company →
+              </button>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
