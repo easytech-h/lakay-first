@@ -54,7 +54,7 @@ function NavLink({
         "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150",
         active
           ? "bg-[#FFC107] text-black shadow-sm"
-          : "text-black/50 dark:text-white/60 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/8"
+          : "text-black/75 dark:text-white/70 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/8"
       )}
     >
       <item.icon className={cn("flex-shrink-0", collapsed ? "h-5 w-5" : "h-4 w-4")} />
@@ -94,7 +94,7 @@ function NavGroup({
         <button
           className={cn(
             "w-full flex items-center justify-center p-2.5 rounded-xl transition-all",
-            active ? "bg-[#FFC107]/20 text-[#FFC107]" : "text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/8"
+            active ? "bg-[#FFC107]/20 text-[#FFC107]" : "text-black/75 dark:text-white/70 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/8"
           )}
           title={label}
         >
@@ -110,7 +110,7 @@ function NavGroup({
         onClick={() => setOpen(!open)}
         className={cn(
           "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150",
-          active ? "text-black dark:text-white" : "text-black/50 dark:text-white/50 hover:text-black/80 dark:hover:text-white/80"
+          active ? "text-black dark:text-white" : "text-black/75 dark:text-white/70 hover:text-black dark:hover:text-white"
         )}
       >
         <Icon className="h-4 w-4 flex-shrink-0" />
@@ -142,7 +142,7 @@ function SubNavLink({
         "w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all",
         active
           ? "bg-[#FFC107]/15 text-[#FFC107]"
-          : "text-black/40 dark:text-white/40 hover:text-black/80 dark:hover:text-white/80 hover:bg-black/5 dark:hover:bg-white/6"
+          : "text-black/70 dark:text-white/60 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/6"
       )}
     >
       <item.icon className="h-3.5 w-3.5 flex-shrink-0" />
