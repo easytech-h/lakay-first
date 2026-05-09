@@ -6,7 +6,7 @@ import { submitToRainc, checkNameAvailability, type RaincStep, type RaincProgres
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { usStates } from "@/lib/us-states";
-import { plans, formationPlans } from "@/lib/plans";
+import { plans } from "@/lib/plans";
 import { supabase } from "@/lib/supabase/client";
 import { AddressAutocomplete } from "@/components/dashboard/AddressAutocomplete";
 import { useStripePriceConfig } from "@/hooks/useStripePriceConfig";
@@ -19,17 +19,16 @@ interface OnboardingWizardProps {
   paymentSuccess?: boolean;
 }
 
-type StepId = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+type StepId = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
 const STEPS = [
   { id: 1 as StepId, label: "Structure Type", desc: "What will be the structure of this entity?" },
   { id: 2 as StepId, label: "Name Search", desc: "Check if your desired company name is available." },
-  { id: 3 as StepId, label: "Formation Package", desc: "Select the package that best fits your business needs." },
-  { id: 4 as StepId, label: "Principal Activity", desc: "What products or services will your business provide?" },
-  { id: 5 as StepId, label: "Business Address", desc: "Where is your principal place of business?" },
-  { id: 6 as StepId, label: "Controlling Officers", desc: "Who is authorized to manage and control this entity?" },
-  { id: 7 as StepId, label: "Annual Report", desc: "Would you like to enroll in annual reporting service?" },
-  { id: 8 as StepId, label: "Review & Submit", desc: "Review all information and form your entity." },
+  { id: 3 as StepId, label: "Principal Activity", desc: "What products or services will your business provide?" },
+  { id: 4 as StepId, label: "Business Address", desc: "Where is your principal place of business?" },
+  { id: 5 as StepId, label: "Controlling Officers", desc: "Who is authorized to manage and control this entity?" },
+  { id: 6 as StepId, label: "Annual Report", desc: "Would you like to enroll in annual reporting service?" },
+  { id: 7 as StepId, label: "Review & Submit", desc: "Review all information and form your entity." },
 ];
 
 interface FormData {
@@ -141,7 +140,7 @@ const [submitting, setSubmitting] = useState(false);
           managementStructure: data.management_structure || "Member Managed",
           companyName: data.company_name || "",
           formationState: data.formation_state || "Wyoming",
-          selectedPlan: data.selected_plan || "formation-starter",
+          selectedPlan: "formation-starter",
           businessCategory: data.business_category || "",
           businessPurpose: data.business_purpose || "",
           principalStreet: data.principal_street || "",
@@ -246,9 +245,9 @@ const [submitting, setSubmitting] = useState(false);
     const updated = { ...formData, ...updates };
     setFormData(updated);
     setCompletedSteps((prev) => new Set([...prev, currentStep]));
-    const nextStep = currentStep < 8 ? (currentStep + 1) as StepId : currentStep;
+    const nextStep = currentStep < 7 ? (currentStep + 1) as StepId : currentStep;
     await saveProgress(updates, nextStep);
-    if (currentStep < 8) setCurrentStep(nextStep);
+    if (currentStep < 7) setCurrentStep(nextStep);
   };
 
   const handleBack = () => {
@@ -563,7 +562,8 @@ const [submitting, setSubmitting] = useState(false);
   }, [loading, paymentSuccess]);
 
   const selectedPlan = plans.find((p) => p.id === formData.selectedPlan);
-  const totalAmount = (selectedPlan?.price || 0) + 103.75;
+  const stateFee = selectedPlan ? 103.75 : 0;
+  const totalAmount = 399 + stateFee;
 
   if (loading) {
     return (
@@ -846,13 +846,6 @@ const [submitting, setSubmitting] = useState(false);
             />
           )}
           {currentStep === 3 && (
-            <FormationPackageStep
-              selectedPlan={formData.selectedPlan}
-              onNext={(selectedPlan) => handleNext({ selectedPlan })}
-              onBack={handleBack}
-            />
-          )}
-          {currentStep === 4 && (
             <PrincipalActivityStep
               businessCategory={formData.businessCategory}
               businessPurpose={formData.businessPurpose}
@@ -862,28 +855,28 @@ const [submitting, setSubmitting] = useState(false);
               onBack={handleBack}
             />
           )}
-          {currentStep === 5 && (
+          {currentStep === 4 && (
             <BusinessAddressStep
               data={formData}
               onNext={(updates) => handleNext(updates)}
               onBack={handleBack}
             />
           )}
-          {currentStep === 6 && (
+          {currentStep === 5 && (
             <ControllingOfficersStep
               data={formData}
               onNext={(updates) => handleNext(updates)}
               onBack={handleBack}
             />
           )}
-          {currentStep === 7 && (
+          {currentStep === 6 && (
             <AnnualReportStep
               enrolled={formData.annualReportEnrolled}
               onNext={(annualReportEnrolled) => handleNext({ annualReportEnrolled })}
               onBack={handleBack}
             />
           )}
-          {currentStep === 8 && (
+          {currentStep === 7 && (
             <ReviewSubmitStep
               formData={formData}
               totalAmount={totalAmount}
@@ -931,7 +924,7 @@ function ProgressBanner({
             </div>
             <div className="min-w-0">
               <p className="text-xs font-black text-black dark:text-white">
-                {currentStep === 8
+                {currentStep === 7
                   ? "Ready to submit"
                   : stepsRemaining > 0
                   ? `${stepsRemaining} step${stepsRemaining !== 1 ? "s" : ""} remaining`

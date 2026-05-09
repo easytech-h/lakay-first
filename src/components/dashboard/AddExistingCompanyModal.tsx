@@ -13,6 +13,7 @@ import {
   ChevronLeft,
   Check,
   ArrowRight,
+  CreditCard,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,6 +21,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { supabase } from "@/lib/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { usStates } from "@/lib/us-states";
+import { useStripePriceConfig } from "@/hooks/useStripePriceConfig";
 
 interface AddExistingCompanyModalProps {
   onClose: () => void;
@@ -66,8 +68,10 @@ type FormData = {
 
 export default function AddExistingCompanyModal({ onClose, onSuccess }: AddExistingCompanyModalProps) {
   const { user } = useAuth();
+  const { getPriceId } = useStripePriceConfig();
   const [currentStep, setCurrentStep] = useState(1);
   const [submitting, setSubmitting] = useState(false);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
   const [formData, setFormData] = useState<FormData>({
     formation_state: "",
     entity_type: "",
@@ -101,8 +105,10 @@ export default function AddExistingCompanyModal({ onClose, onSuccess }: AddExist
   const handleSubmit = async () => {
     if (!user) return;
     setSubmitting(true);
+    setCheckoutError(null);
     try {
-      await supabase.from("user_companies").insert({
+      // Save company data to DB first
+      const { error: insertError } = await supabase.from("user_companies").insert({
         user_id: user.id,
         name: formData.company_name,
         entity_type: formData.entity_type,
@@ -117,10 +123,43 @@ export default function AddExistingCompanyModal({ onClose, onSuccess }: AddExist
         registered_agent: formData.registered_agent || null,
       });
 
-      onSuccess();
-    } catch (err) {
-      console.error("Error saving company:", err);
-    } finally {
+      if (insertError) throw insertError;
+
+      // Redirect to Stripe compliance subscription checkout with 30-day free trial
+      const priceId = getPriceId("management-compliance");
+      if (!priceId) {
+        setCheckoutError("Compliance plan not yet configured. Please contact support.");
+        setSubmitting(false);
+        return;
+      }
+
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+      if (!token) throw new Error("Not authenticated");
+
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+      const res = await fetch(`${supabaseUrl}/functions/v1/compliance-checkout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          price_id: priceId,
+          success_url: `${window.location.origin}/dashboard?compliance=success`,
+          cancel_url: `${window.location.origin}/dashboard`,
+        }),
+      });
+
+      const result = await res.json();
+      if (!res.ok || !result.url) {
+        throw new Error(result.error || "Failed to create checkout session");
+      }
+
+      window.location.href = result.url;
+    } catch (err: any) {
+      console.error("Error during compliance checkout:", err);
+      setCheckoutError(err.message || "An error occurred. Please try again.");
       setSubmitting(false);
     }
   };
@@ -396,9 +435,9 @@ export default function AddExistingCompanyModal({ onClose, onSuccess }: AddExist
 
             {currentStep === 6 && (
               <div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">Review & Submit</h3>
-                <p className="text-gray-500 dark:text-gray-400 mb-6">Review all information and submit.</p>
-                <div className="space-y-4">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">Review & Subscribe</h3>
+                <p className="text-gray-500 dark:text-gray-400 mb-6">Review your company details and start your free trial.</p>
+                <div className="space-y-4 mb-6">
                   {[
                     { label: "Company Name", value: formData.company_name },
                     { label: "Entity Type", value: formData.entity_type },
@@ -414,6 +453,29 @@ export default function AddExistingCompanyModal({ onClose, onSuccess }: AddExist
                     </div>
                   ))}
                 </div>
+
+                <div className="rounded-xl border-2 border-[#FFC107] bg-[#FFC107]/5 p-5">
+                  <div className="flex items-start gap-3">
+                    <div className="w-9 h-9 rounded-full bg-[#FFC107] flex items-center justify-center flex-shrink-0">
+                      <CreditCard className="h-4 w-4 text-black" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-gray-900 dark:text-white">Prolify Compliance — $150/year</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-0.5">
+                        Your card will be saved but <span className="font-semibold text-gray-900 dark:text-white">you won't be charged for 30 days.</span>
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        After the free trial, $150 is billed annually. Cancel anytime before the trial ends.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {checkoutError && (
+                  <div className="mt-4 p-3 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
+                    <p className="text-sm text-red-700 dark:text-red-400">{checkoutError}</p>
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -447,7 +509,7 @@ export default function AddExistingCompanyModal({ onClose, onSuccess }: AddExist
                 disabled={submitting}
                 className="bg-[#FFC107] hover:bg-[#FFB300] text-black font-bold px-8"
               >
-                {submitting ? "Submitting..." : "Submit"}
+                {submitting ? "Redirecting to payment..." : "Start Free Trial"}
                 <ArrowRight className="h-4 w-4 ml-1.5" />
               </Button>
             )}

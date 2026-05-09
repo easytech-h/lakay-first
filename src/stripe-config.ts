@@ -9,88 +9,23 @@ export interface StripeProduct {
 }
 
 export const stripeProducts: StripeProduct[] = [
-  // Formation Plans (one-time)
+  // Formation Plan (one-time, $399)
   {
-    id: 'prod_UA7kE93wILb9rP',
-    priceId: 'price_1TBnVLPfALVp6q7WUslzqose',
-    name: 'Formation Elite',
-    description: 'International founders & premium needs',
-    price: 499.00,
-    currency: 'usd',
-    mode: 'payment'
-  },
-  {
-    id: 'prod_UA7i1MxzYEkEpK',
-    priceId: 'price_1TBnTMPfALVp6q7WAoCASehf',
-    name: 'Formation Growth',
-    description: 'Serious founders wanting a complete launch',
-    price: 299.00,
-    currency: 'usd',
-    mode: 'payment'
-  },
-  {
-    id: 'prod_UA7b0GlnSPx3qS',
-    priceId: 'price_1TBnMePfALVp6q7WOMOjzA6F',
-    name: 'Formation Starter',
-    description: 'US founders wanting the essentials done right',
-    price: 149.00,
-    currency: 'usd',
-    mode: 'payment'
-  },
-  // Management Plans (subscriptions)
-  // TO CONFIGURE: Replace each priceId below with the real Stripe Price ID from your Stripe dashboard.
-  // Stripe Dashboard → Products → [Plan Name] → Copy the price ID (starts with price_1...)
-  {
-    id: 'management-starter-id',
-    priceId: 'REPLACE_WITH_MANAGEMENT_STARTER_MONTHLY_PRICE_ID',
-    name: 'Management Starter Monthly',
-    description: 'Solo founders with early revenue',
-    price: 49.00,
-    currency: 'usd',
-    mode: 'subscription'
-  },
-  {
-    id: 'management-starter-annual-id',
-    priceId: 'REPLACE_WITH_MANAGEMENT_STARTER_ANNUAL_PRICE_ID',
-    name: 'Management Starter Annual',
-    description: 'Solo founders with early revenue',
-    price: 39.00,
-    currency: 'usd',
-    mode: 'subscription'
-  },
-  {
-    id: 'management-growth-id',
-    priceId: 'REPLACE_WITH_MANAGEMENT_GROWTH_MONTHLY_PRICE_ID',
-    name: 'Management Growth Monthly',
-    description: 'Growing businesses',
-    price: 149.00,
-    currency: 'usd',
-    mode: 'subscription'
-  },
-  {
-    id: 'management-growth-annual-id',
-    priceId: 'REPLACE_WITH_MANAGEMENT_GROWTH_ANNUAL_PRICE_ID',
-    name: 'Management Growth Annual',
-    description: 'Growing businesses',
-    price: 119.00,
-    currency: 'usd',
-    mode: 'subscription'
-  },
-  {
-    id: 'management-elite-id',
-    priceId: 'REPLACE_WITH_MANAGEMENT_ELITE_MONTHLY_PRICE_ID',
-    name: 'Management Elite Monthly',
-    description: 'Established companies needing full service',
+    id: 'formation-starter-id',
+    priceId: 'REPLACE_WITH_FORMATION_STARTER_399_PRICE_ID',
+    name: 'Starter U.S. LLC Package',
+    description: 'Everything you need to launch your U.S. LLC',
     price: 399.00,
     currency: 'usd',
-    mode: 'subscription'
+    mode: 'payment'
   },
+  // Compliance Plan (annual subscription, $150/yr with 30-day free trial)
   {
-    id: 'management-elite-annual-id',
-    priceId: 'REPLACE_WITH_MANAGEMENT_ELITE_ANNUAL_PRICE_ID',
-    name: 'Management Elite Annual',
-    description: 'Established companies needing full service',
-    price: 319.00,
+    id: 'management-compliance-id',
+    priceId: 'REPLACE_WITH_COMPLIANCE_150_ANNUAL_PRICE_ID',
+    name: 'Prolify Compliance',
+    description: 'Annual compliance management for existing U.S. companies',
+    price: 150.00,
     currency: 'usd',
     mode: 'subscription'
   },
