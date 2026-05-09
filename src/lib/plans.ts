@@ -8,9 +8,9 @@ export type FormationPlan = {
   price: number;
   billing: "one-time";
   icon: string;
+  image: string;
   coreFeatures: string[];
-  notIncluded?: string[];
-  additionalFeatures?: string;
+  alsoIncluded: { icon: string; title: string; description: string }[];
   popular?: boolean;
   processingSpeed: string;
   support: string;
@@ -21,13 +21,12 @@ export type ManagementPlan = {
   name: string;
   tagline: string;
   description: string;
-  priceMonthly: number;
-  priceAnnual: number;
-  billing: "monthly";
+  price: number;
+  billing: "one-time";
   icon: string;
+  image: string;
   coreFeatures: string[];
-  notIncluded?: string[];
-  additionalFeatures?: string;
+  alsoIncluded: { icon: string; title: string; description: string }[];
   popular?: boolean;
   support: string;
 };
@@ -48,154 +47,85 @@ export type Plan = {
 export const formationPlans: FormationPlan[] = [
   {
     id: "formation-starter",
-    name: "Starter",
-    tagline: "US founders wanting the essentials done right",
-    description: "Full service filing with essential formation services",
-    price: 149,
+    name: "Starter U.S. LLC Package",
+    tagline: "Everything you need to launch your U.S. LLC",
+    description: "One simple Prolify price for cost-sensitive non-US founders. State filing fee added separately. No upsells.",
+    price: 399,
     billing: "one-time",
     icon: "rocket",
+    image: "/WhatsApp_Image_2026-05-08_at_13.08.42.jpeg",
     coreFeatures: [
-      "Full Service LLC/Corp Filing",
-      "Standard processing speed",
-      "Email support",
-    ],
-    notIncluded: [
-      "Registered Agent (add-on: $129/yr)",
-      "EIN filing (add-on: $79)",
-      "BOI / CTA filing (add-on: $99)",
-      "Business Address",
+      "LLC Formation in WY / DE / NM / MT",
+      "EIN Application",
+      "ITIN Advisory (if needed)",
+      "Registered Agent — Year 1",
       "Operating Agreement",
+      "Banking Introductions",
     ],
+    alsoIncluded: [
+      { icon: "credit-card", title: "Stripe Readiness Checklist", description: "Prepare to accept payments" },
+      { icon: "globe", title: "Country-Specific Onboarding", description: "Guided setup tailored to your country" },
+      { icon: "sparkles", title: "AI Chief of Staff", description: "Basic in-product guidance" },
+      { icon: "calendar", title: "Compliance Calendar Enrollment", description: "Track key deadlines from day one" },
+      { icon: "bar-chart", title: "Dashboard", description: "Core visibility for your U.S. business" },
+    ],
+    popular: false,
     processingSpeed: "Standard",
     support: "Email Support",
-  },
-  {
-    id: "formation-growth",
-    name: "Growth",
-    tagline: "Serious founders wanting a complete launch",
-    description: "Complete formation package with registered agent and compliance",
-    price: 299,
-    billing: "one-time",
-    icon: "zap",
-    coreFeatures: [
-      "Full Service LLC/Corp Filing",
-      "Registered Agent included (1 year)",
-      "EIN included (with SSN)",
-      "BOI / CTA Filing included",
-      "Operating Agreement template",
-      "Standard processing (5-7 days)",
-      "Priority Email + Chat support",
-    ],
-    additionalFeatures: "Everything in Starter +",
-    popular: true,
-    processingSpeed: "Standard (5-7 days)",
-    support: "Priority Email + Chat",
-  },
-  {
-    id: "formation-elite",
-    name: "Elite",
-    tagline: "International founders & premium needs",
-    description: "Rush processing with business address and premium support",
-    price: 499,
-    billing: "one-time",
-    icon: "crown",
-    coreFeatures: [
-      "Full Service LLC/Corp Filing (Rush)",
-      "Registered Agent included (1 year)",
-      "EIN included (with or without SSN)",
-      "BOI / CTA Filing included",
-      "Business Address + Mail Scanning",
-      "Operating Agreement template",
-      "Rush processing (1-2 days)",
-      "Dedicated Onboarding Call",
-    ],
-    additionalFeatures: "Everything in Growth +",
-    processingSpeed: "Rush (1-2 days)",
-    support: "Dedicated Onboarding Call",
   },
 ];
 
 export const managementPlans: ManagementPlan[] = [
   {
-    id: "management-starter",
-    name: "Starter",
-    tagline: "Solo founders with early revenue",
-    description: "Self-serve bookkeeping with bank connection and basic AI tools",
-    priceMonthly: 49,
-    priceAnnual: 39,
-    billing: "monthly",
-    icon: "rocket",
+    id: "management-compliance",
+    name: "Prolify Compliance",
+    tagline: "Already formed your U.S. company?",
+    description: "Let Prolify manage the compliance so you don't miss deadlines, lose good standing, or deal with state paperwork alone.",
+    price: 150,
+    billing: "one-time",
+    icon: "shield",
+    image: "/WhatsApp_Image_2026-05-08_at_12.41.41.jpeg",
     coreFeatures: [
-      "Self-serve bookkeeping (bank connection)",
-      "2 AI Copilots (50 queries/mo)",
-      "Tax calendar & checklists",
-      "Document vault (25 docs)",
-      "Basic bank integration",
-      "Email support (48hr)",
-      "Browse Marketplace",
+      "State Annual Report Filing",
+      "Registered Agent Coverage",
+      "Compliance Dashboard",
+      "AI Chief of Staff for Compliance",
     ],
-    notIncluded: [
-      "Mentorship (pay-per-session)",
+    alsoIncluded: [
+      { icon: "clock", title: "Quarterly Compliance Review", description: "We review your company's compliance status every quarter." },
+      { icon: "calendar", title: "Compliance Calendar Enrollment", description: "State and federal deadlines are added to your Prolify calendar." },
+      { icon: "folder", title: "Document Vault", description: "Store annual reports, confirmations, EIN letter, and key company records." },
+      { icon: "shield", title: "Good Standing Monitoring", description: "Reduce the risk of missed deadlines and loss of good standing." },
     ],
-    support: "Email (48hr)",
-  },
-  {
-    id: "management-growth",
-    name: "Growth",
-    tagline: "Growing businesses ($10k+ rev/mo)",
-    description: "Full software suite with AI-guided taxes and compliance workflows",
-    priceMonthly: 149,
-    priceAnnual: 119,
-    billing: "monthly",
-    icon: "zap",
-    coreFeatures: [
-      "Full bookkeeping software suite",
-      "4 AI Copilots (300 queries/mo)",
-      "AI-guided quarterly taxes",
-      "Compliance filing workflows",
-      "Group Office Hours mentorship",
-      "Stripe, Shopify, PayPal integrations",
-      "Email + Chat support (24hr)",
-    ],
-    additionalFeatures: "Everything in Starter +",
-    popular: true,
-    support: "Email + Chat (24hr)",
-  },
-  {
-    id: "management-elite",
-    name: "Elite",
-    tagline: "Established companies needing full service",
-    description: "Dedicated bookkeeper, managed compliance, and 1:1 mentorship",
-    priceMonthly: 399,
-    priceAnnual: 319,
-    billing: "monthly",
-    icon: "crown",
-    coreFeatures: [
-      "Dedicated Bookkeeper (done-for-you)",
-      "All 6 AI Copilots (unlimited queries)",
-      "Managed filing & annual taxes",
-      "Managed compliance + alerts",
-      "1:1 Mentorship (2x/mo)",
-      "All integrations + custom",
-      "Priority Phone & Chat support",
-    ],
-    additionalFeatures: "Everything in Growth +",
-    support: "Priority Phone & Chat",
+    popular: false,
+    support: "Email Support",
   },
 ];
 
-export const plans: Plan[] = formationPlans.map((p) => ({
-  id: p.id,
-  name: p.name,
-  tagline: p.tagline,
-  description: p.description,
-  price: p.price,
-  billing: p.billing,
-  icon: p.icon,
-  coreFeatures: p.coreFeatures,
-  additionalFeatures: p.additionalFeatures,
-  popular: p.popular,
-}));
+export const plans: Plan[] = [
+  ...formationPlans.map((p) => ({
+    id: p.id,
+    name: p.name,
+    tagline: p.tagline,
+    description: p.description,
+    price: p.price,
+    billing: p.billing as "one-time",
+    icon: p.icon,
+    coreFeatures: p.coreFeatures,
+    popular: p.popular,
+  })),
+  ...managementPlans.map((p) => ({
+    id: p.id,
+    name: p.name,
+    tagline: p.tagline,
+    description: p.description,
+    price: p.price,
+    billing: p.billing as "one-time",
+    icon: p.icon,
+    coreFeatures: p.coreFeatures,
+    popular: p.popular,
+  })),
+];
 
 export const getPlanById = (id: string): Plan | undefined => {
   return plans.find((plan) => plan.id === id);

@@ -1,15 +1,45 @@
 "use client";
 
 import { useState } from "react";
-import { Check, ArrowRight, X, Briefcase, Building2 } from "lucide-react";
-import { formationPlans, managementPlans } from "@/lib/plans";
+import { Check, ArrowRight, Briefcase, Building2 } from "lucide-react";
 import Link from "next/link";
 import { useI18n } from "@/contexts/I18nContext";
+import Image from "next/image";
+
+const formationFeatures = [
+  { title: "LLC Formation in WY / DE / NM / MT", description: "Choose the state that fits your business" },
+  { title: "EIN Application", description: "Help applying for your federal tax ID" },
+  { title: "ITIN Advisory (if needed)", description: "Guidance for founders who need ITIN support" },
+  { title: "Registered Agent — Year 1", description: "Required legal address service included" },
+  { title: "Operating Agreement", description: "Foundational company document included" },
+  { title: "Banking Introductions", description: "Mercury, Wise, and Relay" },
+];
+
+const formationAlso = [
+  { title: "Stripe Readiness Checklist", description: "Prepare to accept payments" },
+  { title: "Country-Specific Onboarding", description: "Guided setup tailored to your country" },
+  { title: "AI Chief of Staff", description: "Basic in-product guidance" },
+  { title: "Compliance Calendar Enrollment", description: "Track key deadlines from day one" },
+  { title: "Dashboard", description: "Core visibility for your U.S. business" },
+];
+
+const complianceFeatures = [
+  { title: "State Annual Report Filing", description: "Annual or periodic state report prepared and filed on time." },
+  { title: "Registered Agent Coverage", description: "Professional registered agent service across all 50 states." },
+  { title: "Compliance Dashboard", description: "Track status, deadlines, filings, and documents in one place." },
+  { title: "AI Chief of Staff for Compliance", description: "Get guidance, answers, and reminders for your compliance tasks." },
+];
+
+const complianceAlso = [
+  { title: "Quarterly Compliance Review", description: "We review your company's compliance status every quarter." },
+  { title: "Compliance Calendar Enrollment", description: "State and federal deadlines are added to your Prolify calendar." },
+  { title: "Document Vault", description: "Store annual reports, confirmations, EIN letter, and key company records." },
+  { title: "Good Standing Monitoring", description: "Reduce the risk of missed deadlines and loss of good standing." },
+];
 
 const PricingSection = () => {
   const { t } = useI18n();
   const [selectedTab, setSelectedTab] = useState<"new" | "existing">("new");
-  const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("annual");
 
   return (
     <section id="pricing" className="relative py-24 md:py-32 px-4 bg-[#FAFAFA]">
@@ -31,7 +61,7 @@ const PricingSection = () => {
           </p>
         </div>
 
-        <div className="flex justify-center mb-8">
+        <div className="flex justify-center mb-12">
           <div className="inline-flex items-center gap-1 p-1.5 bg-white rounded-2xl border border-black/8 shadow-sm">
             <button
               onClick={() => setSelectedTab("new")}
@@ -58,210 +88,148 @@ const PricingSection = () => {
           </div>
         </div>
 
-        {selectedTab === "existing" && (
-          <div className="flex justify-center mb-8">
-            <div className="inline-flex items-center gap-1 p-1 bg-white rounded-xl border border-black/8 shadow-sm">
-              <button
-                onClick={() => setBillingCycle("monthly")}
-                className={`px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 ${
-                  billingCycle === "monthly"
-                    ? "bg-[#FFC107] text-black"
-                    : "text-black/50 hover:text-black"
-                }`}
-              >
-                {t.pricing.monthly}
-              </button>
-              <button
-                onClick={() => setBillingCycle("annual")}
-                className={`px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 ${
-                  billingCycle === "annual"
-                    ? "bg-[#FFC107] text-black"
-                    : "text-black/50 hover:text-black"
-                }`}
-              >
-                {t.pricing.annual} <span className="text-green-700 ml-1 font-semibold">-20%</span>
-              </button>
+        {selectedTab === "new" ? (
+          <div className="max-w-3xl mx-auto">
+            <div className="text-center mb-8">
+              <h3 className="text-3xl md:text-4xl font-black tracking-tighter text-black mb-2">
+                Everything you need to launch your U.S. LLC
+              </h3>
+              <p className="text-black/50 font-medium text-sm">
+                One simple Prolify price for cost-sensitive non-US founders. State filing fee added separately. No upsells.
+              </p>
+            </div>
+
+            <div className="bg-white border border-black/8 rounded-3xl shadow-sm overflow-hidden">
+              <div className="p-8 pb-0 text-center">
+                <div className="flex items-baseline justify-center gap-2 mb-1">
+                  <span className="text-6xl font-black tracking-tighter text-black">$399</span>
+                  <div className="text-left">
+                    <div className="text-sm font-medium text-black/50">+ state filing fee</div>
+                    <div className="text-sm font-medium text-black/50">one-time</div>
+                  </div>
+                </div>
+                <p className="text-[#2563EB] font-bold text-base mt-1">Starter U.S. LLC Package</p>
+              </div>
+
+              <div className="p-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                    <h4 className="font-black text-black text-sm mb-4">What&apos;s Included</h4>
+                    <ul className="space-y-3">
+                      {formationFeatures.map((f) => (
+                        <li key={f.title} className="flex items-start gap-3">
+                          <div className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <Check className="w-3 h-3 text-green-600" strokeWidth={3} />
+                          </div>
+                          <div>
+                            <span className="text-sm font-bold text-black">{f.title}</span>
+                            <p className="text-xs text-black/50">{f.description}</p>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="font-black text-black text-sm mb-4">Also Included</h4>
+                    <ul className="space-y-3">
+                      {formationAlso.map((f) => (
+                        <li key={f.title} className="flex items-start gap-3">
+                          <div className="w-6 h-6 rounded-full bg-[#2563EB] flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <Check className="w-3 h-3 text-white" strokeWidth={3} />
+                          </div>
+                          <div>
+                            <span className="text-sm font-bold text-black">{f.title}</span>
+                            <p className="text-xs text-black/50">{f.description}</p>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="mt-8 pt-6 border-t border-black/8 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <p className="text-sm text-black/50 font-medium">Ready to start? Launch your U.S. LLC with Prolify.</p>
+                  <Link href="/signup">
+                    <button className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#2563EB] text-white font-bold rounded-2xl hover:bg-[#1d4ed8] transition-all duration-200 text-sm group whitespace-nowrap">
+                      Start Your LLC for $399
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                    </button>
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
-        )}
-
-        <p className="text-center text-black/40 text-xs font-medium mb-10">
-          {selectedTab === "new"
-            ? t.pricing.oneTimeFormation
-            : t.pricing.monthlySubscriptions}
-        </p>
-
-        {selectedTab === "new" ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 w-full pt-6">
-            {formationPlans.map((plan) => {
-              const isPopular = plan.popular;
-              return (
-                <div
-                  key={plan.id}
-                  className={`relative flex flex-col rounded-3xl transition-all duration-200 ${
-                    isPopular
-                      ? "bg-[#FFC107] shadow-xl"
-                      : "bg-white border border-black/8 shadow-sm hover:shadow-md hover:border-black/15"
-                  }`}
-                >
-                  {isPopular && (
-                    <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-10">
-                      <span className="inline-flex items-center gap-1 px-4 py-1 rounded-full bg-black text-white text-xs font-black uppercase tracking-widest">
-                        {t.pricing.mostPopular}
-                      </span>
-                    </div>
-                  )}
-
-                  <div className="p-6 pb-4">
-                    <h3 className="text-lg font-black mb-0.5 text-black">
-                      {plan.name}
-                    </h3>
-                    <p className={`text-xs font-medium mb-4 ${isPopular ? "text-black/55" : "text-black/45"}`}>
-                      {plan.tagline}
-                    </p>
-                    <div className="flex items-baseline gap-0.5 mb-1">
-                      <span className="text-4xl font-black tracking-tighter text-black">
-                        ${plan.price}
-                      </span>
-                    </div>
-                    <p className={`text-xs font-medium ${isPopular ? "text-black/45" : "text-black/35"}`}>
-                      {t.pricing.oneTimePlusFees}
-                    </p>
-                    <div className={`h-px w-full mt-5 ${isPopular ? "bg-black/15" : "bg-black/6"}`} />
-                  </div>
-
-                  <div className="px-6 flex-grow">
-                    {plan.additionalFeatures && (
-                      <p className={`text-xs font-black uppercase tracking-widest mb-3 ${isPopular ? "text-black/60" : "text-black/35"}`}>
-                        {plan.additionalFeatures}
-                      </p>
-                    )}
-                    <ul className="space-y-2.5 w-full">
-                      {plan.coreFeatures.map((f) => (
-                        <li key={f} className="flex items-start gap-2.5">
-                          <div className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${isPopular ? "bg-black" : "bg-[#FFC107]/20"}`}>
-                            <Check className={`w-2.5 h-2.5 ${isPopular ? "text-[#FFC107]" : "text-black"}`} strokeWidth={3} />
-                          </div>
-                          <span className={`text-xs font-medium leading-snug flex-1 ${isPopular ? "text-black/80" : "text-black/65"}`}>
-                            {f}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                    {plan.notIncluded && plan.notIncluded.length > 0 && (
-                      <ul className="space-y-2 mt-3 pt-3 border-t border-black/10 w-full">
-                        {plan.notIncluded.map((f) => (
-                          <li key={f} className="flex items-start gap-2.5">
-                            <div className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${isPopular ? "bg-black/15" : "bg-black/5"}`}>
-                              <X className={`w-2.5 h-2.5 ${isPopular ? "text-black/40" : "text-black/25"}`} />
-                            </div>
-                            <span className={`text-xs font-medium leading-snug flex-1 ${isPopular ? "text-black/40" : "text-black/30"}`}>
-                              {f}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-
-                  <div className="p-6 pt-5">
-                    <Link href="/signup">
-                      <button
-                        className={`w-full py-3 rounded-2xl font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 group ${
-                          isPopular
-                            ? "bg-black text-white hover:bg-black/85"
-                            : "bg-black text-white hover:bg-[#FFC107] hover:text-black"
-                        }`}
-                      >
-                        {plan.price === 0 ? t.pricing.getStartedFree : `${t.pricing.choose} ${plan.name}`}
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                      </button>
-                    </Link>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {managementPlans.map((plan) => {
-              const isPopular = plan.popular;
-              const displayPrice = billingCycle === "annual" ? plan.priceAnnual : plan.priceMonthly;
-              return (
-                <div
-                  key={plan.id}
-                  className={`relative flex flex-col rounded-3xl transition-all duration-200 ${
-                    isPopular
-                      ? "bg-[#FFC107] shadow-xl"
-                      : "bg-white border border-black/8 shadow-sm hover:shadow-md hover:border-black/15"
-                  }`}
-                >
-                  {isPopular && (
-                    <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-10">
-                      <span className="inline-flex items-center gap-1 px-4 py-1 rounded-full bg-black text-white text-xs font-black uppercase tracking-widest">
-                        {t.pricing.mostPopular}
-                      </span>
-                    </div>
-                  )}
+          <div className="max-w-3xl mx-auto">
+            <div className="text-center mb-8">
+              <h3 className="text-3xl md:text-4xl font-black tracking-tighter text-black mb-2">
+                Already formed your U.S. company?
+              </h3>
+              <p className="text-black/50 font-medium text-sm">
+                Let Prolify manage the compliance so you don&apos;t miss deadlines, lose good standing, or deal with state paperwork alone.
+              </p>
+            </div>
 
-                  <div className="p-6 pb-4">
-                    <h3 className="text-lg font-black mb-0.5 text-black">
-                      {plan.name}
-                    </h3>
-                    <p className={`text-xs font-medium mb-4 ${isPopular ? "text-black/55" : "text-black/45"}`}>
-                      {plan.tagline}
-                    </p>
-                    <div className="flex items-baseline gap-1 mb-1">
-                      <span className="text-4xl font-black tracking-tighter text-black">
-                        ${displayPrice}
-                      </span>
-                      <span className={`text-sm font-bold ${isPopular ? "text-black/55" : "text-black/50"}`}>/mo</span>
-                    </div>
-                    {billingCycle === "annual" && plan.priceMonthly > 0 && (
-                      <p className="text-xs font-semibold text-green-700">
-                        {t.pricing.save} ${(plan.priceMonthly - plan.priceAnnual) * 12}{t.pricing.perYear}
-                      </p>
-                    )}
-                    <div className={`h-px w-full mt-5 ${isPopular ? "bg-black/15" : "bg-black/6"}`} />
+            <div className="bg-white border border-black/8 rounded-3xl shadow-sm overflow-hidden">
+              <div className="p-8 pb-0 text-center">
+                <div className="flex items-baseline justify-center gap-2 mb-1">
+                  <span className="text-6xl font-black tracking-tighter text-black">$150</span>
+                  <div className="text-left">
+                    <div className="text-sm font-medium text-black/50">/ year + state filing fees</div>
                   </div>
+                </div>
+                <p className="text-[#2563EB] font-bold text-base mt-1">Prolify Compliance</p>
+                <p className="text-sm text-black/50 mt-1">For businesses that already have a U.S. company and want to stay compliant.</p>
+                <p className="text-sm text-black/60 font-medium mt-2">Everything you need to keep your business active, organized, and in good standing.</p>
+              </div>
 
-                  <div className="px-6 flex-grow">
-                    {plan.additionalFeatures && (
-                      <p className={`text-xs font-black uppercase tracking-widest mb-3 ${isPopular ? "text-black/60" : "text-black/35"}`}>
-                        {plan.additionalFeatures}
-                      </p>
-                    )}
-                    <ul className="space-y-2.5">
-                      {plan.coreFeatures.map((f) => (
-                        <li key={f} className="flex items-start gap-2.5">
-                          <div className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${isPopular ? "bg-black" : "bg-[#FFC107]/20"}`}>
-                            <Check className={`w-2.5 h-2.5 ${isPopular ? "text-[#FFC107]" : "text-black"}`} strokeWidth={3} />
+              <div className="p-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                    <h4 className="font-black text-black text-sm mb-4">What&apos;s Included</h4>
+                    <ul className="space-y-3">
+                      {complianceFeatures.map((f) => (
+                        <li key={f.title} className="flex items-start gap-3">
+                          <div className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <Check className="w-3 h-3 text-green-600" strokeWidth={3} />
                           </div>
-                          <span className={`text-xs font-medium leading-snug ${isPopular ? "text-black/80" : "text-black/65"}`}>
-                            {f}
-                          </span>
+                          <div>
+                            <span className="text-sm font-bold text-black">{f.title}</span>
+                            <p className="text-xs text-black/50">{f.description}</p>
+                          </div>
                         </li>
                       ))}
                     </ul>
                   </div>
-
-                  <div className="p-6 pt-5">
-                    <Link href="/signup">
-                      <button
-                        className={`w-full py-3 rounded-2xl font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 group ${
-                          isPopular
-                            ? "bg-black text-white hover:bg-black/85"
-                            : "bg-black text-white hover:bg-[#FFC107] hover:text-black"
-                        }`}
-                      >
-                        {displayPrice === 0 ? t.pricing.startFree : `${t.pricing.choose} ${plan.name}`}
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                      </button>
-                    </Link>
+                  <div>
+                    <h4 className="font-black text-black text-sm mb-4">Also Included</h4>
+                    <ul className="space-y-3">
+                      {complianceAlso.map((f) => (
+                        <li key={f.title} className="flex items-start gap-3">
+                          <div className="w-6 h-6 rounded-full bg-[#2563EB] flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <Check className="w-3 h-3 text-white" strokeWidth={3} />
+                          </div>
+                          <div>
+                            <span className="text-sm font-bold text-black">{f.title}</span>
+                            <p className="text-xs text-black/50">{f.description}</p>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 </div>
-              );
-            })}
+
+                <div className="mt-8 pt-6 border-t border-black/8 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <p className="text-sm text-black/50 font-medium">Stay compliant and organized with Prolify.</p>
+                  <Link href="/signup">
+                    <button className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#2563EB] text-white font-bold rounded-2xl hover:bg-[#1d4ed8] transition-all duration-200 text-sm group whitespace-nowrap">
+                      Manage My U.S. Business
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
