@@ -716,9 +716,6 @@ function DashboardContent() {
                     t={t}
                   />
 
-                  {/* Bank */}
-                  <ConnectBankCard onNavigate={() => setActiveSection("bk-dashboard" as ActiveSection)} />
-
                   {/* Services grid */}
                   <div>
                     <div className="flex items-center justify-between mb-3">
