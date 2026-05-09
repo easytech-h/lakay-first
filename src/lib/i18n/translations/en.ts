@@ -380,7 +380,7 @@ const en = {
     step2i2: "Operating agreement customized for your business",
     step2i3: "Articles of organization filed with the state",
     step2i4: "Registered agent service (first year included)",
-    step2time: "1 week average (varies by state)",
+    step2time: "3 week average (varies by state)",
     step3headline: "Secure Your Business Documents",
     step3desc: "We obtain your federal EIN (tax ID) from the IRS and prepare all documents banks and payment processors require. Everything is organized in your Prolify dashboard.",
     step3i1: "Federal EIN (Employer Identification Number)",
