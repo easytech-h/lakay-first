@@ -107,7 +107,7 @@ export default function ProlifyPricing() {
                     <div className="text-sm font-medium text-black/50">one-time</div>
                   </div>
                 </div>
-                <p className="text-[#2563EB] font-bold text-base mt-1">Starter U.S. LLC Package</p>
+                <p className="text-[#FFC107] font-bold text-base mt-1">Starter U.S. LLC Package</p>
               </div>
 
               <div className="p-8">
@@ -133,7 +133,7 @@ export default function ProlifyPricing() {
                     <ul className="space-y-3">
                       {formationAlso.map((f) => (
                         <li key={f.title} className="flex items-start gap-3">
-                          <div className="w-6 h-6 rounded-full bg-[#2563EB] flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <div className="w-6 h-6 rounded-full bg-[#FFC107] flex items-center justify-center flex-shrink-0 mt-0.5">
                             <Check className="w-3 h-3 text-white" strokeWidth={3} />
                           </div>
                           <div>
@@ -149,7 +149,7 @@ export default function ProlifyPricing() {
                 <div className="mt-8 pt-6 border-t border-black/8 flex flex-col sm:flex-row items-center justify-between gap-4">
                   <p className="text-sm text-black/50 font-medium">Ready to start? Launch your U.S. LLC with Prolify.</p>
                   <Link href="/signup">
-                    <button className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#2563EB] text-white font-bold rounded-2xl hover:bg-[#1d4ed8] transition-all duration-200 text-sm group whitespace-nowrap">
+                    <button className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#FFC107] text-black font-bold rounded-2xl hover:bg-[#FFB300] transition-all duration-200 text-sm group whitespace-nowrap">
                       Start Your LLC for $399
                       <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                     </button>
@@ -177,7 +177,7 @@ export default function ProlifyPricing() {
                     <div className="text-sm font-medium text-black/50">/ year + state filing fees</div>
                   </div>
                 </div>
-                <p className="text-[#2563EB] font-bold text-base mt-1">Prolify Compliance</p>
+                <p className="text-[#FFC107] font-bold text-base mt-1">Prolify Compliance</p>
                 <p className="text-sm text-black/50 mt-1">For businesses that already have a U.S. company and want to stay compliant.</p>
                 <p className="text-sm text-black/60 font-medium mt-2">Everything you need to keep your business active, organized, and in good standing.</p>
               </div>
@@ -205,7 +205,7 @@ export default function ProlifyPricing() {
                     <ul className="space-y-3">
                       {complianceAlso.map((f) => (
                         <li key={f.title} className="flex items-start gap-3">
-                          <div className="w-6 h-6 rounded-full bg-[#2563EB] flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <div className="w-6 h-6 rounded-full bg-[#FFC107] flex items-center justify-center flex-shrink-0 mt-0.5">
                             <Check className="w-3 h-3 text-white" strokeWidth={3} />
                           </div>
                           <div>
@@ -221,7 +221,7 @@ export default function ProlifyPricing() {
                 <div className="mt-8 pt-6 border-t border-black/8 flex flex-col sm:flex-row items-center justify-between gap-4">
                   <p className="text-sm text-black/50 font-medium">Stay compliant and organized with Prolify.</p>
                   <Link href="/signup">
-                    <button className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#2563EB] text-white font-bold rounded-2xl hover:bg-[#1d4ed8] transition-all duration-200 text-sm group whitespace-nowrap">
+                    <button className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#FFC107] text-black font-bold rounded-2xl hover:bg-[#FFB300] transition-all duration-200 text-sm group whitespace-nowrap">
                       Manage My U.S. Business
                       <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                     </button>
